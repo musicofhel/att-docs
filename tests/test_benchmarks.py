@@ -5,7 +5,8 @@ import pandas as pd
 import pytest
 
 from att.config import set_seed
-from att.synthetic import coupled_lorenz
+from att.synthetic import coupled_lorenz, kuramoto_oscillators
+from att.binding import BindingDetector
 from att.benchmarks import transfer_entropy, pac, crqa, CouplingBenchmark
 
 
@@ -156,3 +157,29 @@ class TestCouplingBenchmark:
             transient_discard=500,
         )
         np.testing.assert_array_equal(df1["score"].values, df2["score"].values)
+
+
+class TestKuramotoBenchmark:
+    def test_kuramoto_binding_decreases_with_synchronization(self):
+        """Binding score should decrease as Kuramoto coupling synchronizes oscillators.
+
+        In the Kuramoto model, coupling drives oscillators toward phase
+        synchronization.  Synchronized signals collapse onto a lower-dimensional
+        manifold in the joint embedding, *reducing* excess topology compared to
+        uncoupled oscillators with independent frequencies.
+        """
+        scores = []
+        for coupling in [0.0, 1.0, 5.0]:
+            phases, signals = kuramoto_oscillators(
+                n_oscillators=2, n_steps=5000, dt=0.01,
+                coupling=coupling, omega_spread=0.5, seed=42,
+            )
+            det = BindingDetector(max_dim=1, baseline="max")
+            det.fit(signals[:, 0], signals[:, 1], subsample=300, seed=42)
+            scores.append(det.binding_score())
+
+        # Uncoupled oscillators with different frequencies produce richer
+        # joint topology than synchronized (coupled) ones.
+        assert scores[0] > scores[1], (
+            f"Scores {scores}: uncoupled should exceed moderately coupled"
+        )

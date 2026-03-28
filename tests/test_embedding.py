@@ -4,7 +4,7 @@ import numpy as np
 import pytest
 
 from att.config import set_seed
-from att.synthetic import lorenz_system, rossler_system, coupled_rossler_lorenz
+from att.synthetic import lorenz_system, coupled_rossler_lorenz
 from att.embedding import (
     TakensEmbedder,
     JointEmbedder,

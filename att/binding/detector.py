@@ -1,9 +1,8 @@
-"""Binding detection via persistence image subtraction."""
+"""Binding detection via persistence image subtraction and diagram matching."""
 
 import warnings
 import numpy as np
 
-from att.config.seed import get_rng
 from att.embedding.takens import TakensEmbedder
 from att.embedding.joint import JointEmbedder
 from att.embedding.validation import validate_embedding, EmbeddingDegeneracyWarning
@@ -21,7 +20,8 @@ class BindingDetector:
     max_dim : int
         Maximum homology dimension (0=components, 1=loops).
     method : str
-        "persistence_image" (primary) or "diagram_matching" (not yet implemented).
+        "persistence_image" (PI subtraction) or "diagram_matching"
+        (optimal matching via Hungarian algorithm).
     image_resolution : int
         Resolution of persistence images.
     image_sigma : float
@@ -42,8 +42,11 @@ class BindingDetector:
         baseline: str = "max",
         embedding_quality_gate: bool = True,
     ):
-        if method not in ("persistence_image",):
-            raise ValueError(f"Unknown method: {method}. Use 'persistence_image'.")
+        if method not in ("persistence_image", "diagram_matching"):
+            raise ValueError(
+                f"Unknown method: {method}. "
+                "Use 'persistence_image' or 'diagram_matching'."
+            )
         if baseline not in ("max", "sum"):
             raise ValueError(f"Unknown baseline: {baseline}. Use 'max' or 'sum'.")
 
@@ -55,6 +58,7 @@ class BindingDetector:
         self.embedding_quality_gate = embedding_quality_gate
 
         # Fitted state
+        self._fitted = False
         self._cloud_x: np.ndarray | None = None
         self._cloud_y: np.ndarray | None = None
         self._cloud_joint: np.ndarray | None = None
@@ -65,6 +69,8 @@ class BindingDetector:
         self._images_y: list[np.ndarray] | None = None
         self._images_joint: list[np.ndarray] | None = None
         self._residual_images: list[np.ndarray] | None = None
+        self._matching_score: float | None = None
+        self._matching_details: dict | None = None
         self._embedding_quality: dict | None = None
         self._X_raw: np.ndarray | None = None
         self._Y_raw: np.ndarray | None = None
@@ -154,52 +160,66 @@ class BindingDetector:
             self._cloud_joint, subsample=subsample, seed=pa_seed
         )
 
-        # 5. Compute PIs on shared grid
-        birth_range, persistence_range = self._compute_shared_ranges(
-            pa_x.diagrams_, pa_y.diagrams_, pa_joint.diagrams_
-        )
-
-        self._images_x = pa_x.to_image(
-            self.image_resolution, self.image_sigma, birth_range, persistence_range
-        )
-        self._images_y = pa_y.to_image(
-            self.image_resolution, self.image_sigma, birth_range, persistence_range
-        )
-        self._images_joint = pa_joint.to_image(
-            self.image_resolution, self.image_sigma, birth_range, persistence_range
-        )
-
         # Store analyzers for reuse in significance testing
         self._pa_x = pa_x
         self._pa_y = pa_y
         self._pa_joint = pa_joint
-        self._birth_range = birth_range
-        self._persistence_range = persistence_range
 
-        # 6. Compute residuals
-        self._residual_images = []
-        for d in range(self.max_dim + 1):
-            img_joint = self._images_joint[d]
-            img_x = self._images_x[d]
-            img_y = self._images_y[d]
+        if self.method == "diagram_matching":
+            # 5b. Compute binding score from raw persistence diagrams
+            self._matching_score, self._matching_details = (
+                self._diagram_matching_score()
+            )
+        else:
+            # 5a. Compute PIs on shared grid (persistence_image method)
+            birth_range, persistence_range = self._compute_shared_ranges(
+                pa_x.diagrams_, pa_y.diagrams_, pa_joint.diagrams_
+            )
 
-            if self.baseline == "max":
-                baseline_img = np.maximum(img_x, img_y)
-            else:  # "sum"
-                baseline_img = img_x + img_y
+            self._images_x = pa_x.to_image(
+                self.image_resolution, self.image_sigma, birth_range, persistence_range
+            )
+            self._images_y = pa_y.to_image(
+                self.image_resolution, self.image_sigma, birth_range, persistence_range
+            )
+            self._images_joint = pa_joint.to_image(
+                self.image_resolution, self.image_sigma, birth_range, persistence_range
+            )
 
-            self._residual_images.append(img_joint - baseline_img)
+            self._birth_range = birth_range
+            self._persistence_range = persistence_range
 
+            # 6a. Compute residuals
+            self._residual_images = []
+            for d in range(self.max_dim + 1):
+                img_joint = self._images_joint[d]
+                img_x = self._images_x[d]
+                img_y = self._images_y[d]
+
+                if self.baseline == "max":
+                    baseline_img = np.maximum(img_x, img_y)
+                else:  # "sum"
+                    baseline_img = img_x + img_y
+
+                self._residual_images.append(img_joint - baseline_img)
+
+        self._fitted = True
         return self
 
     def binding_score(self) -> float:
-        """L1 norm of positive residual (joint excess over baseline).
+        """Binding score (higher = more emergent topology).
+
+        For persistence_image method: L1 norm of positive residual.
+        For diagram_matching method: optimal matching cost between joint
+        and concatenated marginal persistence diagrams.
 
         Returns
         -------
-        float : binding score (higher = more emergent topology)
+        float : binding score
         """
         self._check_fitted()
+        if self.method == "diagram_matching":
+            return self._matching_score
         score = 0.0
         for residual in self._residual_images:
             positive = np.maximum(residual, 0)
@@ -209,11 +229,16 @@ class BindingDetector:
     def binding_features(self) -> dict:
         """Per-dimension breakdown of excess topology.
 
+        For persistence_image: {dim: {n_excess, total_persistence, max_persistence}}
+        For diagram_matching: {dim: {score, n_joint, n_baseline, n_unmatched}}
+
         Returns
         -------
-        dict : {dim: {n_excess, total_persistence, max_persistence}}
+        dict : per-dimension feature dictionary
         """
         self._check_fitted()
+        if self.method == "diagram_matching":
+            return self._matching_details
         features = {}
         for d, residual in enumerate(self._residual_images):
             positive = np.maximum(residual, 0)
@@ -227,11 +252,23 @@ class BindingDetector:
     def binding_image(self) -> list[np.ndarray]:
         """Residual persistence images (joint - baseline).
 
+        Only available for the persistence_image method.
+
         Returns
         -------
         list of (resolution, resolution) arrays, one per homology dimension
+
+        Raises
+        ------
+        RuntimeError
+            If called with the diagram_matching method.
         """
         self._check_fitted()
+        if self.method == "diagram_matching":
+            raise RuntimeError(
+                "binding_image() is not available for the 'diagram_matching' method. "
+                "Use binding_features() for per-dimension matching details."
+            )
         return self._residual_images
 
     def embedding_quality(self) -> dict:
@@ -260,7 +297,7 @@ class BindingDetector:
         Parameters
         ----------
         n_surrogates : number of surrogate iterations
-        method : "phase_randomize" or "time_shuffle"
+        method : "phase_randomize", "time_shuffle", or "twin_surrogate"
         seed : seed for surrogate generation
         subsample : subsample for persistence (passed through)
 
@@ -271,16 +308,28 @@ class BindingDetector:
         """
         self._check_fitted()
 
-        from att.surrogates import phase_randomize, time_shuffle
+        from att.surrogates import phase_randomize, time_shuffle, twin_surrogate
 
         if method == "phase_randomize":
             surr_fn = phase_randomize
         elif method == "time_shuffle":
             surr_fn = time_shuffle
+        elif method == "twin_surrogate":
+            surr_fn = None  # handled separately below
         else:
-            raise ValueError(f"Unknown method: {method}. Use 'phase_randomize' or 'time_shuffle'.")
+            raise ValueError(
+                f"Unknown method: {method}. "
+                "Use 'phase_randomize', 'time_shuffle', or 'twin_surrogate'."
+            )
 
-        surr_Y = surr_fn(self._Y_raw, n_surrogates=n_surrogates, seed=seed)
+        if method == "twin_surrogate":
+            surr_Y = twin_surrogate(self._Y_raw, n_surrogates=n_surrogates, seed=seed)
+            # Twin surrogates are shorter due to embedding padding; truncate X_raw
+            n_surr_len = surr_Y.shape[1]
+            X_raw_trimmed = self._X_raw[:n_surr_len]
+        else:
+            surr_Y = surr_fn(self._Y_raw, n_surrogates=n_surrogates, seed=seed)
+            X_raw_trimmed = self._X_raw
 
         observed = self.binding_score()
         surrogate_scores = np.empty(n_surrogates)
@@ -291,7 +340,7 @@ class BindingDetector:
         for i in range(n_surrogates):
             surr_seed = (seed + i + 1) if seed is not None else None
             score = self._compute_surrogate_score(
-                self._X_raw, surr_Y[i], cached_images_x,
+                X_raw_trimmed, surr_Y[i], cached_images_x,
                 subsample=subsample, seed=surr_seed,
             )
             surrogate_scores[i] = score
@@ -306,6 +355,127 @@ class BindingDetector:
             "significant": p_value < 0.05,
             "embedding_quality": self._embedding_quality,
         }
+
+    def _diagram_matching_score(self) -> tuple[float, dict]:
+        """Compute binding score via optimal diagram matching.
+
+        Uses the Hungarian algorithm to find the minimum-cost assignment
+        between persistence diagram features of the joint embedding and
+        the concatenated marginals. Unmatched joint features (those assigned
+        to the diagonal) and poor matches contribute to the binding score.
+
+        Returns
+        -------
+        total_score : float
+            Sum of assignment costs across all homology dimensions.
+        details : dict
+            Per-dimension breakdown: {dim: {score, n_joint, n_baseline, n_unmatched}}.
+        """
+        from scipy.optimize import linear_sum_assignment
+
+        total = 0.0
+        details = {}
+
+        for d in range(self.max_dim + 1):
+            joint_dgm = self._pa_joint.diagrams_[d]
+            baseline_dgm = np.concatenate([
+                self._pa_x.diagrams_[d],
+                self._pa_y.diagrams_[d],
+            ])
+
+            # Filter zero-persistence features
+            if len(joint_dgm) > 0:
+                joint_pers = joint_dgm[:, 1] - joint_dgm[:, 0]
+                joint_dgm = joint_dgm[joint_pers > 1e-10]
+                joint_pers = joint_dgm[:, 1] - joint_dgm[:, 0] if len(joint_dgm) > 0 else np.array([])
+            else:
+                joint_pers = np.array([])
+
+            if len(baseline_dgm) > 0:
+                baseline_pers = baseline_dgm[:, 1] - baseline_dgm[:, 0]
+                baseline_dgm = baseline_dgm[baseline_pers > 1e-10]
+                baseline_pers = baseline_dgm[:, 1] - baseline_dgm[:, 0] if len(baseline_dgm) > 0 else np.array([])
+            else:
+                baseline_pers = np.array([])
+
+            n_j = len(joint_dgm)
+            n_b = len(baseline_dgm)
+
+            if n_j == 0:
+                # No joint features: baseline features match to diagonal
+                # but that cost doesn't reflect binding, so score is 0
+                details[d] = {
+                    "score": 0.0,
+                    "n_joint": 0,
+                    "n_baseline": n_b,
+                    "n_unmatched": 0,
+                }
+                continue
+
+            if n_b == 0:
+                # All joint features are unmatched (sent to diagonal)
+                score_d = float(np.sum(joint_pers) / 2)
+                details[d] = {
+                    "score": score_d,
+                    "n_joint": n_j,
+                    "n_baseline": 0,
+                    "n_unmatched": n_j,
+                }
+                total += score_d
+                continue
+
+            # Build augmented cost matrix (n_j + n_b) x (n_j + n_b)
+            #
+            # Layout:
+            #   Columns 0..n_b-1      : real baseline features
+            #   Columns n_b..n_b+n_j-1: diagonal slots for joint features
+            #
+            #   Rows 0..n_j-1         : real joint features
+            #   Rows n_j..n_j+n_b-1   : diagonal slots for baseline features
+            #
+            # Top-left  (n_j x n_b): L∞ distance between joint[i] and baseline[j]
+            # Top-right (n_j x n_j): joint[i] matched to diagonal, cost = pers_i/2
+            #                         only slot (i, n_b+i) is finite
+            # Bot-left  (n_b x n_b): baseline[j] matched to diagonal, cost = pers_j/2
+            #                         only slot (j, j) is finite  (row=n_j+j, col=j)
+            # Bot-right (n_b x n_j): diagonal-to-diagonal padding, zero cost
+
+            N = n_j + n_b
+            cost = np.full((N, N), np.inf)
+
+            # Top-left: real-to-real matching (vectorized)
+            birth_diff = np.abs(joint_dgm[:, 0:1] - baseline_dgm[:, 0].reshape(1, -1))
+            death_diff = np.abs(joint_dgm[:, 1:2] - baseline_dgm[:, 1].reshape(1, -1))
+            cost[:n_j, :n_b] = np.maximum(birth_diff, death_diff)
+
+            # Top-right: joint[i] to diagonal — only diagonal entries
+            for i in range(n_j):
+                cost[i, n_b + i] = joint_pers[i] / 2
+
+            # Bottom-left: baseline[j] to diagonal — only diagonal entries
+            for j in range(n_b):
+                cost[n_j + j, j] = baseline_pers[j] / 2
+
+            # Bottom-right: diagonal-to-diagonal (zero cost padding)
+            cost[n_j:, n_b:] = 0.0
+
+            row_ind, col_ind = linear_sum_assignment(cost)
+            total_cost = float(cost[row_ind, col_ind].sum())
+
+            # Count joint features matched to diagonal (col >= n_b)
+            n_unmatched = sum(
+                1 for i, j in zip(row_ind, col_ind) if i < n_j and j >= n_b
+            )
+
+            details[d] = {
+                "score": total_cost,
+                "n_joint": n_j,
+                "n_baseline": n_b,
+                "n_unmatched": n_unmatched,
+            }
+            total += total_cost
+
+        return total, details
 
     def _compute_surrogate_score(
         self,
@@ -368,7 +538,7 @@ class BindingDetector:
         return plot_binding_image(self._residual_images)
 
     def _check_fitted(self):
-        if self._residual_images is None:
+        if not self._fitted:
             raise RuntimeError("Call .fit() first.")
 
     @staticmethod

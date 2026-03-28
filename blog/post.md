@@ -10,7 +10,7 @@ The alternation isn't random noise. It's a signature of multistable dynamics: yo
 
 Neuroscientists have spent years measuring these dynamics with tools like transfer entropy, phase-amplitude coupling, and cross-recurrence analysis. These methods are powerful, but they all share a blind spot: they don't see the **shape** of the coupling. They can tell you that information flows from region A to region B, or that two signals recur together, but they can't tell you what new geometric structure appears in the joint state space when those regions interact.
 
-We built a tool that can. It's called the [Attractor Topology Toolkit (ATT)](https://github.com/musicofhel/attractor-topology-toolkit), and in this post we'll walk through what it does, why it works, and what we found when we pointed it at real EEG data from a binocular rivalry experiment.
+We built a tool that can. It's called the [Attractor Topology Toolkit (ATT)](https://github.com/musicofhel/attractor-topology-toolkit) ([docs](https://musicofhel.github.io/att-docs/)), and in this post we'll walk through what it does, why it works, and what we found when we pointed it at real EEG data from a binocular rivalry experiment.
 
 ## The Problem: Measuring Coupling Between Chaotic Systems
 
@@ -72,7 +72,9 @@ detector = BindingDetector(max_dim=1, method="persistence_image")
 detector.fit(channel_x, channel_y)
 
 print(f"Binding score: {detector.binding_score():.4f}")
-print(f"Significant: {detector.test_significance(n_surrogates=100)}")
+
+result = detector.test_significance(n_surrogates=100)
+print(f"Significant: {result['significant']} (p = {result['p_value']:.3f})")
 ```
 
 The `max` baseline is conservative by design: a pixel in the residual is positive only if the joint exceeds whichever marginal is stronger at that location. This minimizes false positives.
@@ -85,7 +87,7 @@ We validated the method on coupled chaotic systems with known ground truth befor
 
 We swept the coupling parameter $\epsilon$ from 0 (independent) to 1 (fully synchronized) for two diffusively coupled Lorenz systems.
 
-![Figure 1: Binding score vs. coupling strength](figures/fig1_coupling_sweep.png)
+![Figure 1: Binding score vs. coupling strength](../figures/fig1_coupling_sweep.png)
 
 The binding score traces out a **unimodal curve**: it starts at a nonzero baseline for uncoupled systems (inherent mismatch between joint and marginal representations), peaks at low coupling ($\epsilon \approx 0.1$, $S = 257.2$), then collapses at full synchronization ($S = 89.3$, a 65% drop from peak).
 
@@ -95,7 +97,7 @@ This makes intuitive sense. At low coupling, the two attractors are structurally
 
 We benchmarked the binding score head-to-head against transfer entropy, PAC, and CRQA on the same coupled Lorenz sweep.
 
-![Figure 3: Benchmark comparison of coupling measures](figures/fig3_benchmark_overlay.png)
+![Figure 2: Benchmark comparison of coupling measures](../figures/fig3_benchmark_overlay.png)
 
 | Measure | $\epsilon=0$ | $\epsilon=0.1$ | $\epsilon=0.5$ | $\epsilon=1.0$ | Dynamic Range |
 |---------|-------------|----------------|----------------|----------------|---------------|
@@ -112,7 +114,7 @@ These methods aren't broken --- they're measuring different things. The binding 
 
 We tested statistical significance using amplitude-adjusted Fourier transform (AAFT) surrogates, which preserve the marginal distribution and power spectrum of each signal while destroying inter-system coupling.
 
-![Figure 4: Surrogate null distributions](figures/fig4_surrogate_null.png)
+![Figure 3: Surrogate null distributions](../figures/fig4_surrogate_null.png)
 
 At $\epsilon = 0$ (uncoupled), the observed score falls well within the null distribution ($p = 0.250$) --- no false positive. At $\epsilon = 0.5$ (moderate coupling), the observed score exceeds most surrogates ($p = 0.060$), a trend toward significance that doesn't quite cross the $\alpha = 0.05$ threshold.
 
@@ -120,9 +122,9 @@ At $\epsilon = 0$ (uncoupled), the observed score falls well within the null dis
 
 ### Per-Channel Delays Fix the Timescale Problem
 
-Real coupled systems often have different intrinsic frequencies. When you embed a coupled Rossler-Lorenz system (Rossler is slower than Lorenz) using a single shared delay, the faster system's embedding degenerates.
+Real coupled systems often have different intrinsic frequencies. When you embed a coupled Rössler-Lorenz system (Rössler is slower than Lorenz) using a single shared delay, the faster system's embedding degenerates.
 
-![Figure 5: Per-channel vs. shared delay estimation](figures/fig5_heterogeneous_timescales.png)
+![Figure 4: Per-channel vs. shared delay estimation](../figures/fig5_heterogeneous_timescales.png)
 
 Per-channel delay estimation produces joint embeddings with condition numbers around 50 --- well-conditioned. Shared delays produce condition numbers of 2,671 --- a **52x degradation**, approaching the degeneracy threshold of $10^4$.
 
@@ -140,7 +142,7 @@ We applied ATT to EEG recordings from a binocular rivalry experiment ([Nie, Katy
 
 We used the Oz (occipital midline) channel, bandpass-filtered to 4-13 Hz (theta-alpha, the frequency range most relevant to rivalry dynamics). The `TransitionDetector` computed persistent homology on 214 sliding windows and applied CUSUM changepoint detection to the persistence image distance series.
 
-![Figure 7: Real EEG transition detection](figures/fig7_real_eeg.png)
+![Figure 5: Real EEG transition detection](../figures/fig7_real_eeg.png)
 
 The results:
 
@@ -162,7 +164,7 @@ This is exactly what you'd expect if the detector is capturing something real ab
 
 We then applied the full binding detection framework to two spatially separated electrodes --- Oz (occipital) and Pz (parietal) --- using sliding 10-second windows.
 
-![Figure 8: Cross-region Oz-Pz binding](figures/fig8_eeg_binding.png)
+![Figure 6: Cross-region Oz-Pz binding](../figures/fig8_eeg_binding.png)
 
 The binding score between Oz and Pz varies dramatically over time: from 5.1 to 34.1, a 6.7x range. This isn't noise. It correlates with behavior:
 
@@ -232,10 +234,13 @@ detector = BindingDetector(max_dim=1, method="persistence_image")
 detector.fit(ts_x[:, 0], ts_y[:, 0])
 
 print(f"Binding score: {detector.binding_score():.4f}")
-print(f"Significant: {detector.test_significance(n_surrogates=100)}")
+
+result = detector.test_significance(n_surrogates=100)
+print(f"Significant: {result['significant']} (p = {result['p_value']:.3f})")
 ```
 
 - **GitHub**: [github.com/musicofhel/attractor-topology-toolkit](https://github.com/musicofhel/attractor-topology-toolkit)
+- **Documentation**: [musicofhel.github.io/att-docs](https://musicofhel.github.io/att-docs/)
 - **PyPI**: [att-toolkit](https://pypi.org/project/att-toolkit/)
 - **Preprint**: [paper/preprint.pdf](https://github.com/musicofhel/attractor-topology-toolkit/blob/main/paper/preprint.pdf)
 - **Notebooks**: All figures in this post are reproducible from `notebooks/` with fixed random seeds.

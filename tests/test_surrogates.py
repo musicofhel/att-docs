@@ -4,8 +4,8 @@ import numpy as np
 import pytest
 
 from att.config import set_seed
-from att.synthetic import lorenz_system
-from att.surrogates import phase_randomize, time_shuffle
+from att.synthetic import lorenz_system, coupled_lorenz
+from att.surrogates import phase_randomize, time_shuffle, twin_surrogate
 
 
 class TestPhaseRandomize:
@@ -78,4 +78,122 @@ class TestTimeShuffle:
         surr = time_shuffle(self.x, n_surrogates=1, seed=42)
         np.testing.assert_array_almost_equal(
             np.sort(surr[0]), np.sort(self.x), decimal=10,
+        )
+
+
+class TestTwinSurrogate:
+    @pytest.fixture(autouse=True)
+    def setup(self):
+        set_seed(42)
+        ts = lorenz_system(n_steps=2000)
+        self.x = ts[:, 0]
+
+    def test_output_shape(self):
+        embedding_dim = 3
+        embedding_delay = 1
+        expected_len = len(self.x) - (embedding_dim - 1) * embedding_delay
+        surr = twin_surrogate(
+            self.x, n_surrogates=10,
+            embedding_dim=embedding_dim, embedding_delay=embedding_delay,
+            seed=42,
+        )
+        assert surr.shape == (10, expected_len)
+
+    def test_reproducible(self):
+        s1 = twin_surrogate(self.x, n_surrogates=5, seed=42)
+        s2 = twin_surrogate(self.x, n_surrogates=5, seed=42)
+        np.testing.assert_array_equal(s1, s2)
+
+    def test_different_from_original(self):
+        """Surrogates should not be identical to the original embedded series."""
+        embedding_dim = 3
+        embedding_delay = 1
+        pad = (embedding_dim - 1) * embedding_delay
+        original_first_coord = self.x[:len(self.x) - pad]
+
+        surr = twin_surrogate(
+            self.x, n_surrogates=5,
+            embedding_dim=embedding_dim, embedding_delay=embedding_delay,
+            seed=42,
+        )
+        for i in range(surr.shape[0]):
+            assert not np.allclose(surr[i], original_first_coord), (
+                f"Surrogate {i} is identical to original"
+            )
+
+    def test_preserves_recurrence_structure(self):
+        """Recurrence density of surrogates should be similar to the original."""
+        from scipy.spatial.distance import cdist
+
+        embedding_dim = 3
+        embedding_delay = 1
+        pad = (embedding_dim - 1) * embedding_delay
+        n_embedded = len(self.x) - pad
+
+        # Embed the original
+        embedded = np.empty((n_embedded, embedding_dim))
+        for d in range(embedding_dim):
+            embedded[:, d] = self.x[d * embedding_delay: d * embedding_delay + n_embedded]
+
+        dist_orig = cdist(embedded, embedded)
+        upper_tri = dist_orig[np.triu_indices(n_embedded, k=1)]
+        threshold = np.percentile(upper_tri, 10)
+        orig_density = np.mean(dist_orig < threshold)
+
+        # Generate surrogates and re-embed them
+        surr = twin_surrogate(
+            self.x, n_surrogates=3,
+            embedding_dim=embedding_dim, embedding_delay=embedding_delay,
+            seed=42,
+        )
+        # Re-embedding the surrogate (length n_embedded) reduces it further
+        n_surr_embedded = n_embedded - pad
+        for s in range(surr.shape[0]):
+            surr_embedded = np.empty((n_surr_embedded, embedding_dim))
+            for d in range(embedding_dim):
+                surr_embedded[:, d] = surr[s, d * embedding_delay: d * embedding_delay + n_surr_embedded]
+
+            dist_surr = cdist(surr_embedded, surr_embedded)
+            surr_density = np.mean(dist_surr < threshold)
+
+            # Surrogate recurrence density within 50% of original
+            assert surr_density > orig_density * 0.5, (
+                f"Surrogate {s} recurrence density {surr_density:.4f} "
+                f"is less than 50% of original {orig_density:.4f}"
+            )
+            assert surr_density < orig_density * 1.5, (
+                f"Surrogate {s} recurrence density {surr_density:.4f} "
+                f"exceeds 150% of original {orig_density:.4f}"
+            )
+
+    def test_destroys_coupling(self):
+        """Twin surrogates of Y should reduce cross-correlation with X."""
+        set_seed(42)
+        ts_x, ts_y = coupled_lorenz(n_steps=2000, coupling=0.1, seed=42)
+        x_series = ts_x[:, 0]
+        y_series = ts_y[:, 0]
+
+        embedding_dim = 3
+        embedding_delay = 1
+        pad = (embedding_dim - 1) * embedding_delay
+        n_embedded = len(y_series) - pad
+
+        # Original cross-correlation (truncated to match surrogate length)
+        orig_corr = abs(np.corrcoef(x_series[:n_embedded], y_series[:n_embedded])[0, 1])
+
+        surr = twin_surrogate(
+            y_series, n_surrogates=10,
+            embedding_dim=embedding_dim, embedding_delay=embedding_delay,
+            seed=42,
+        )
+
+        surr_corrs = []
+        for i in range(surr.shape[0]):
+            c = abs(np.corrcoef(x_series[:n_embedded], surr[i])[0, 1])
+            surr_corrs.append(c)
+
+        mean_surr_corr = np.mean(surr_corrs)
+        assert mean_surr_corr < orig_corr, (
+            f"Mean surrogate cross-correlation {mean_surr_corr:.4f} "
+            f"should be less than original {orig_corr:.4f}"
         )

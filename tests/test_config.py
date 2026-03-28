@@ -3,7 +3,6 @@
 import os
 import tempfile
 import numpy as np
-import pytest
 
 from att.config import set_seed, get_rng, load_config, save_config
 

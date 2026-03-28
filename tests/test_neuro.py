@@ -1,3 +1,4 @@
+import numpy as np
 import pytest
 from att.neuro.eeg_params import get_fallback_params
 
@@ -21,8 +22,6 @@ class TestFallbackParams:
         with pytest.raises(ValueError, match="Unknown band"):
             get_fallback_params("delta")
 
-
-import numpy as np
 
 
 class TestEmbedChannel:

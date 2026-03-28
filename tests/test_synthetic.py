@@ -1,9 +1,7 @@
 """Tests for att.synthetic — chaotic system generators."""
 
 import numpy as np
-import pytest
 
-from att.config import set_seed
 from att.synthetic import (
     lorenz_system,
     rossler_system,
@@ -11,6 +9,7 @@ from att.synthetic import (
     coupled_rossler_lorenz,
     switching_rossler,
     coupled_oscillators,
+    kuramoto_oscillators,
 )
 
 
@@ -99,3 +98,47 @@ class TestCoupledOscillators:
         coupling = np.array([[0, 0.2, 0], [0.2, 0, 0.1], [0, 0.1, 0]])
         ts = coupled_oscillators(n_oscillators=3, coupling_matrix=coupling, n_steps=500, seed=42)
         assert ts.shape == (500, 3, 3)
+
+
+class TestKuramoto:
+    def test_shape(self):
+        phases, signals = kuramoto_oscillators(
+            n_oscillators=4, n_steps=1000, seed=42
+        )
+        assert phases.shape == (1000, 4)
+        assert signals.shape == (1000, 4)
+
+    def test_uncoupled_drift(self):
+        """At coupling=0, phases should drift apart over time."""
+        phases, _ = kuramoto_oscillators(
+            n_oscillators=5, n_steps=5000, coupling=0.0, omega_spread=1.0, seed=42
+        )
+        # Phase differences at start vs end should show increasing variance
+        diffs_start = np.var(phases[10])  # skip step 0 (all random but close)
+        diffs_end = np.var(phases[-1])
+        assert diffs_end > diffs_start
+
+    def test_synchronized(self):
+        """At high coupling, the Kuramoto order parameter R should approach 1."""
+        phases, _ = kuramoto_oscillators(
+            n_oscillators=10, n_steps=10000, coupling=5.0, omega_spread=0.5, seed=42
+        )
+        # Order parameter R = |1/N * sum(exp(i*theta))|
+        last_quarter = phases[-2500:]
+        order_param = np.abs(np.mean(np.exp(1j * last_quarter), axis=1))
+        mean_R = np.mean(order_param)
+        assert mean_R > 0.8, f"Expected R > 0.8 for strong coupling, got {mean_R}"
+
+    def test_reproducible(self):
+        a_phases, a_signals = kuramoto_oscillators(n_steps=500, seed=42)
+        b_phases, b_signals = kuramoto_oscillators(n_steps=500, seed=42)
+        np.testing.assert_array_equal(a_phases, b_phases)
+        np.testing.assert_array_equal(a_signals, b_signals)
+
+    def test_signals_bounded(self):
+        """sin(phase) should always be in [-1, 1]."""
+        _, signals = kuramoto_oscillators(
+            n_oscillators=3, n_steps=2000, noise=0.5, seed=42
+        )
+        assert np.all(signals >= -1.0)
+        assert np.all(signals <= 1.0)

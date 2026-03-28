@@ -215,7 +215,6 @@ def plot_benchmark_sweep(results, ax=None) -> matplotlib.figure.Figure:
     ----------
     results : pd.DataFrame with columns coupling, method, score, score_normalized
     """
-    import pandas as pd
 
     if ax is None:
         fig, ax = plt.subplots(figsize=(8, 5))
@@ -252,8 +251,6 @@ def plot_binding_comparison(detector) -> matplotlib.figure.Figure:
     diagrams_x = detector._result_x["diagrams"]
     diagrams_joint = detector._result_joint["diagrams"]
     diagrams_y = detector._result_y["diagrams"]
-    residuals = detector._residual_images
-
     fig, axes = plt.subplots(1, 3, figsize=(18, 5))
 
     titles = ["Marginal X", "Joint (excess highlighted)", "Marginal Y"]

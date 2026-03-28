@@ -1,6 +1,8 @@
 """Surrogate generation for significance testing."""
 
 import numpy as np
+from scipy.spatial.distance import cdist
+
 from att.config.seed import get_rng
 
 
@@ -97,5 +99,85 @@ def time_shuffle(
             perm = rng.permutation(n_blocks)
             shuffled = np.concatenate([blocks[p] for p in perm])
             surrogates[i] = shuffled[:n]
+
+    return surrogates
+
+
+def twin_surrogate(
+    X: np.ndarray,
+    n_surrogates: int = 100,
+    embedding_dim: int = 3,
+    embedding_delay: int = 1,
+    recurrence_threshold: float | None = None,
+    seed: int | None = None,
+) -> np.ndarray:
+    """Generate twin surrogates from recurrence structure (Thiel et al. 2006).
+
+    Preserves the recurrence properties of the attractor while destroying
+    the specific temporal ordering. Tests specifically for deterministic
+    coupling structure in the dynamics.
+
+    Parameters
+    ----------
+    X : 1D time series of length n_samples
+    n_surrogates : number of surrogates to generate
+    embedding_dim : dimension for Takens delay embedding
+    embedding_delay : delay for Takens embedding
+    recurrence_threshold : distance threshold for recurrence matrix;
+        if None, uses 10th percentile of pairwise distances
+    seed : random seed for reproducibility
+
+    Returns
+    -------
+    (n_surrogates, n_output) array where n_output = n_samples - (embedding_dim - 1) * embedding_delay
+    """
+    X = np.asarray(X).ravel()
+    n = len(X)
+    rng = get_rng(seed)
+
+    # 1. Delay-embed the time series
+    pad = (embedding_dim - 1) * embedding_delay
+    n_embedded = n - pad
+    embedded = np.empty((n_embedded, embedding_dim))
+    for d in range(embedding_dim):
+        embedded[:, d] = X[d * embedding_delay: d * embedding_delay + n_embedded]
+
+    # 2. Pairwise distance matrix
+    dist_matrix = cdist(embedded, embedded, metric="euclidean")
+
+    # 3. Build recurrence matrix
+    if recurrence_threshold is None:
+        # Use 10th percentile of all pairwise distances (excluding diagonal zeros)
+        upper_tri = dist_matrix[np.triu_indices(n_embedded, k=1)]
+        recurrence_threshold = np.percentile(upper_tri, 10)
+
+    recurrence = dist_matrix < recurrence_threshold
+
+    # 4. Precompute twin lists: twins[i] = indices j where recurrence[i,j] is True
+    # (simplified definition: twins are recurrent neighbors)
+    twins = [np.where(recurrence[i])[0] for i in range(n_embedded)]
+
+    # 5. Generate surrogates
+    surrogates = np.empty((n_surrogates, n_embedded))
+    for s in range(n_surrogates):
+        trajectory = np.empty(n_embedded, dtype=int)
+        # Pick random starting index
+        trajectory[0] = rng.integers(0, n_embedded)
+
+        for t in range(1, n_embedded):
+            current = trajectory[t - 1]
+            tw = twins[current]
+
+            if len(tw) > 0:
+                # Jump to a random twin's next time step
+                chosen_twin = tw[rng.integers(0, len(tw))]
+                # Advance to next step, wrapping around if at the end
+                trajectory[t] = (chosen_twin + 1) % n_embedded
+            else:
+                # No twins — advance sequentially
+                trajectory[t] = (current + 1) % n_embedded
+
+        # Extract the first coordinate of the embedded point at each visited index
+        surrogates[s] = embedded[trajectory, 0]
 
     return surrogates

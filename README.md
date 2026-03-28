@@ -4,6 +4,7 @@
 [![Python 3.10+](https://img.shields.io/pypi/pyversions/att-toolkit)](https://pypi.org/project/att-toolkit/)
 [![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
 [![CI](https://github.com/musicofhel/att-docs/actions/workflows/ci.yml/badge.svg)](https://github.com/musicofhel/att-docs/actions/workflows/ci.yml)
+[![Docs](https://github.com/musicofhel/att-docs/actions/workflows/docs.yml/badge.svg)](https://musicofhel.github.io/att-docs/)
 
 **Joint-vs-marginal persistent homology on Takens embeddings for coupling detection in dynamical systems.**
 
@@ -120,9 +121,7 @@ ATT sits at the intersection of several existing research threads, none of which
 
 ## Documentation
 
-See [`docs/`](./docs/) for Sphinx API reference and quickstart tutorial.
-
-<!-- TODO: Link to hosted docs once published -->
+Full API reference and quickstart tutorial: **[musicofhel.github.io/att-docs](https://musicofhel.github.io/att-docs/)**
 <!-- TODO: Link to blog post -->
 
 ## Citation

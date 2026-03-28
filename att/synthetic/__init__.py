@@ -7,6 +7,7 @@ from att.synthetic.generators import (
     coupled_rossler_lorenz,
     switching_rossler,
     coupled_oscillators,
+    kuramoto_oscillators,
 )
 
 __all__ = [
@@ -16,4 +17,5 @@ __all__ = [
     "coupled_rossler_lorenz",
     "switching_rossler",
     "coupled_oscillators",
+    "kuramoto_oscillators",
 ]

@@ -3,7 +3,6 @@
 import numpy as np
 import pandas as pd
 
-from att.config.seed import get_rng
 from att.benchmarks.methods import transfer_entropy, pac, crqa
 
 
@@ -67,7 +66,7 @@ class CouplingBenchmark:
         for name, fn in self._methods.items():
             try:
                 results[name] = float(fn(X, Y))
-            except Exception as e:
+            except Exception:
                 results[name] = float("nan")
         return results
 

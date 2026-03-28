@@ -1,6 +1,5 @@
 """Embedding quality validation via condition number analysis."""
 
-import warnings
 import numpy as np
 
 

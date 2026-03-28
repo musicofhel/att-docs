@@ -246,3 +246,62 @@ def coupled_oscillators(
         state = state + dt * derivs
 
     return result
+
+
+def kuramoto_oscillators(
+    n_oscillators: int = 2,
+    n_steps: int = 10000,
+    dt: float = 0.01,
+    coupling: float = 0.5,
+    omega_spread: float = 1.0,
+    noise: float = 0.0,
+    seed: int | None = None,
+) -> tuple[np.ndarray, np.ndarray]:
+    """Kuramoto coupled phase oscillators.
+
+    Simulates the Kuramoto model of phase-coupled oscillators.
+    Useful for testing topological binding on oscillatory (non-chaotic) dynamics.
+
+    The classic Kuramoto model: dθ_i/dt = ω_i + (K/N) Σ_j sin(θ_j − θ_i) + η(t)
+
+    Parameters
+    ----------
+    n_oscillators : number of oscillators
+    n_steps : number of integration steps
+    dt : integration timestep
+    coupling : coupling strength K
+    omega_spread : std of natural frequency distribution (mean=1.0)
+    noise : Gaussian noise amplitude
+    seed : random seed
+
+    Returns
+    -------
+    phases : (n_steps, n_oscillators) array of phase values
+    signals : (n_steps, n_oscillators) array with signal_i = sin(phase_i)
+    """
+    rng = get_rng(seed)
+
+    # Natural frequencies drawn from normal distribution around 1.0
+    omega = 1.0 + rng.normal(0, omega_spread, n_oscillators)
+
+    # Random initial phases
+    theta = rng.uniform(0, 2 * np.pi, n_oscillators)
+
+    phases = np.zeros((n_steps, n_oscillators))
+    signals = np.zeros((n_steps, n_oscillators))
+
+    for step in range(n_steps):
+        phases[step] = theta
+        signals[step] = np.sin(theta)
+
+        # Coupling term: (K/N) * sum_j sin(theta_j - theta_i) for each i
+        diff = theta[None, :] - theta[:, None]  # (N, N): diff[i, j] = theta_j - theta_i
+        coupling_term = (coupling / n_oscillators) * np.sum(np.sin(diff), axis=1)
+
+        # Noise term
+        noise_term = rng.normal(0, noise, n_oscillators) if noise > 0 else 0.0
+
+        # Euler integration (Kuramoto is smooth, no need for RK4)
+        theta = theta + dt * (omega + coupling_term + noise_term)
+
+    return phases, signals

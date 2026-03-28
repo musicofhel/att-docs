@@ -5,7 +5,6 @@ import tempfile
 import subprocess
 import sys
 
-import pytest
 
 
 class TestCLI:

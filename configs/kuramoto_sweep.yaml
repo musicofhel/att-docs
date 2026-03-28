@@ -1,0 +1,26 @@
+# Kuramoto oscillator coupling sweep benchmark
+system: kuramoto_oscillators
+system_kwargs:
+  n_oscillators: 2
+  n_steps: 5000
+  dt: 0.01
+  omega_spread: 0.5
+
+coupling_values: [0.0, 0.1, 0.2, 0.5, 1.0, 2.0, 5.0]
+
+# Use signals (sin of phases) for embedding
+channel_x: 0
+channel_y: 1
+
+embedding:
+  delay: auto
+  dimension: auto
+
+topology:
+  max_dim: 1
+  subsample: 300
+
+binding:
+  baseline: max
+  image_resolution: 50
+  image_sigma: 0.1

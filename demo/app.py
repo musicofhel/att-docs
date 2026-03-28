@@ -13,13 +13,10 @@ import streamlit as st
 
 from att.config.seed import set_seed
 from att.synthetic.generators import lorenz_system, rossler_system, coupled_lorenz
-from att.embedding.takens import TakensEmbedder
 from att.topology.persistence import PersistenceAnalyzer
 from att.binding.detector import BindingDetector
 from att.viz.plotting import (
     plot_persistence_diagram,
-    plot_binding_image,
-    plot_persistence_image,
     plot_surrogate_distribution,
 )
 from att.benchmarks.methods import transfer_entropy

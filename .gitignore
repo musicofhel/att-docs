@@ -39,6 +39,9 @@ data/eeg/
 # Precomputed outputs (regenerable)
 data/precomputed/
 
+# Sphinx build output
+docs/_build/
+
 # LaTeX build artifacts
 *.aux
 *.bbl
