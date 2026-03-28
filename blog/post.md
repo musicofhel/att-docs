@@ -10,7 +10,7 @@ The alternation isn't random noise. It's a signature of multistable dynamics: yo
 
 Neuroscientists have spent years measuring these dynamics with tools like transfer entropy, phase-amplitude coupling, and cross-recurrence analysis. These methods are powerful, but they all share a blind spot: they don't see the **shape** of the coupling. They can tell you that information flows from region A to region B, or that two signals recur together, but they can't tell you what new geometric structure appears in the joint state space when those regions interact.
 
-We built a tool that can. It's called the [Attractor Topology Toolkit (ATT)](https://github.com/musicofhel/attractor-topology-toolkit) ([docs](https://musicofhel.github.io/att-docs/)), and in this post we'll walk through what it does, why it works, and what we found when we pointed it at real EEG data from a binocular rivalry experiment.
+We built a tool that can. It's called the [Attractor Topology Toolkit (ATT)](https://github.com/musicofhel/att-docs) ([docs](https://musicofhel.github.io/att-docs/)), and in this post we'll walk through what it does, why it works, and what we found when we pointed it at real EEG data from a binocular rivalry experiment.
 
 ## The Problem: Measuring Coupling Between Chaotic Systems
 
@@ -276,10 +276,10 @@ result = detector.test_significance(n_surrogates=100)
 print(f"Significant: {result['significant']} (p = {result['p_value']:.3f})")
 ```
 
-- **GitHub**: [github.com/musicofhel/attractor-topology-toolkit](https://github.com/musicofhel/attractor-topology-toolkit)
+- **GitHub**: [github.com/musicofhel/att-docs](https://github.com/musicofhel/att-docs)
 - **Documentation**: [musicofhel.github.io/att-docs](https://musicofhel.github.io/att-docs/)
 - **PyPI**: [att-toolkit](https://pypi.org/project/att-toolkit/)
-- **Preprint**: [paper/preprint.pdf](https://github.com/musicofhel/attractor-topology-toolkit/blob/main/paper/preprint.pdf)
+- **Preprint**: [paper/preprint.pdf](https://github.com/musicofhel/att-docs/blob/master/paper/preprint.pdf)
 - **Notebooks**: All figures in this post are reproducible from `notebooks/` with fixed random seeds.
 
 ---
@@ -292,6 +292,6 @@ print(f"Significant: {result['significant']} (p = {result['p_value']:.3f})")
            on Takens Embeddings},
   author = {{ATT Contributors}},
   year = {2026},
-  url = {https://github.com/musicofhel/attractor-topology-toolkit},
+  url = {https://github.com/musicofhel/att-docs},
 }
 ```

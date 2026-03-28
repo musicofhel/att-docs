@@ -85,9 +85,9 @@ all = [
 att = "att.cli.main:main"
 
 [project.urls]
-Repository = "https://github.com/musicofhel/attractor-topology-toolkit"
-Documentation = "https://github.com/musicofhel/attractor-topology-toolkit/tree/main/docs"
-"Bug Tracker" = "https://github.com/musicofhel/attractor-topology-toolkit/issues"
+Repository = "https://github.com/musicofhel/att-docs"
+Documentation = "https://musicofhel.github.io/att-docs/"
+"Bug Tracker" = "https://github.com/musicofhel/att-docs/issues"
 
 [tool.setuptools.packages.find]
 include = ["att*"]

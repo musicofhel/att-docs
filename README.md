@@ -8,7 +8,7 @@
 
 **Joint-vs-marginal persistent homology on Takens embeddings for coupling detection in dynamical systems.**
 
-<!-- TODO: Add animated GIF demo here (e.g. binding detection sweep on coupled Lorenz) -->
+![ATT Overview: Lorenz attractor, binding image, coupling sweep, and benchmark comparison](figures/readme_demo.png)
 
 ```bash
 pip install att-toolkit
@@ -124,7 +124,8 @@ ATT sits at the intersection of several existing research threads, none of which
 ## Documentation
 
 Full API reference and quickstart tutorial: **[musicofhel.github.io/att-docs](https://musicofhel.github.io/att-docs/)**
-<!-- TODO: Link to blog post -->
+
+Blog post: [Your Brain Is a Matrix of Chaos Attractors](blog/post.md)
 
 ## Citation
 
@@ -140,7 +141,7 @@ If you use ATT in your research, please cite:
 }
 ```
 
-<!-- TODO: Replace with preprint citation once posted to arXiv -->
+Preprint available at [`paper/preprint.pdf`](paper/preprint.pdf).
 
 ## License
 

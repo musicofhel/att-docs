@@ -20,7 +20,7 @@
 **Unused figures** (generated but not referenced in post): `fig2_baseline_comparison.png`, `fig6_eeg_transitions.png`
 
 **Links in post**:
-- GitHub: github.com/musicofhel/attractor-topology-toolkit
+- GitHub: github.com/musicofhel/att-docs
 - Docs: musicofhel.github.io/att-docs/
 - PyPI: att-toolkit
 - Preprint: paper/preprint.pdf

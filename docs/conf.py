@@ -52,8 +52,8 @@ html_title = "ATT Documentation"
 html_static_path = ["_static"]
 
 html_theme_options = {
-    "source_repository": "https://github.com/musicofhel/attractor-topology-toolkit",
-    "source_branch": "main",
+    "source_repository": "https://github.com/musicofhel/att-docs",
+    "source_branch": "master",
     "source_directory": "docs/",
 }
 
