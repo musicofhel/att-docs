@@ -410,7 +410,7 @@ class CouplingBenchmark:
 ```python
 def phase_randomize(X: np.ndarray, n_surrogates: int = 100,
                     seed: int | None = None) -> np.ndarray:
-    """Amplitude-Adjusted Phase Randomization (AAFTR).
+    """Amplitude-Adjusted Phase Randomization (AAFT).
     Preserves marginal distribution and power spectrum.
     Destroys nonlinear coupling and phase relationships.
     Returns: (n_surrogates, n_samples)

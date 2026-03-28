@@ -74,7 +74,7 @@ A working Python library with deterministic reproducibility that takes any 1D or
 | 2.2 | Embedding quality gate: validate all three embeddings, raise EmbeddingDegeneracyWarning | `binding` | 3 |
 | 2.3 | Binding score computation (L1 norm of positive residual) | `binding` | 2 |
 | 2.4 | Binding image visualization (residual heatmap) | `viz` | 2 |
-| 2.5 | Phase-randomized surrogates (AAFTR) with seed support | `surrogates` | 3 |
+| 2.5 | Phase-randomized surrogates (AAFT) with seed support | `surrogates` | 3 |
 | 2.6 | Time-shuffle surrogates with seed support | `surrogates` | 1 |
 | 2.7 | BindingDetector.test_significance() with embedding quality in output | `binding` | 3 |
 | 2.8 | Transfer entropy wrapper (PyInform or Kraskov fallback) | `benchmarks` | 4 |

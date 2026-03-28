@@ -1,0 +1,97 @@
+[build-system]
+requires = ["setuptools>=68.0", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "att-toolkit"
+version = "0.1.0"
+description = "Topological analysis of dynamical attractors via joint-vs-marginal persistent homology on Takens embeddings"
+readme = "README.md"
+license = "MIT"
+requires-python = ">=3.10"
+authors = [{ name = "ATT Contributors" }]
+keywords = [
+    "topology",
+    "TDA",
+    "persistent homology",
+    "attractors",
+    "dynamical systems",
+    "neuroscience",
+    "Takens embedding",
+    "binding detection",
+]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: Mathematics",
+    "Topic :: Scientific/Engineering :: Physics",
+    "Topic :: Scientific/Engineering :: Information Analysis",
+]
+
+dependencies = [
+    "numpy>=1.24",
+    "scipy>=1.10",
+    "scikit-learn>=1.2",
+    "ripser>=0.6",
+    "persim>=0.3",
+    "matplotlib>=3.7",
+    "pyyaml>=6.0",
+    "pandas>=2.0",
+]
+
+[project.optional-dependencies]
+eeg = [
+    "mne>=1.4",
+    "openneuro-py>=2023.1",
+]
+gudhi = [
+    "gudhi>=3.8",
+]
+plotly = [
+    "plotly>=5.14",
+]
+demo = [
+    "plotly>=5.14",
+    "streamlit>=1.25",
+]
+benchmarks = [
+    "pyinform>=0.2",
+]
+dev = [
+    "pytest>=7.0",
+    "pytest-cov>=4.0",
+    "gudhi>=3.8",
+    "mne>=1.4",
+    "plotly>=5.14",
+    "streamlit>=1.25",
+    "nbval>=0.10",
+    "ruff>=0.1",
+    "pyinform>=0.2",
+]
+all = [
+    "att-toolkit[eeg,gudhi,plotly,demo,benchmarks]",
+]
+
+[project.scripts]
+att = "att.cli.main:main"
+
+[project.urls]
+Repository = "https://github.com/musicofhel/attractor-topology-toolkit"
+Documentation = "https://github.com/musicofhel/attractor-topology-toolkit/tree/main/docs"
+"Bug Tracker" = "https://github.com/musicofhel/attractor-topology-toolkit/issues"
+
+[tool.setuptools.packages.find]
+include = ["att*"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+addopts = "-v --tb=short"
+markers = ["slow: marks tests as slow (deselect with '-k not slow')"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py310"

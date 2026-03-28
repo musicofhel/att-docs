@@ -1,0 +1,24 @@
+seed: 42
+dataset:
+  name: nie_rivalry_ssvep
+  source: "https://conservancy.umn.edu/handle/11299/257166"
+  subjects: [1]
+  fallback: synthetic_bistable  # Use synthetic EEG if real data unavailable
+preprocessing:
+  bandpass: [4, 13]  # Theta-alpha band
+  notch: null  # Not needed for synthetic
+  reference: average
+  ica_reject: false  # Skip for proof-of-concept
+embedding:
+  strategy: auto_with_fallback
+  fallback_band: theta_alpha
+  quality_gate_threshold: 1.0e4
+transition_detection:
+  window_size: 500
+  step_size: 50
+  max_dim: 1
+  backend: ripser
+  changepoint_method: cusum
+channels:
+  occipital: ["O1", "Oz", "O2"]
+  parietal: ["P3", "Pz", "P4"]

@@ -60,34 +60,47 @@ Bistable perception (binocular rivalry, Necker cube) is the cleanest natural exa
 
 **Research gap confirmed**: No published work applies sliding-window persistent homology to EEG during binocular rivalry or Necker cube tasks. TDA on EEG has been applied to other paradigms (Gestalt grouping: Li et al.; working memory: Huang, Jin et al.) but not bistable perception.
 
-### Primary Target: Katyal SSVEP Binocular Rivalry
+### Primary Target: Nie, Katyal & Engel — Binocular Rivalry SSVEP
 
-Katyal et al., "SSVEP Signatures of Binocular Rivalry During Simultaneous EEG and fMRI"
-- 64-channel EEG (two interleaved 32-channel amplifiers)
-- Binocular rivalry paradigm with time-resolved rivalry events
-- Button-press reports of perceptual switches
-- Simultaneous fMRI (not needed for our purposes but validates neural localization)
+Nie et al., "An Accumulating Neural Signal Underlying Binocular Rivalry Dynamics" (J. Neuroscience 43(50):8777, 2023)
+- 34-channel EEG (10/20 system), 84 subjects
+- Continuous raw EEG with button-press perceptual switch markers ("tilt left", "tilt right", "mixed")
+- SSVEP frequency tagging at 14.4 Hz and 18.0 Hz — objective percept dominance measure
+- 12 runs × 120 sec per subject
+- Hosted at UMN Data Repository: https://conservancy.umn.edu/handle/11299/257166
+- DOI: 10.13020/9sy5-a716
+- License: CC BY-NC 3.0 US
+- Same lab as Katyal et al. (2015) — natural lineage from the earlier simultaneous EEG-fMRI work
 
-**Access**: Check if available on OpenNeuro or the authors' data sharing portal. If gated, contact authors directly — rivalry EEG datasets are typically shared on request for academic use.
+**Actual downloaded specs** (differ from paper's raw recording parameters):
+- **Sampling rate**: 360 Hz (preprocessed), NOT 1024 Hz raw
+- **Format**: MATLAB .mat files (`scipy.io.loadmat` compatible), NOT BDF/EDF
+- **Preprocessing already applied**: CSD transform, artifact rejection, ICA component removal, bandpass filtered
+- **Subject 1 path**: `data/eeg/rivalry_ssvep/Sucharit - 012516_3629/`
+- **Structure**: `Epochs/` (6 .mat files — rivalry + SFM + fixation + rest) and `Behavior/` (button-press .mat files)
+- **Epoch shape**: (34, ~43195) float64 per rivalry session (~120s at 360 Hz)
+- **Rivalry sessions**: 12 total (6 in `riv_12`, 6 in `riv_13` — two counterbalanced SSVEP frequency conditions)
+- **Button presses**: `responseKey` field (1=tilt left, 2=tilt right, 3=mixed)
 
-### Backup Datasets
+### Alternative Datasets
 
-**Backup 1: OpenNeuro ds003505**
-- Binocular rivalry paradigm with button-press reports
-- 64-channel EEG, 20+ subjects
-- Well-labeled event markers
+**Alternative 1: Kornmeier et al. — Necker Cube EEG (Figshare)**
+- 32-channel EEG (extended 10-10), 20 subjects, 1000 Hz
+- Necker cube with stability/reversal button-press labels
+- Figshare project 79727: https://figshare.com/projects/79727
+- Paper: Kornmeier et al., PLOS ONE 2020 (10.1371/journal.pone.0232928)
+- **Limitation**: Epoched (discontinuous presentation), not continuous free-viewing rivalry
 
-**Backup 2: OpenNeuro ds002218**
-- Necker cube perception with rivalry reporting
-- 32-channel EEG
-- Smaller but cleaner annotations
+**Alternative 2: Figshare Necker Cube Ambiguity**
+- 31-channel EEG, 20 subjects, 250 Hz, .mat format
+- Necker cubes with 8 ambiguity levels, left/right button press
+- Figshare: https://figshare.com/articles/dataset/12292637
+- **Limitation**: Also epoched
 
-**Backup 3: OpenNeuro ds004019**
-- Auditory bistability (streaming/segregation)
-- Alternative modality — tests generality of the approach
-- Different timescales than visual rivalry
-
-**Fallback**: Resting state eyes open / eyes closed. Not bistable, but involves clear state transitions with known EEG correlates (alpha power increase with eyes closed). Available on many OpenNeuro datasets. Less novel but guaranteed data availability.
+**Fallback: Resting-State Eyes-Open/Closed**
+- OpenNeuro ds005385 (Dortmund Vital Study): 64-channel, 608 subjects, 1000 Hz, 3 min EO + 3 min EC
+- OpenNeuro ds004148: 62-channel, 60 subjects, 500 Hz, test-retest design
+- Not bistable, but clear alpha-power state transition. Less novel but data guaranteed.
 
 ### Pre-Screening Protocol (Phase 3, Task 3.1-3.2)
 
@@ -97,7 +110,7 @@ Before committing to a dataset, verify:
 3. At least 32 channels with standard 10-20 montage positions
 4. At least 3 subjects with clean data
 5. Sufficient number of switch events per subject (>20) for statistical power
-6. File format readable by MNE-Python (BDF, EDF, SET, FIF)
+6. File format readable by MNE-Python or scipy (BDF, EDF, SET, FIF, .mat)
 
 ### Download Script
 
@@ -105,28 +118,23 @@ Before committing to a dataset, verify:
 # Install OpenNeuro CLI
 pip install openneuro-py
 
-# Primary: try Katyal dataset first (may need manual download)
-# Check: https://openneuro.org/search?query=binocular+rivalry+EEG
+# Primary: Nie/Katyal/Engel binocular rivalry SSVEP
+# Download from UMN Data Repository:
+# https://conservancy.umn.edu/handle/11299/257166
+# (manual download — 3 zip parts, ~11.66 GB total)
+# Extract to data/eeg/rivalry_ssvep/
 
-# Backup 1: ds003505
-openneuro-py download --dataset ds003505 \
-  --include "sub-*/eeg/*" \
-  --target data/eeg/bistable_rivalry/
-
-# Backup 2: ds002218
-openneuro-py download --dataset ds002218 \
-  --include "sub-*/eeg/*" \
-  --target data/eeg/necker_cube/
-
-# Backup 3: ds004019
-openneuro-py download --dataset ds004019 \
-  --include "sub-*/eeg/*" \
-  --target data/eeg/auditory_bistable/
+# Fallback: Resting-state eyes-open/closed
+openneuro-py download --dataset ds005385 \
+  --include "sub-01/eeg/*" \
+  --target data/eeg/resting_state/
 ```
 
 ### Preprocessing Pipeline
 
-Standard pipeline via MNE-Python:
+**For Nie/Katyal/Engel data**: The downloaded .mat files are already preprocessed (CSD, ICA, artifact rejection, bandpass). No MNE preprocessing needed. Load directly with `scipy.io.loadmat` and extract epoch arrays for embedding.
+
+**For other datasets** (standard pipeline via MNE-Python):
 1. Load raw files
 2. Set montage (standard 10-20 or dataset-specific)
 3. Bandpass filter: 1-45 Hz
@@ -191,9 +199,12 @@ The EEG phase is scoped to a single-subject proof-of-concept. The goal is to det
 # configs/eeg_bistable.yaml
 seed: 42
 dataset:
-  name: katyal_rivalry  # or ds003505, ds002218
+  name: nie_rivalry_ssvep  # or ds005385 (resting-state fallback)
   subjects: [1]  # 1-subject proof-of-concept; scale in Phase 5
+  sampling_rate: 360  # preprocessed rate from downloaded .mat files
 preprocessing:
+  already_applied: true  # CSD, ICA, artifact rejection, bandpass already done
+  # Original pipeline below retained for alternative datasets:
   bandpass: [1, 45]
   notch: 50
   reference: average
@@ -255,10 +266,11 @@ data/
 ├── synthetic/             # Generated on the fly, cached here
 │   └── .gitkeep
 ├── eeg/
-│   ├── katyal_rivalry/    # Primary target
-│   ├── bistable_rivalry/  # Backup (ds003505)
-│   ├── necker_cube/       # Backup (ds002218)
-│   ├── auditory_bistable/ # Backup (ds004019)
+│   ├── rivalry_ssvep/     # Primary target (Nie/Katyal/Engel 2023)
+│   │   └── Sucharit - 012516_3629/
+│   │       ├── Epochs/    # 6 .mat files (rivalry + SFM + fixation + rest)
+│   │       └── Behavior/  # Button-press .mat files
+│   ├── necker_cube/       # Backup (Kornmeier et al.)
 │   └── download.sh
 ├── transformer/           # Phase 5
 │   └── .gitkeep
@@ -275,9 +287,8 @@ data/
 | Dataset | Raw Size | After Preprocessing |
 |---------|----------|-------------------|
 | Synthetic (10k steps) | ~240 KB per system | Same |
-| Katyal (1 subject) | ~400 MB (est.) | ~100 MB |
-| ds003505 (1 subject) | ~400 MB | ~100 MB |
-| ds003505 (full) | ~8 GB | ~2 GB (EEG only) |
+| Nie/Katyal/Engel (1 subject, preprocessed .mat) | ~20 MB | Already preprocessed |
+| Nie/Katyal/Engel (full, 84 subjects) | ~11.66 GB (3 zip parts) | Already preprocessed |
 | Transformer states (GPT-2, 100 sentences) | ~500 MB | ~50 MB (PCA reduced) |
 
 Start with 1-3 subjects for development. Full dataset analysis is a batch job.
@@ -292,8 +303,8 @@ All neural datasets are publicly available on OpenNeuro under permissive license
 
 | Risk | Mitigation |
 |------|-----------|
-| Katyal data not on OpenNeuro | Contact authors directly. Fall back to ds003505. |
-| ds003505 event labels incorrect | Pre-screen with MNE in Phase 3 tasks 3.1-3.2. |
+| Nie/Katyal/Engel data unavailable | Downloaded and verified. Subject 1 confirmed working. |
+| Preprocessed data missing raw info | Data is at 360 Hz post-CSD/ICA — no raw recovery possible, but sufficient for embedding. |
 | All rivalry datasets unusable | Fall back to resting state eyes open/closed. Less novel but guaranteed availability. |
 | Datasets too large for local development | Subsample to 1-3 subjects. Use only EEG modality. |
 | AMI/FNN fails on noisy EEG | Use fallback parameters from literature. See EEG Embedding Strategy above. |
