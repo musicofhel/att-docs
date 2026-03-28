@@ -165,14 +165,22 @@ Detect emergent topological features in joint embeddings absent from marginals.
 
 **Methods**:
 
-#### `.fit(X, Y, joint_embedder=None, marginal_embedder_x=None, marginal_embedder_y=None) -> BindingDetector`
+#### `.fit(X, Y, joint_embedder=None, marginal_embedder_x=None, marginal_embedder_y=None, subsample=None, seed=None, n_ensemble=1) -> BindingDetector`
 - `X`, `Y`: 1D time series of same length
 - If embedders are None, uses auto-estimated per-channel parameters
+- `n_ensemble` (int): If >1 and `subsample` is provided, runs K independent persistence+scoring passes with different subsample seeds. `binding_score()` returns the ensemble mean. Variance reduction is modest: CV ~28% → ~24% at K=10.
 - **Embedding quality check**: If `embedding_quality_gate=True`, validates all three point clouds (marginal X, marginal Y, joint). If any has condition number exceeding the threshold, raises `EmbeddingDegeneracyWarning` identifying which embedding(s) failed and recommending inspection or SVD denoising. The result dict includes `"embedding_quality"` with validation output for all three clouds.
 
 #### `.binding_score() -> float`
 For `persistence_image` method: L1 norm of positive residual image (joint minus baseline).
 For `diagram_matching` method: total persistence of unmatched features.
+If `n_ensemble > 1`, returns the ensemble mean.
+
+#### `.ensemble_scores -> np.ndarray | None`
+Array of K individual binding scores from ensemble runs. None if `n_ensemble=1` or `subsample=None`.
+
+#### `.confidence_interval(confidence=0.95) -> tuple[float, float]`
+Bootstrap confidence interval from ensemble scores. Raises ValueError if ensemble was not used.
 
 #### `.binding_features() -> dict`
 ```python
@@ -203,10 +211,16 @@ Returns `validate_embedding` output for all three clouds. Useful for diagnosing 
     "observed_score": float,
     "surrogate_scores": np.ndarray,
     "significant": bool,  # at α=0.05
+    "z_score": float,  # (observed - surrogate_mean) / surrogate_std
+    "calibrated_score": float,  # observed - surrogate_mean
+    "surrogate_mean": float,
+    "surrogate_std": float,
     "embedding_quality": dict,  # validate_embedding output for joint cloud
 }
 ```
 Methods: `"phase_randomize"`, `"time_shuffle"`, `"twin_surrogate"`
+
+**Important**: Raw binding scores have a structural positive baseline that grows with data size. Z-scores are the correct calibrated measure for coupling evidence. The method has zero power for same-timescale coupling (e.g., Lorenz–Lorenz); it is selective to heterogeneous-timescale coupling (e.g., Rössler–Lorenz). See the preprint, Experiment 9.
 
 #### `.plot_comparison() -> Figure`
 Three-panel: marginal X diagram | joint diagram (excess highlighted) | marginal Y diagram
@@ -383,6 +397,11 @@ Ground truth transitions at `switch_every` intervals.
 
 ### `coupled_oscillators(n_oscillators=3, coupling_matrix=None, n_steps=10000, seed=None) -> np.ndarray`
 Returns `(n_steps, n_oscillators, 3)`.
+
+### `kuramoto_oscillators(n_oscillators=5, coupling=1.0, n_steps=10000, dt=0.01, natural_frequencies=None, noise=0.0, seed=None) -> tuple[np.ndarray, np.ndarray]`
+Classic Kuramoto model: $d\theta_i/dt = \omega_i + (K/N) \sum \sin(\theta_j - \theta_i) + \text{noise}$.
+Returns `(phases, signals)` where `phases` is `(n_steps, n_oscillators)` and `signals = sin(phases)`.
+**Note**: Binding score *decreases* with Kuramoto coupling (77× reduction at strong coupling). Phase synchronization collapses the joint manifold — opposite of chaotic systems. See preprint Discussion.
 
 ---
 

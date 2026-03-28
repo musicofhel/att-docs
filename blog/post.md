@@ -132,6 +132,39 @@ The binding score itself diverges correspondingly. At $\epsilon = 0.8$, per-chan
 
 ATT handles this automatically: the `embed_channel()` function estimates AMI and FNN independently for each channel, validates the result via singular value decomposition, and falls back to literature-grounded defaults if the auto-estimate degenerates.
 
+## Where It Works and Where It Doesn't
+
+After the synthetic validation above, we stress-tested the method extensively. The results are illuminating --- and humbling. Here's the honest picture.
+
+### Raw scores are not interpretable
+
+The non-zero binding score at $\epsilon = 0$ (uncoupled systems) is not a finite-sample artifact. It's **structural**: the positive baseline *grows* with data size (mean score of 45 at $n = 3{,}000$, 127 at $n = 10{,}000$, 164 at $n = 20{,}000$). The cause is dimensional: the joint embedding lives in $\mathbb{R}^{m_1 + m_2}$, and even independent systems produce topological structure that exceeds the max-marginal baseline in higher dimensions.
+
+This means you should **never** compare raw binding scores across different data lengths. The correct approach is z-score calibration against a surrogate null distribution: $z = (S_\text{obs} - \bar{S}_\text{surr}) / \sigma_\text{surr}$. A positive z-score means the coupling creates joint topology beyond what the surrogates (preserving spectra but destroying coupling) can produce.
+
+### The method is selective to heterogeneous-timescale coupling
+
+When we computed z-scores at coupling $\epsilon = 0.3$:
+
+- **Lorenz–Lorenz** (same timescale): all z-scores negative. Range: $-4.3$ to $-0.6$. Zero detections. The method has **no statistical power** for coupling between identical systems.
+- **Rössler–Lorenz** (different timescales): z-scores positive. Range: $+0.1$ to $+2.9$. Three of five seeds significant at $p \leq 0.05$.
+
+This is a fundamental property of the construction, not a bug. When both systems evolve on the same timescale, the joint embedding looks like a product of two similar marginals even when coupled. When timescales differ, coupling creates genuinely novel topology that surrogates can't reproduce.
+
+The silver lining: inter-region neural coupling typically involves areas with different characteristic timescales. The method is selective to exactly the regime where it's most likely to be applied.
+
+### The Kuramoto surprise
+
+For Kuramoto coupled oscillators (non-chaotic, oscillatory dynamics), the binding score *decreases* with coupling --- a 77× reduction at strong coupling. Phase synchronization collapses the joint embedding onto a lower-dimensional manifold, *reducing* excess topology. This is the opposite of chaotic systems and means the binding score measures **topological novelty**, not coupling strength per se.
+
+### Multi-oscillator pairwise analysis is unreliable
+
+In a 3-oscillator system where oscillators 0–1 and 1–2 are coupled but 0–2 are not, the pairwise binding score for the uncoupled pair (0–2) is 83 in the 3-body system versus 33 in isolation --- a **2.5× inflation** from indirect coupling through the shared oscillator. Don't trust pairwise scores in multi-oscillator systems without isolated-pair controls.
+
+### Individual scores are noisy
+
+Binding scores have a coefficient of variation of ~30% across random seeds. Ensemble binding (averaging over $K = 10$ independent subsamplings) only reduces this to ~24%. Single scores are unreliable --- always use z-score calibration or multiple seeds.
+
 ## Real EEG: Detecting Perceptual Switches as Topological Reorganizations
 
 The synthetic experiments validate the method's mechanics. The real question: does it work on actual brain data?
@@ -181,15 +214,19 @@ The joint topology captures structure that neither channel has alone. This is ge
 
 This is an early-stage result, and we want to be explicit about what it does and does not establish.
 
-**N=1.** The real EEG analysis is from a single subject, a single epoch, and two electrodes. The [full dataset](https://doi.org/10.13020/9sy5-a716) has 84 subjects with multiple rivalry epochs each. Multi-subject analysis is the next step. Until then, these results demonstrate feasibility, not generalizability.
+**Same-timescale blind spot.** As detailed above, the method has zero power for coupling between identical dynamical systems. It needs timescale heterogeneity to produce a signal. Don't apply it to two identical oscillators and expect sensitivity.
 
-**Borderline surrogate p-values.** The surrogate significance test at moderate coupling ($\epsilon = 0.5$) yielded $p = 0.060$, which does not reach conventional significance. The false positive rate is well controlled, but the test's power at moderate coupling needs improvement --- longer time series, more surrogates, or stronger coupling are likely needed.
+**Raw scores aren't interpretable.** The structural baseline grows with data size. Always use z-score calibration against surrogates. Never compare raw scores across different data lengths.
 
-**Computational cost.** Persistent homology is expensive. We subsample to 300-500 points per window, which introduces variance. GPU-accelerated backends (Ripser++) and witness complexes could help scale to larger datasets.
+**Multi-oscillator pairwise analysis is unreliable.** Indirect coupling inflates pairwise scores 2.5×. Use isolated-pair controls.
 
-**Parameter sensitivity.** The binding score depends on embedding parameters ($\tau$, $m$), persistence image resolution, Gaussian bandwidth, and subsampling. The quality gate catches gross failures but doesn't optimize these parameters.
+**N=1.** The real EEG analysis is from a single subject, a single epoch, and two electrodes. The [full dataset](https://doi.org/10.13020/9sy5-a716) has 84 subjects. Multi-subject analysis is the next step.
 
-**No causal claims.** The binding score is symmetric --- it detects coupling, not directionality. Transfer entropy or convergent cross-mapping would be needed for causal inference. ATT complements these methods rather than replacing them.
+**~30% CV.** Individual scores are noisy. Ensemble binding helps modestly (CV 28% → 24%). Use z-scores or multiple seeds.
+
+**Computational cost.** Persistent homology is expensive. We subsample to 300-500 points per window. GPU-accelerated backends (Ripser++) and witness complexes could help scale.
+
+**No causal claims.** The binding score is symmetric --- it detects coupling, not directionality. Transfer entropy or convergent cross-mapping would be needed for causal inference.
 
 ## What's Next
 

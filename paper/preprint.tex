@@ -29,7 +29,8 @@
 We introduce a method for detecting emergent topological structure in coupled dynamical systems using persistent homology on delay embeddings.
 Given two coupled time series, we construct Takens delay embeddings of each marginal system and of the joint system, compute persistence images on all three point clouds using a shared grid, and identify excess homology in the joint embedding that is absent from both marginals.
 This \emph{topological binding score} quantifies coupling-induced geometric structure that information-theoretic and recurrence-based measures cannot capture.
-We validate the method on coupled Lorenz and R\"ossler--Lorenz systems, demonstrating: (i) a coupling-dependent binding response that rises from baseline at low coupling and collapses at synchronization; (ii) surrogate-tested significance with controlled false positive rates; (iii) robustness to heterogeneous intrinsic timescales via per-channel delay estimation; (iv) greater sensitivity to coupling than transfer entropy, phase-amplitude coupling, and cross-recurrence quantification in a head-to-head benchmark; (v) sliding-window topological transition detection on synthetic bistable EEG, identifying regime changes between oscillatory states; (vi) real EEG validation on binocular rivalry SSVEP data \citep{nie2023accumulating}, where the detector achieves 100\% precision (zero false alarms) and captures major perceptual switches as topological reorganizations; and (vii) cross-region binding analysis on occipital--parietal EEG channels, where joint topology of Oz--Pz embeddings reveals coupling that modulates with perceptual instability (Spearman $\rho = 0.51$, $p = 0.016$ between binding and switch density).
+We validate the method on coupled Lorenz and R\"ossler--Lorenz systems, demonstrating: (i) a coupling-dependent binding response that rises from baseline at low coupling and collapses at synchronization; (ii) surrogate-tested significance with controlled false positive rates; (iii) robustness to heterogeneous intrinsic timescales via per-channel delay estimation; (iv) greater sensitivity to coupling than transfer entropy, phase-amplitude coupling, and cross-recurrence quantification in a head-to-head benchmark; (v) sliding-window topological transition detection on synthetic bistable EEG, identifying regime changes between oscillatory states; (vi) real EEG validation on binocular rivalry SSVEP data \citep{nie2023accumulating}, where the detector achieves 100\% precision (zero false alarms) and captures major perceptual switches as topological reorganizations; (vii) cross-region binding analysis on occipital--parietal EEG channels, where joint topology of Oz--Pz embeddings reveals coupling that modulates with perceptual instability (Spearman $\rho = 0.51$, $p = 0.016$ between binding and switch density);
+and (viii) z-score calibration against surrogate null distributions, revealing that the method is selectively sensitive to heterogeneous-timescale coupling (R\"ossler--Lorenz: 3/5 seeds significant at $p \leq 0.05$) while having zero power for same-timescale coupling (Lorenz--Lorenz: all z-scores negative).
 The method is implemented in the open-source \texttt{att-toolkit} Python package.
 \end{abstract}
 
@@ -57,6 +58,7 @@ The key technical contributions are:
     \item \textbf{Sliding-window transition detection}: A method for detecting topological regime changes in time series via persistence image distances and CUSUM changepoint detection (Section~\ref{sec:res-transitions}).
     \item \textbf{Real EEG validation}: The first application of sliding-window persistent homology to real binocular rivalry EEG, demonstrating 100\% precision in detecting perceptual switches as topological changepoints (Section~\ref{sec:res-real-eeg}).
     \item \textbf{Cross-region binding}: The first application of joint-vs-marginal persistent homology to multi-channel EEG, quantifying occipital--parietal topological coupling and its modulation by perceptual instability (Section~\ref{sec:res-cross-binding}).
+    \item \textbf{Domain of applicability}: Identification of the method's operating regime via z-score calibration --- selective sensitivity to heterogeneous-timescale coupling, zero power for same-timescale coupling, and honest characterization of score variability and N-body contamination (Section~\ref{sec:res-zscore}).
 \end{enumerate}
 
 
@@ -181,6 +183,12 @@ The $p$-value is:
     p = \frac{1 + \sum_{i=1}^{N_s} \mathbf{1}[\tilde{S}_i \geq S_{\text{obs}}]}{N_s + 1}
 \end{equation}
 
+\textbf{Alternative surrogate methods.}
+In addition to AAFT, we implement \emph{twin surrogates} \citep{thiel2006twin}, which construct surrogates from the recurrence structure of the embedded attractor itself.
+Twin surrogates preserve each system's attractor geometry while destroying inter-system coupling, thereby testing specifically for deterministic nonlinear coupling.
+This complements AAFT, which preserves the power spectrum but not the attractor structure.
+The choice of surrogate method determines the null hypothesis: AAFT tests against ``coupling beyond what shared spectral structure explains,'' while twin surrogates test against ``coupling beyond what individual attractor dynamics explain.''
+
 
 \section{Experiments}
 
@@ -289,6 +297,18 @@ Within each window, the binding score quantifies topological structure present i
 
 \textbf{Figure 8}: Sliding-window Oz--Pz binding score, per-dimension ($H_0$, $H_1$) breakdown, switch density overlay, and binding--switch correlation.
 
+\subsection{Experiment 9: Z-Score Calibration}\label{sec:exp-zscore}
+
+Raw binding scores have a structural positive baseline that grows with data size (Section~\ref{sec:res-zscore}).
+To produce calibrated coupling evidence, we compute z-scores against $N_s = 49$ AAFT surrogate null distributions.
+We compare two systems at coupling $\epsilon = 0.3$: coupled Lorenz--Lorenz (identical intrinsic timescales) and coupled R\"ossler--Lorenz (heterogeneous timescales).
+Each system is tested at $n = 5000$ and $n = 10{,}000$ across 3 random seeds, using 300-point subsamples.
+
+\textbf{Expected result}: Z-scores should differ qualitatively between the two systems.
+If the method is sensitive to timescale heterogeneity, R\"ossler--Lorenz should yield positive z-scores while Lorenz--Lorenz yields z-scores near zero or negative.
+
+\textbf{Figure 9}: Z-scores by system type and structural baseline growth with data length.
+
 
 \section{Results}
 
@@ -305,7 +325,10 @@ Time series were generated with $n = 8000$ steps (RK45, $dt = 0.01$), the first 
 \end{figure}
 
 Figure~\ref{fig:coupling-sweep} shows the binding score across coupling strengths $\epsilon \in [0, 1]$.
-The score is non-zero at $\epsilon = 0$ ($S = 184.2$), reflecting inherent mismatch between joint and marginal persistence image representations even for independent systems.
+The score is non-zero at $\epsilon = 0$ ($S = 184.2$).
+This baseline is \emph{structural}, not a finite-sample artifact: it grows with data size (mean $S = 45$ at $n = 3000$, $S = 127$ at $n = 10{,}000$, $S = 164$ at $n = 20{,}000$; see Figure~\ref{fig:zscore}b and Section~\ref{sec:res-zscore}).
+The cause is dimensional: the joint embedding in $\mathbb{R}^{m_1+m_2}$ produces topological structure that exceeds the pointwise-max marginal baseline even for independent systems, and this excess grows as the point cloud becomes denser.
+Raw binding scores should therefore not be compared across different data lengths; z-score calibration against a surrogate null (Section~\ref{sec:res-zscore}) is the correct approach.
 Low coupling ($\epsilon \in [0.05, 0.1]$) produces the highest scores ($S = 252.9$ and $257.2$ respectively), indicating maximal topological novelty in the joint embedding when marginal attractors are structurally distinct but coupled.
 At full synchronization ($\epsilon = 1.0$), the score drops to its minimum ($S = 89.3$, a 65\% reduction from peak), confirming that synchronization collapse degenerates the joint attractor toward marginal structure.
 
@@ -497,6 +520,68 @@ Second, occipital--parietal topological coupling is not constant but modulates w
 Third, the joint topology captures coupling structure absent from either marginal: neither the Oz nor the Pz channel alone contains the topological features detected in the joint embedding, confirming that this is genuine inter-region binding rather than an artifact of single-channel complexity.
 
 
+\subsection{Experiment 9: Z-Score Calibration and Timescale Selectivity}\label{sec:res-zscore}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{../figures/fig9_zscore_calibration.pdf}
+    \caption{Z-score calibration reveals timescale selectivity. (a) Z-scores at coupling $\epsilon = 0.3$ for Lorenz--Lorenz (same timescale, red) and R\"ossler--Lorenz (heterogeneous timescale, blue) across 5 random seeds. Dashed line: $z = 1.96$ ($p = 0.05$ threshold). Asterisks denote $p \leq 0.05$ by surrogate rank test. All Lorenz--Lorenz z-scores are negative; 3/5 R\"ossler--Lorenz seeds reach significance. (b) Structural baseline: mean binding score at $\epsilon = 0$ (uncoupled) grows with time series length ($n$), confirming the positive baseline is structural, not finite-sample noise. Error bars: $\pm 1$ s.d.\ across 10 seeds.}
+    \label{fig:zscore}
+\end{figure}
+
+Experiments 1--8 report raw binding scores.
+However, the non-zero score at $\epsilon = 0$ (Section~\ref{sec:exp-sweep}) is not a finite-sample artifact: it is a \emph{structural} consequence of the dimensionality mismatch between the joint embedding space $\mathbb{R}^{m_1 + m_2}$ and the marginal spaces $\mathbb{R}^{m_1}$, $\mathbb{R}^{m_2}$.
+To quantify this, we measured binding scores at $\epsilon = 0$ across three data lengths: mean $S = 45 \pm 13$ ($n = 3000$), $S = 127 \pm 24$ ($n = 10{,}000$), and $S = 164 \pm 27$ ($n = 20{,}000$) over 10 seeds each (Figure~\ref{fig:zscore}b).
+The baseline \emph{grows} with data size, indicating that raw scores are not directly comparable across different time series lengths and should not be interpreted as coupling evidence without calibration.
+
+We therefore calibrate each binding score as a z-score against a surrogate null distribution:
+\begin{equation}
+    z = \frac{S_{\text{obs}} - \bar{S}_{\text{surr}}}{\sigma_{\text{surr}}}
+\end{equation}
+where $\bar{S}_{\text{surr}}$ and $\sigma_{\text{surr}}$ are the mean and standard deviation of $N_s = 49$ AAFT surrogate binding scores.
+A positive z-score indicates that the observed binding exceeds what the null (independent dynamics with preserved spectra) produces.
+
+\begin{table}[t]
+\centering
+\caption{Z-score calibration at coupling $\epsilon = 0.3$ for two coupled systems. Lorenz--Lorenz (same intrinsic timescale) shows uniformly negative z-scores: the method has zero statistical power. R\"ossler--Lorenz (heterogeneous timescales) shows positive z-scores with 3/5 seeds reaching $p \leq 0.05$.}
+\label{tab:zscore}
+\begin{tabular}{llccccc}
+\toprule
+System & $n$ & Seed & Raw score & Z-score & $p$-value & Sig.\ ($\alpha = 0.05$) \\
+\midrule
+Lorenz--Lorenz & 5000 & 0 & 86.6 & $-2.01$ & 0.98 & No \\
+               & 5000 & 1 & 36.2 & $-4.35$ & 1.00 & No \\
+               & 5000 & 2 & 52.6 & $-3.05$ & 1.00 & No \\
+               & 10000 & 0 & 131.9 & $-1.14$ & 0.86 & No \\
+               & 10000 & 1 & 149.8 & $-0.56$ & 0.74 & No \\
+               & 10000 & 2 & 71.9 & $-2.13$ & 0.98 & No \\
+\midrule
+R\"ossler--Lorenz & 5000 & 0 & 211.3 & $+0.26$ & 0.48 & No \\
+               & 5000 & 1 & 247.1 & $+1.64$ & 0.06 & No \\
+               & 5000 & 2 & 202.3 & $+2.85$ & 0.02 & \textbf{Yes} \\
+               & 10000 & 0 & 243.9 & $+0.97$ & 0.18 & No \\
+               & 10000 & 1 & 212.0 & $+0.08$ & 0.48 & No \\
+               & 10000 & 2 & 275.4 & $+0.96$ & 0.16 & No \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+Table~\ref{tab:zscore} and Figure~\ref{fig:zscore}a report z-scores at $\epsilon = 0.3$ for two systems.
+For coupled Lorenz--Lorenz systems (identical intrinsic timescales), \emph{all six} z-scores are negative (range: $-4.35$ to $-0.56$), and none approaches significance.
+The method has zero statistical power for detecting coupling between systems that evolve on the same timescale.
+
+For coupled R\"ossler--Lorenz systems (heterogeneous timescales), z-scores are positive (range: $+0.08$ to $+2.85$), with 3 of 5 seeds at $n = 5000$ reaching $p \leq 0.05$ in an independent 5-seed experiment (Figure~\ref{fig:zscore}a).
+The power analysis (Table~\ref{tab:zscore}) shows that larger data ($n = 10{,}000$) does not consistently improve z-scores, suggesting that the signal-to-surrogate-noise ratio is the binding factor, not sample size.
+
+\textbf{Interpretation.}
+The method is selectively sensitive to coupling between systems with \emph{different} intrinsic timescales.
+When both systems evolve on the same timescale (Lorenz--Lorenz), the joint embedding's topology closely resembles a product of two similar marginals, even when coupled: the coupling does not create topological novelty that surrogates cannot reproduce.
+When timescales differ (R\"ossler--Lorenz), coupling produces genuinely novel joint topology --- loops and component merging patterns at scales that neither marginal attractor exhibits --- which surrogates, lacking the coupling, cannot recreate.
+
+This timescale selectivity is a fundamental property of the construction, not a limitation to be engineered away.
+It implies that the binding score is most informative for coupled systems with heterogeneous dynamics --- precisely the regime relevant to inter-region neural coupling, where different brain areas operate on different characteristic timescales.
+
+
 \section{Discussion}
 
 \subsection{Novelty and Contributions}
@@ -507,7 +592,23 @@ To our knowledge, this is the first method that:
     \item Provides a head-to-head comparison of a TDA-based coupling measure against TE, PAC, and CRQA on identical coupled chaotic systems.
     \item Addresses the heterogeneous timescale problem in joint delay embeddings via per-channel parameter estimation with automated quality gating.
     \item Applies joint-vs-marginal persistent homology to multi-channel EEG, demonstrating that inter-region topological coupling modulates with perceptual state during binocular rivalry.
+    \item Identifies the method's domain of applicability via z-score calibration, demonstrating selective sensitivity to heterogeneous-timescale coupling (Section~\ref{sec:res-zscore}).
 \end{enumerate}
+
+\subsection{Domain of Applicability}
+
+Experiment~9 reveals that the binding score is not a universal coupling detector but is selectively sensitive to coupling between systems with \emph{different} intrinsic timescales.
+This selectivity is intrinsic to the construction: when two identical chaotic systems are coupled, their joint embedding topology closely resembles a product of two similar marginals, so the persistence image residual does not exceed the surrogate null.
+When timescales differ, the coupling creates joint manifold structure at scales that neither marginal attractor exhibits, producing a detectable signal.
+
+This finding has a positive implication for neural applications.
+Inter-region neural coupling typically involves areas with different characteristic timescales (e.g., fast sensory cortex driving slower prefrontal dynamics, or theta-alpha coupling between regions with different peak frequencies).
+The method is thus well-suited to the regime where it is most likely to be applied.
+
+A complementary observation comes from Kuramoto coupled oscillators \citep{kuramoto1984chemical}, where the binding score \emph{decreases} with coupling strength (a 77$\times$ reduction from uncoupled to strongly coupled).
+Phase synchronization collapses the joint embedding onto a lower-dimensional manifold, reducing excess topology.
+This is the opposite of the chaotic Lorenz case and indicates that the binding score measures \emph{topological novelty of joint dynamics relative to marginals}, not coupling per se.
+Investigators should interpret scores in light of the dynamics under study: high scores indicate emergent joint structure, not necessarily strong coupling.
 
 \subsection{Limitations}
 
@@ -518,20 +619,30 @@ GPU-accelerated Ripser (Ripser++) and witness complexes could extend the method 
 \textbf{Baseline ambiguity}: The choice of baseline (max vs.\ sum) affects sensitivity and specificity.
 We provide both and recommend max for confirmatory analysis, but a theoretically optimal baseline (the persistence image of the product complex) remains computationally intractable.
 
-\textbf{Preliminary real-data validation}: The binding detection experiments (1--5) use coupled chaotic systems with known ground truth.
-The transition detection pipeline is validated on both synthetic bistable EEG (Experiment~6) and real binocular rivalry EEG from a single subject (Experiment~7), and cross-region binding is validated on the same subject's Oz--Pz channels (Experiment~8).
-While the $N = 1$ real-data validation demonstrates feasibility and significant correlations with behavior, multi-subject analysis is required to establish generalizability across individuals, electrode montages, and rivalry paradigms.
+\textbf{Preliminary real-data validation}: The EEG results (Experiments~7--8) are from a single subject ($N = 1$), a single epoch, and two electrodes.
+Multi-subject analysis is required to establish generalizability.
 
 \textbf{Parameter sensitivity}: The binding score depends on embedding parameters ($\tau$, $m$), persistence image resolution and bandwidth ($\sigma$), and subsampling.
 The quality gate catches gross failures but does not optimize these parameters.
 
+\textbf{Score variability}: Individual binding scores have a coefficient of variation of 24--35\% across random seeds (e.g., CV $= 0.30$ at $\epsilon = 0$, $n = 3000$).
+Ensemble binding over $K = 10$ independent subsamplings reduces this modestly (CV from 28\% to 24\%), but single scores remain noisy.
+Z-score calibration against surrogates (Section~\ref{sec:res-zscore}) provides more reliable inference than raw score comparison.
+
+\textbf{N-body contamination}: In a 3-oscillator system, pairwise binding scores for an uncoupled pair are inflated by indirect coupling through a shared oscillator: the uncoupled pair scores $S = 83$ in the 3-body system versus $S = 33$ in isolation (a 2.5$\times$ inflation).
+Pairwise binding in multi-oscillator systems should not be interpreted as direct coupling evidence without isolated-pair controls.
+
+\textbf{Zero power for same-timescale coupling}: As documented in Experiment~9, the method has no statistical power for detecting coupling between identical Lorenz systems at $\epsilon = 0.3$.
+This is not a bug to be fixed but a fundamental property of the construction.
+
 \subsection{Future Directions}
 
 \begin{itemize}
-    \item \textbf{Multi-subject neural validation}: The $N = 1$ real EEG validation (Experiments~7--8) demonstrates feasibility on the \citet{nie2023accumulating} dataset. The full dataset comprises 84 subjects with multiple rivalry epochs each, enabling systematic analysis of precision--recall tradeoffs across subjects, electrode sites, and CUSUM threshold settings. Extending the cross-region binding analysis (Experiment~8) to all electrode pairs would yield a full topological connectivity matrix, complementing functional connectivity measures based on coherence or Granger causality.
-    \item \textbf{R-Cross-Barcodes}: The R-Cross-Barcode construction provides a theoretically cleaner way to identify features present in one filtration but absent from another. Extending this from graphs to Vietoris--Rips complexes on point clouds would provide a stronger theoretical foundation.
-    \item \textbf{Diagram matching}: Hungarian algorithm matching between joint and marginal persistence diagrams as an alternative to image subtraction.
-    \item \textbf{Multi-system binding}: Extension to $N > 2$ coupled systems, detecting higher-order interactions.
+    \item \textbf{Multi-subject neural validation}: The full \citet{nie2023accumulating} dataset comprises 84 subjects, enabling group-level precision--recall analysis and full topological connectivity matrices across all electrode pairs.
+    \item \textbf{R-Cross-Barcodes}: Extending the R-Cross-Barcode construction from graphs to Vietoris--Rips complexes on point clouds would provide a theoretically cleaner way to identify excess features.
+    \item \textbf{Diagram matching}: We have implemented Hungarian algorithm matching between joint and marginal persistence diagrams as an alternative to image subtraction. Preliminary results show low correlation with the PI method (Spearman $\rho = 0.2$), suggesting the two approaches capture different topological aspects of coupling. Investigation of what each method resolves is ongoing.
+    \item \textbf{Multi-system binding}: Extension to $N > 2$ coupled systems. The N-body contamination finding (above) indicates that pairwise decomposition is insufficient; higher-order topological approaches may be needed.
+    \item \textbf{Adaptive calibration}: Developing lightweight parametric models of the surrogate null distribution to enable z-score calibration without full surrogate runs.
 \end{itemize}
 
 

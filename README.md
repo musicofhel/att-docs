@@ -18,6 +18,8 @@ pip install att-toolkit
 
 ATT extracts, compares, and visualizes the topological structure of chaotic attractors from multivariate time series. Its core construction -- **joint-vs-marginal persistent homology on Takens-embedded coupled systems** -- isolates emergent coupling topology by comparing persistence diagrams of joint delay embeddings against their marginal counterparts. The library provides clean infrastructure for attractor reconstruction, persistent homology, cross-system binding detection, surrogate-tested statistics, and head-to-head benchmarks against transfer entropy, phase-amplitude coupling, and cross-recurrence quantification.
 
+> **Domain of applicability**: The binding score is selectively sensitive to coupling between systems with *different intrinsic timescales* (e.g., Rossler-Lorenz). It has zero power for same-timescale coupling (e.g., Lorenz-Lorenz). Always use z-score calibration against surrogates rather than raw scores. See the [preprint](paper/preprint.tex), Experiment 9.
+
 ## Quick Start
 
 ### Topological fingerprinting of a Lorenz attractor

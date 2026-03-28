@@ -235,7 +235,9 @@ class BindingDetector:
     def fit(self, X: np.ndarray, Y: np.ndarray,
             joint_embedder: JointEmbedder | None = None,
             marginal_embedder_x: TakensEmbedder | None = None,
-            marginal_embedder_y: TakensEmbedder | None = None) -> "BindingDetector":
+            marginal_embedder_y: TakensEmbedder | None = None,
+            subsample: int | None = None, seed: int | None = None,
+            n_ensemble: int = 1) -> "BindingDetector":
         """
         X, Y: 1D time series (must be same length, simultaneous recordings)
 
@@ -243,12 +245,18 @@ class BindingDetector:
         TakensEmbedder("auto", "auto") for each marginal. Per-channel delay estimation
         is critical — see JointEmbedder docs.
 
+        n_ensemble: If >1 and subsample is provided, runs K independent
+        persistence+scoring passes with different subsample seeds. binding_score()
+        returns ensemble mean. Variance reduction is modest (~28% to ~24% CV at K=10).
+        Ensemble scores available via .ensemble_scores property.
+        .confidence_interval(confidence=0.95) returns bootstrap CI.
+
         Pipeline:
           1. Marginal embedding of X alone
           2. Marginal embedding of Y alone
           3. Joint embedding of [X; Y]
           4. [If embedding_quality_gate] Validate all three embeddings
-          5. Persistence of marginal X, marginal Y, joint
+          5. Persistence of marginal X, marginal Y, joint (K times if ensemble)
           6. Excess topology via chosen method and baseline
         """
 
@@ -284,8 +292,17 @@ class BindingDetector:
             "observed_score": float,
             "surrogate_scores": np.ndarray,
             "significant": bool,  # at α=0.05
+            "z_score": float,  # (observed - surrogate_mean) / surrogate_std
+            "calibrated_score": float,  # observed - surrogate_mean
+            "surrogate_mean": float,
+            "surrogate_std": float,
             "embedding_quality": dict,  # validate_embedding output
         }
+
+        NOTE: Raw binding scores have a structural positive baseline that grows
+        with data size. Z-scores are the correct calibrated measure. The method
+        has zero power for same-timescale coupling (Lorenz-Lorenz); it is
+        selective to heterogeneous-timescale coupling (Rossler-Lorenz).
         """
 
     def plot_comparison(self) -> matplotlib.figure.Figure:
