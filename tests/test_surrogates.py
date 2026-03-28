@@ -197,3 +197,35 @@ class TestTwinSurrogate:
             f"Mean surrogate cross-correlation {mean_surr_corr:.4f} "
             f"should be less than original {orig_corr:.4f}"
         )
+
+
+class TestSurrogateEdgeCases:
+    """Edge-case tests for surrogate generation."""
+
+    def test_phase_randomize_very_short(self):
+        """Phase randomization should work on 5-sample signal."""
+        x = np.array([1.0, 2.0, 3.0, 4.0, 5.0])
+        surr = phase_randomize(x, n_surrogates=2, seed=42)
+        assert surr.shape == (2, 5)
+
+    def test_time_shuffle_very_short(self):
+        """Time shuffle should work on 3-sample signal."""
+        x = np.array([1.0, 2.0, 3.0])
+        surr = time_shuffle(x, n_surrogates=2, seed=42)
+        assert surr.shape == (2, 3)
+
+    def test_twin_surrogate_minimal(self):
+        """Twin surrogate should work on minimal viable input."""
+        rng = np.random.default_rng(42)
+        x = rng.standard_normal(50)
+        surr = twin_surrogate(x, n_surrogates=2, embedding_dim=2, embedding_delay=1, seed=42)
+        assert surr.shape[0] == 2
+        assert surr.shape[1] > 0  # Shorter than input due to embedding
+
+    def test_time_shuffle_block_larger_than_signal(self):
+        """Block size larger than signal should still work."""
+        x = np.arange(10, dtype=float)
+        surr = time_shuffle(x, n_surrogates=1, block_size=20, seed=42)
+        assert surr.shape == (1, 10)
+        # With one block containing everything, output should be same as input
+        np.testing.assert_array_equal(surr[0], x)

@@ -156,3 +156,44 @@ class TestSvdEmbedding:
         ts = np.sin(np.linspace(0, 100, 5000))
         projected = svd_embedding(ts, delay=10, dimension=5, n_components=3)
         assert projected.shape == (5000 - 40, 3)
+
+
+class TestEmbeddingEdgeCases:
+    """Edge-case tests for embedding functions."""
+
+    def test_constant_signal_delay(self):
+        """estimate_delay on constant signal should return 1."""
+        delay = estimate_delay(np.ones(1000))
+        assert delay == 1
+
+    def test_constant_signal_dimension(self):
+        """estimate_dimension on constant signal should return small dim."""
+        dim = estimate_dimension(np.ones(1000), delay=1)
+        # All NN distances are 0 → skipped → fnn_fraction=0 → returns d=1
+        assert dim >= 1
+        assert dim <= 3  # Should be very low
+
+    def test_joint_single_channel(self):
+        """JointEmbedder with single channel should work."""
+        x = np.sin(np.linspace(0, 100, 5000))
+        je = JointEmbedder(delays="auto", dimensions="auto")
+        cloud = je.fit_transform([x])
+        assert cloud.ndim == 2
+        assert cloud.shape[0] > 0
+
+    def test_takens_short_series_raises(self):
+        """Too-short time series should raise ValueError."""
+        emb = TakensEmbedder(delay=50, dimension=5)
+        short = np.zeros(100)  # needs (5-1)*50+1 = 201
+        with pytest.raises(ValueError, match="too short"):
+            emb.fit_transform(short)
+
+    def test_validate_embedding_degenerate(self):
+        """validate_embedding on rank-deficient cloud should flag degenerate."""
+        # Create a 3D cloud that only varies along 1 axis
+        rng = np.random.default_rng(42)
+        cloud = np.zeros((100, 3))
+        cloud[:, 0] = rng.standard_normal(100)
+        result = validate_embedding(cloud)
+        assert result["degenerate"] is True
+        assert result["effective_rank"] == 1

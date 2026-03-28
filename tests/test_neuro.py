@@ -103,3 +103,54 @@ class TestEEGLoader:
         ts_data, names = loader.to_timeseries()
         assert ts_data.shape[0] == 2
         assert names == ch_names
+
+
+class TestNeuroEdgeCases:
+    """Edge-case tests for neuro module."""
+
+    @pytest.fixture(autouse=True)
+    def _skip_if_no_mne(self):
+        pytest.importorskip("mne")
+
+    def test_preprocess_pipeline(self, tmp_path):
+        """preprocess() should run bandpass + notch without error."""
+        import mne
+        from att.neuro.loader import EEGLoader
+
+        sfreq = 256.0
+        ch_names = ["O1", "O2", "Pz", "Fz"]
+        info = mne.create_info(ch_names=ch_names, sfreq=sfreq, ch_types="eeg")
+        data = np.random.default_rng(42).standard_normal((4, 5120))  # 20 seconds
+        raw = mne.io.RawArray(data, info, verbose=False)
+        fif_path = tmp_path / "test_raw.fif"
+        raw.save(str(fif_path), overwrite=True, verbose=False)
+
+        loader = EEGLoader(fif_path, subject="test")
+        loader.load()
+        processed = loader.preprocess(bandpass=(1, 45), notch=50.0)
+        assert processed is not None
+        assert processed.info["sfreq"] == sfreq
+
+    def test_get_events_no_events(self, tmp_path):
+        """get_events() on file with no annotations should return None."""
+        import mne
+        from att.neuro.loader import EEGLoader
+
+        sfreq = 256.0
+        info = mne.create_info(ch_names=["O1"], sfreq=sfreq, ch_types="eeg")
+        data = np.random.default_rng(42).standard_normal((1, 2560))
+        raw = mne.io.RawArray(data, info, verbose=False)
+        fif_path = tmp_path / "no_events.fif"
+        raw.save(str(fif_path), overwrite=True, verbose=False)
+
+        loader = EEGLoader(fif_path)
+        loader.load()
+        events = loader.get_events()
+        assert events is None
+
+    def test_unsupported_format_raises(self):
+        """Loading an unsupported file format should raise ValueError."""
+        from att.neuro.loader import EEGLoader
+        loader = EEGLoader("/tmp/fake_file.xyz")
+        with pytest.raises(ValueError, match="Unsupported"):
+            loader.load()

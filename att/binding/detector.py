@@ -308,6 +308,12 @@ class BindingDetector:
         """
         self._check_fitted()
 
+        if self.method == "diagram_matching":
+            raise NotImplementedError(
+                "Significance testing is not yet supported for the "
+                "'diagram_matching' method. Use method='persistence_image'."
+            )
+
         from att.surrogates import phase_randomize, time_shuffle, twin_surrogate
 
         if method == "phase_randomize":

@@ -73,3 +73,21 @@ class TestConfig:
             save_config({"key": "value"}, path)
             loaded = load_config(path)
             assert loaded == {"key": "value"}
+
+
+class TestGetSeed:
+    """Tests for get_seed()."""
+
+    def test_get_seed_after_set(self):
+        """get_seed() should return the value passed to set_seed()."""
+        from att.config.seed import get_seed
+        set_seed(123)
+        assert get_seed() == 123
+
+    def test_get_seed_different_values(self):
+        """get_seed() should update when set_seed() is called again."""
+        from att.config.seed import get_seed
+        set_seed(99)
+        assert get_seed() == 99
+        set_seed(42)
+        assert get_seed() == 42

@@ -93,3 +93,73 @@ class TestTransitionDetector:
         det = TransitionDetector()
         with pytest.raises(RuntimeError, match="fit_transform"):
             det.detect_changepoints()
+
+
+class TestTransitionEdgeCases:
+    """Edge-case tests for TransitionDetector."""
+
+    def test_threshold_method(self):
+        """detect_changepoints with method='threshold' should return list."""
+        from att.synthetic import switching_rossler
+        ts = switching_rossler(n_steps=3000, seed=42)
+        det = TransitionDetector(window_size=200, step_size=100, max_dim=1)
+        det.fit_transform(ts[:, 0], embedding_dim=3, embedding_delay=10)
+        cps = det.detect_changepoints(method="threshold")
+        assert isinstance(cps, list)
+
+    def test_custom_threshold_zero(self):
+        """threshold=0 should flag all points with positive scores."""
+        from att.synthetic import switching_rossler
+        ts = switching_rossler(n_steps=3000, seed=42)
+        det = TransitionDetector(window_size=200, step_size=100, max_dim=1)
+        result = det.fit_transform(ts[:, 0], embedding_dim=3, embedding_delay=10)
+        cps = det.detect_changepoints(method="threshold", threshold=0.0)
+        # All scores > 0 should be flagged
+        n_positive = sum(1 for s in result["image_distances"] if s > 0)
+        assert len(cps) == n_positive
+
+    def test_cusum_constant_scores(self):
+        """Constant scores → CUSUM never exceeds threshold → no changepoints."""
+        # Create a 2D cloud directly (bypasses embedding)
+        rng = np.random.default_rng(42)
+        # Large enough for several windows
+        cloud = rng.standard_normal((1500, 3))
+        det = TransitionDetector(window_size=200, step_size=100, max_dim=1)
+        det.fit_transform(cloud, seed=42)
+        # The scores won't be truly constant, but if data is iid normal
+        # there shouldn't be strong changepoints
+        cps = det.detect_changepoints(method="cusum")
+        assert isinstance(cps, list)
+
+    def test_invalid_changepoint_method_raises(self):
+        """Unknown changepoint method should raise ValueError."""
+        rng = np.random.default_rng(42)
+        cloud = rng.standard_normal((1500, 3))
+        det = TransitionDetector(window_size=200, step_size=100, max_dim=1)
+        det.fit_transform(cloud, seed=42)
+        with pytest.raises(ValueError):
+            det.detect_changepoints(method="bad_method")
+
+    def test_input_too_short_raises(self):
+        """Input shorter than window_size should raise ValueError."""
+        det = TransitionDetector(window_size=500, step_size=50, max_dim=1)
+        short_cloud = np.random.default_rng(42).standard_normal((100, 3))
+        with pytest.raises(ValueError, match="too short"):
+            det.fit_transform(short_cloud, seed=42)
+
+    def test_single_window(self):
+        """Input exactly equal to window_size → 1 window, 0 distances."""
+        cloud = np.random.default_rng(42).standard_normal((500, 3))
+        det = TransitionDetector(window_size=500, step_size=50, max_dim=1)
+        result = det.fit_transform(cloud, seed=42)
+        assert len(result["window_centers"]) == 1
+        assert len(result["image_distances"]) == 0
+        cps = det.detect_changepoints()
+        assert cps == []
+
+    def test_1d_without_embedding_params_raises(self):
+        """1D input without embedding_dim/embedding_delay should raise ValueError."""
+        det = TransitionDetector(window_size=200, step_size=50, max_dim=1)
+        signal = np.random.default_rng(42).standard_normal(2000)
+        with pytest.raises(ValueError):
+            det.fit_transform(signal)

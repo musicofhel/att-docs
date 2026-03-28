@@ -183,3 +183,74 @@ class TestKuramotoBenchmark:
         assert scores[0] > scores[1], (
             f"Scores {scores}: uncoupled should exceed moderately coupled"
         )
+
+
+class TestBenchmarkEdgeCases:
+    """Edge-case tests for benchmark methods."""
+
+    def test_te_constant_input(self):
+        """TE of constant signals should be 0."""
+        score = transfer_entropy(np.ones(500), np.ones(500))
+        assert score == 0.0
+
+    def test_te_zero_input(self):
+        """TE of zero signals should be 0."""
+        score = transfer_entropy(np.zeros(500), np.zeros(500))
+        assert score == 0.0
+
+    def test_pac_constant_input(self):
+        """PAC of constant signals should not crash and return a valid float."""
+        # Hilbert transform on constant input produces numerical artifacts,
+        # so the score may not be exactly 0.
+        score = pac(np.ones(500), np.ones(500))
+        assert isinstance(score, float)
+        assert np.isfinite(score)
+        assert 0.0 <= score <= 1.0
+
+    def test_crqa_constant_input(self):
+        """CRQA of constant signals should not crash."""
+        score = crqa(np.ones(500), np.ones(500))
+        assert isinstance(score, float)
+        assert np.isfinite(score)
+
+    def test_te_short_signal(self):
+        """TE should work on very short signals."""
+        rng = np.random.default_rng(42)
+        score = transfer_entropy(rng.standard_normal(10), rng.standard_normal(10))
+        assert isinstance(score, float)
+        assert score >= 0
+
+    def test_crqa_short_signal(self):
+        """CRQA should work on short signals."""
+        rng = np.random.default_rng(42)
+        score = crqa(rng.standard_normal(30), rng.standard_normal(30))
+        assert isinstance(score, float)
+        assert 0 <= score <= 1
+
+    def test_delay_embed_empty(self):
+        """_delay_embed with too-short input should return empty array."""
+        from att.benchmarks.methods import _delay_embed
+        result = _delay_embed(np.array([1.0, 2.0, 3.0]), dim=3, delay=2)
+        assert result.shape == (0, 3)
+
+    def test_count_line_points_direct(self):
+        """_count_line_points should count points on lines of min_line length."""
+        from att.benchmarks.methods import _count_line_points
+        # [1,1,1,0,1,1,0,1] -> lines of length 3 and 2 -> 5 points total (min_line=2)
+        diagonal = np.array([1, 1, 1, 0, 1, 1, 0, 1])
+        assert _count_line_points(diagonal, min_line=2) == 5
+        # min_line=3 -> only the length-3 line counts -> 3 points
+        assert _count_line_points(diagonal, min_line=3) == 3
+
+    def test_discretize_identical_values(self):
+        """_discretize should handle all-identical values without crash."""
+        from att.benchmarks.methods import _discretize
+        result = _discretize(np.ones(100), bins=8)
+        assert len(result) == 100
+        # All should map to the same bin
+        assert len(np.unique(result)) == 1
+
+    def test_unknown_normalization_raises(self):
+        """Unknown normalization should raise ValueError."""
+        with pytest.raises(ValueError):
+            CouplingBenchmark(normalization="bad")

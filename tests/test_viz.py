@@ -125,3 +125,57 @@ class TestTransitionTimeline:
         assert isinstance(fig, plt.Figure)
         assert len(fig.axes) == 2
         plt.close(fig)
+
+
+class TestVizEdgeCases:
+    """Tests for untested plotting functions."""
+
+    def test_plot_surrogate_distribution(self):
+        """plot_surrogate_distribution should return a Figure."""
+        from att.viz.plotting import plot_surrogate_distribution
+        import matplotlib.figure
+        surrogates = np.random.default_rng(42).standard_normal(100)
+        fig = plot_surrogate_distribution(observed=5.0, surrogates=surrogates)
+        assert isinstance(fig, matplotlib.figure.Figure)
+        import matplotlib.pyplot as plt
+        plt.close(fig)
+
+    def test_plot_benchmark_sweep(self):
+        """plot_benchmark_sweep should return a Figure."""
+        import pandas as pd
+        from att.viz.plotting import plot_benchmark_sweep
+        import matplotlib.figure
+        df = pd.DataFrame({
+            "coupling": [0.0, 0.1, 0.2, 0.0, 0.1, 0.2],
+            "method": ["binding"] * 3 + ["te"] * 3,
+            "score": [1.0, 2.0, 3.0, 0.5, 1.5, 2.5],
+            "score_normalized": [0.0, 0.5, 1.0, 0.0, 0.5, 1.0],
+        })
+        fig = plot_benchmark_sweep(df)
+        assert isinstance(fig, matplotlib.figure.Figure)
+        import matplotlib.pyplot as plt
+        plt.close(fig)
+
+    def test_plot_surrogate_distribution_with_ax(self):
+        """plot_surrogate_distribution should work with explicit ax."""
+        from att.viz.plotting import plot_surrogate_distribution
+        import matplotlib.pyplot as plt
+        fig, ax = plt.subplots()
+        surrogates = np.random.default_rng(42).standard_normal(50)
+        returned_fig = plot_surrogate_distribution(observed=2.0, surrogates=surrogates, ax=ax)
+        assert returned_fig is fig
+        plt.close(fig)
+
+    def test_plot_benchmark_sweep_raw_score(self):
+        """plot_benchmark_sweep should work without score_normalized column."""
+        import pandas as pd
+        from att.viz.plotting import plot_benchmark_sweep
+        import matplotlib.pyplot as plt
+        df = pd.DataFrame({
+            "coupling": [0.0, 0.1, 0.0, 0.1],
+            "method": ["binding", "binding", "te", "te"],
+            "score": [1.0, 2.0, 0.5, 1.5],
+        })
+        fig = plot_benchmark_sweep(df)
+        assert fig is not None
+        plt.close(fig)

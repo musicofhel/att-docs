@@ -129,3 +129,59 @@ class TestWitnessComplex:
 
         assert len(result["diagrams"][0]) > 0  # H0 features
         assert len(result["diagrams"][1]) > 0  # H1 features
+
+
+class TestTopologyEdgeCases:
+    """Edge-case tests for PersistenceAnalyzer."""
+
+    def test_single_point_cloud(self):
+        """Single-point cloud should produce minimal diagrams."""
+        pa = PersistenceAnalyzer(max_dim=1)
+        cloud = np.array([[1.0, 2.0, 3.0]])
+        result = pa.fit_transform(cloud)
+        # Only H0 can have features (trivially: one component)
+        # H1 should be empty
+        assert len(result["diagrams"]) >= 1
+        if len(result["diagrams"]) > 1:
+            assert len(result["diagrams"][1]) == 0
+
+    def test_two_point_cloud(self):
+        """Two-point cloud should produce H0 merge feature."""
+        pa = PersistenceAnalyzer(max_dim=1)
+        cloud = np.array([[0.0, 0.0], [1.0, 0.0]])
+        result = pa.fit_transform(cloud)
+        # H0: two components merge at distance 1
+        assert len(result["diagrams"][0]) >= 1
+        # H1 should be empty (no loops with 2 points)
+        if len(result["diagrams"]) > 1:
+            assert len(result["diagrams"][1]) == 0
+
+    def test_to_image_explicit_ranges(self):
+        """to_image with custom ranges should produce correct shape."""
+        pa = PersistenceAnalyzer(max_dim=1)
+        rng = np.random.default_rng(42)
+        cloud = rng.standard_normal((200, 3))
+        pa.fit_transform(cloud)
+        images = pa.to_image(
+            resolution=25, sigma=0.05,
+            birth_range=(0, 5), persistence_range=(0, 2)
+        )
+        for img in images:
+            assert img.shape == (25, 25)
+
+    def test_to_image_before_fit_raises(self):
+        """to_image before fit_transform should raise."""
+        pa = PersistenceAnalyzer(max_dim=1)
+        with pytest.raises((RuntimeError, AttributeError)):
+            pa.to_image()
+
+    def test_distance_with_empty_diagrams(self):
+        """Distance between two minimal clouds should be defined."""
+        pa1 = PersistenceAnalyzer(max_dim=1)
+        pa1.fit_transform(np.array([[0.0, 0.0], [1.0, 0.0]]))
+        pa2 = PersistenceAnalyzer(max_dim=1)
+        pa2.fit_transform(np.array([[0.0, 0.0], [2.0, 0.0]]))
+        dist = pa1.distance(pa2, metric="bottleneck")
+        assert isinstance(dist, float)
+        assert np.isfinite(dist)
+        assert dist >= 0

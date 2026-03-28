@@ -49,3 +49,4 @@ docs/_build/
 *.log
 *.out
 *.synctex.gz
+results/
