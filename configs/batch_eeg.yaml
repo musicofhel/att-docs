@@ -1,0 +1,93 @@
+# Batch EEG Analysis Configuration
+# Multi-subject pipeline for Nie/Katyal/Engel (2023) binocular rivalry SSVEP dataset.
+# DOI: 10.13020/9sy5-a716 | 84 subjects, 34-channel EEG, 360 Hz (preprocessed)
+
+seed: 42
+
+dataset:
+  name: nie_rivalry_ssvep
+  source: "https://conservancy.umn.edu/handle/11299/257166"
+  doi: "10.13020/9sy5-a716"
+  sampling_rate: 360        # Hz (preprocessed; raw was 1024 Hz)
+  n_channels: 34            # 10/20 system
+  n_epochs_per_condition: 6 # 6 epochs in riv_12, 6 in riv_13
+  epoch_duration: 120       # seconds per epoch
+  license: "CC BY-NC 3.0 US"
+
+# Which epoch files to process (rivalry conditions)
+epochs:
+  conditions:
+    - suffix: "riv_12"  # paramSet=2 in behavioral data
+      param_set: 2
+    - suffix: "riv_13"  # paramSet=3 in behavioral data
+      param_set: 3
+  # Process only first epoch per condition by default (epoch index 0)
+  epoch_index: 0
+
+# Preprocessing (data is already preprocessed: CSD, ICA, artifact rejection)
+preprocessing:
+  already_preprocessed: true
+  bandpass:
+    low: 4     # Hz (theta)
+    high: 13   # Hz (alpha)
+    order: 4   # Butterworth filter order
+
+# Channel selection
+channels:
+  # Primary channel for transition detection
+  transition_channel: "Oz"
+  # Channel pair for binding analysis
+  binding_pair: ["Oz", "Pz"]
+  # All available channels (34-ch 10/20)
+  all: ["Fp1", "Fpz", "Fp2", "F7", "F3", "Fz", "F4", "F8",
+        "FC5", "FC1", "FC2", "FC6", "T7", "C3", "Cz", "C4", "T8",
+        "CP5", "CP1", "CP2", "CP6", "P7", "P3", "Pz", "P4", "P8",
+        "POz", "O1", "Oz", "O2", "PO3", "PO4", "PO7", "PO8"]
+
+# Takens embedding parameters
+embedding:
+  strategy: "auto_with_fallback"  # try auto, fall back to literature params
+  fallback_band: "theta_alpha"    # fallback band for get_fallback_params()
+  condition_threshold: 1.0e4      # condition number threshold for degeneracy
+
+# Transition detection (TransitionDetector)
+transition_detection:
+  window_size: 500      # points per window (~1.4s at 360 Hz)
+  step_size: 200        # step between windows (~0.56s)
+  max_dim: 1            # H0 + H1
+  backend: "ripser"
+  subsample: 300        # points subsampled per window for Ripser
+  changepoint_method: "cusum"
+  changepoint_threshold: null  # null = auto (mean + 2*std)
+
+# Behavioral switch extraction
+behavioral:
+  # Key codes: 1=tilt left, 2=tilt right, 3=mixed
+  switch_definition: "any_change"  # any change in responseKey counts as switch
+
+# Precision/recall evaluation
+evaluation:
+  tolerance_seconds: [3.0, 5.0]  # tolerance windows for matching CPs to switches
+
+# Binding analysis (BindingDetector)
+binding:
+  enabled: true           # set false or use --skip-binding to skip
+  max_dim: 1
+  baseline: "max"         # "max" (conservative) or "sum" (sensitive)
+  image_resolution: 50
+  image_sigma: 0.1
+  subsample: 400          # points subsampled per cloud for Ripser
+  # Shared embedding params for marginal/joint comparability
+  shared_dimension: 5     # cap marginal dimension
+  # Sliding window parameters
+  window_seconds: 10      # seconds per binding window
+  step_seconds: 5         # seconds between binding windows
+  # Correlation with switch density
+  correlation_method: "spearman"
+
+# Output
+output:
+  per_subject_json: true    # save individual JSON per subject
+  summary_csv: true         # save aggregated summary CSV
+  summary_filename: "batch_eeg_summary.csv"
+  log_filename: "batch_eeg.log"

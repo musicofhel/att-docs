@@ -61,6 +61,11 @@ demo = [
 benchmarks = [
     "pyinform>=0.2",
 ]
+docs = [
+    "sphinx>=7.0",
+    "furo>=2024.1",
+    "sphinx-autodoc-typehints>=2.0",
+]
 dev = [
     "pytest>=7.0",
     "pytest-cov>=4.0",
@@ -73,7 +78,7 @@ dev = [
     "pyinform>=0.2",
 ]
 all = [
-    "att-toolkit[eeg,gudhi,plotly,demo,benchmarks]",
+    "att-toolkit[eeg,gudhi,plotly,demo,benchmarks,docs]",
 ]
 
 [project.scripts]

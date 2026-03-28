@@ -1,40 +1,21 @@
 # Attractor Topology Toolkit (ATT)
 
-**Topological analysis of dynamical attractors in neural and artificial systems.**
+[![PyPI version](https://img.shields.io/pypi/v/att-toolkit)](https://pypi.org/project/att-toolkit/)
+[![Python 3.10+](https://img.shields.io/pypi/pyversions/att-toolkit)](https://pypi.org/project/att-toolkit/)
+[![License: MIT](https://img.shields.io/badge/license-MIT-blue.svg)](./LICENSE)
+[![CI](https://github.com/musicofhel/att-docs/actions/workflows/ci.yml/badge.svg)](https://github.com/musicofhel/att-docs/actions/workflows/ci.yml)
 
-ATT is a Python library that extracts, compares, and visualizes the topological structure of chaotic attractors from multivariate time series. It introduces **joint-vs-marginal persistent homology on Takens-embedded coupled systems** -- a construction that isolates emergent coupling topology by comparing persistence diagrams of joint delay embeddings against their marginal counterparts. ATT provides clean infrastructure for attractor reconstruction, persistent homology, cross-system binding detection, surrogate-tested statistics, and head-to-head benchmarks against transfer entropy, phase-amplitude coupling, and cross-recurrence quantification.
+**Joint-vs-marginal persistent homology on Takens embeddings for coupling detection in dynamical systems.**
 
-## Installation
+<!-- TODO: Add animated GIF demo here (e.g. binding detection sweep on coupled Lorenz) -->
 
 ```bash
 pip install att-toolkit
 ```
 
-For EEG/MEG data support (requires MNE-Python):
+---
 
-```bash
-pip install att-toolkit[eeg]
-```
-
-For the GUDHI backend (alpha/witness complexes):
-
-```bash
-pip install att-toolkit[gudhi]
-```
-
-For all optional dependencies:
-
-```bash
-pip install att-toolkit[all]
-```
-
-From source:
-
-```bash
-git clone https://github.com/musicofhel/attractor-topology-toolkit.git
-cd attractor-topology-toolkit
-pip install -e ".[dev]"
-```
+ATT extracts, compares, and visualizes the topological structure of chaotic attractors from multivariate time series. Its core construction -- **joint-vs-marginal persistent homology on Takens-embedded coupled systems** -- isolates emergent coupling topology by comparing persistence diagrams of joint delay embeddings against their marginal counterparts. The library provides clean infrastructure for attractor reconstruction, persistent homology, cross-system binding detection, surrogate-tested statistics, and head-to-head benchmarks against transfer entropy, phase-amplitude coupling, and cross-recurrence quantification.
 
 ## Quick Start
 
@@ -86,7 +67,27 @@ print(f"Significant: {detector.test_significance(n_surrogates=100)}")
 
 ```bash
 # Run a coupling sweep from a YAML config
-att benchmark run --config configs/coupled_lorenz_sweep.yaml --output results/sweep.csv --plot results/sweep.png
+att benchmark run \
+  --config configs/coupled_lorenz_sweep.yaml \
+  --output results/sweep.csv \
+  --plot results/sweep.png
+```
+
+## Installation
+
+```bash
+pip install att-toolkit           # core
+pip install att-toolkit[eeg]      # + MNE-Python for EEG/MEG
+pip install att-toolkit[gudhi]    # + GUDHI backend (alpha/witness complexes)
+pip install att-toolkit[all]      # everything
+```
+
+From source:
+
+```bash
+git clone https://github.com/musicofhel/att-docs.git
+cd att-docs
+pip install -e ".[dev]"
 ```
 
 ## API Overview
@@ -117,26 +118,28 @@ ATT sits at the intersection of several existing research threads, none of which
 | Giusti, Curto et al. | PH on neural correlation matrices | PH on time-evolving attractor dynamics |
 | Sliding-window PH (Perea, Harer) | Topological time series analysis | Applied to bistable perception EEG (novel niche) |
 
+## Documentation
+
+See [`docs/`](./docs/) for Sphinx API reference and quickstart tutorial.
+
+<!-- TODO: Link to hosted docs once published -->
+<!-- TODO: Link to blog post -->
+
 ## Citation
 
 If you use ATT in your research, please cite:
 
 ```bibtex
 @software{att2026,
-  title = {Attractor Topology Toolkit: Joint-vs-Marginal Persistent Homology on Takens Embeddings},
-  author = {{ATT Contributors}},
-  year = {2026},
-  url = {https://github.com/musicofhel/attractor-topology-toolkit},
+  title   = {Attractor Topology Toolkit: Joint-vs-Marginal Persistent
+             Homology on Takens Embeddings},
+  author  = {{ATT Contributors}},
+  year    = {2026},
+  url     = {https://github.com/musicofhel/att-docs},
 }
 ```
 
-## Documentation
-
-- [ARCHITECTURE.md](./docs/ARCHITECTURE.md) -- System design, module contracts, data flow
-- [ROADMAP.md](./docs/ROADMAP.md) -- Scope, sequence, completion criteria
-- [RESEARCH.md](./docs/RESEARCH.md) -- Theoretical foundations, novelty analysis, literature map
-- [API.md](./docs/API.md) -- Library API reference
-- [DATA.md](./docs/DATA.md) -- Dataset guide, download instructions, preprocessing
+<!-- TODO: Replace with preprint citation once posted to arXiv -->
 
 ## License
 

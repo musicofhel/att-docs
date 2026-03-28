@@ -29,7 +29,7 @@
 We introduce a method for detecting emergent topological structure in coupled dynamical systems using persistent homology on delay embeddings.
 Given two coupled time series, we construct Takens delay embeddings of each marginal system and of the joint system, compute persistence images on all three point clouds using a shared grid, and identify excess homology in the joint embedding that is absent from both marginals.
 This \emph{topological binding score} quantifies coupling-induced geometric structure that information-theoretic and recurrence-based measures cannot capture.
-We validate the method on coupled Lorenz and R\"ossler--Lorenz systems, demonstrating: (i) a coupling-dependent binding response that rises from baseline at low coupling and collapses at synchronization; (ii) surrogate-tested significance with controlled false positive rates; (iii) robustness to heterogeneous intrinsic timescales via per-channel delay estimation; (iv) greater sensitivity to coupling than transfer entropy, phase-amplitude coupling, and cross-recurrence quantification in a head-to-head benchmark; (v) sliding-window topological transition detection on synthetic bistable EEG, identifying regime changes between oscillatory states; and (vi) real EEG validation on binocular rivalry SSVEP data \citep{nie2023accumulating}, where the detector achieves 100\% precision (zero false alarms) and captures major perceptual switches as topological reorganizations.
+We validate the method on coupled Lorenz and R\"ossler--Lorenz systems, demonstrating: (i) a coupling-dependent binding response that rises from baseline at low coupling and collapses at synchronization; (ii) surrogate-tested significance with controlled false positive rates; (iii) robustness to heterogeneous intrinsic timescales via per-channel delay estimation; (iv) greater sensitivity to coupling than transfer entropy, phase-amplitude coupling, and cross-recurrence quantification in a head-to-head benchmark; (v) sliding-window topological transition detection on synthetic bistable EEG, identifying regime changes between oscillatory states; (vi) real EEG validation on binocular rivalry SSVEP data \citep{nie2023accumulating}, where the detector achieves 100\% precision (zero false alarms) and captures major perceptual switches as topological reorganizations; and (vii) cross-region binding analysis on occipital--parietal EEG channels, where joint topology of Oz--Pz embeddings reveals coupling that modulates with perceptual instability (Spearman $\rho = 0.51$, $p = 0.016$ between binding and switch density).
 The method is implemented in the open-source \texttt{att-toolkit} Python package.
 \end{abstract}
 
@@ -56,6 +56,7 @@ The key technical contributions are:
     \item \textbf{Head-to-head benchmarks}: The first published comparison of a TDA-based coupling measure against TE, PAC, and CRQA on identical coupled chaotic systems with explicit normalization (Section~\ref{sec:exp-benchmarks}).
     \item \textbf{Sliding-window transition detection}: A method for detecting topological regime changes in time series via persistence image distances and CUSUM changepoint detection (Section~\ref{sec:res-transitions}).
     \item \textbf{Real EEG validation}: The first application of sliding-window persistent homology to real binocular rivalry EEG, demonstrating 100\% precision in detecting perceptual switches as topological changepoints (Section~\ref{sec:res-real-eeg}).
+    \item \textbf{Cross-region binding}: The first application of joint-vs-marginal persistent homology to multi-channel EEG, quantifying occipital--parietal topological coupling and its modulation by perceptual instability (Section~\ref{sec:res-cross-binding}).
 \end{enumerate}
 
 
@@ -275,6 +276,19 @@ Forward CUSUM changepoint detection is applied to the L2 persistence image dista
 
 \textbf{Figure 7}: Real EEG signal (Oz, theta--alpha filtered), persistence image distances with CUSUM changepoints, behavioral switch markers, and $H_1$ persistence entropy.
 
+\subsection{Experiment 8: Cross-Region Oz--Pz Binding}\label{sec:exp-cross-binding}
+
+While Experiments 6--7 analyze single-channel topology over time, this experiment returns to the core binding detection framework (Experiments 1--5) and applies it to real multi-channel EEG.
+We compute the topological binding score between two spatially separated electrode sites during binocular rivalry, testing whether joint occipital--parietal topology captures inter-region coupling that modulates with perceptual state.
+
+We analyze Subject~1, Epoch~0 from the \citet{nie2023accumulating} dataset, using channels Oz (occipital midline) and Pz (parietal midline), bandpass-filtered to 4--13\,Hz.
+The \texttt{BindingDetector} is configured with per-channel delay estimation (delay $\tau = 12$, embedding dimension $m = 5$), and applied in a sliding-window fashion: 10\,s windows with 5\,s step, yielding 23 overlapping windows across the 120\,s epoch.
+Within each window, the binding score quantifies topological structure present in the joint Oz--Pz embedding but absent from either marginal embedding.
+
+\textbf{Expected result}: Binding should vary over time, with elevated scores during periods of perceptual instability (frequent switching) and reduced scores during stable percepts, consistent with the hypothesis that inter-region topological coupling reflects the coordination demands of perceptual reorganization.
+
+\textbf{Figure 8}: Sliding-window Oz--Pz binding score, per-dimension ($H_0$, $H_1$) breakdown, switch density overlay, and binding--switch correlation.
+
 
 \section{Results}
 
@@ -457,6 +471,31 @@ Entropy increases during periods of rapid alternation and stabilizes during sust
 
 These results demonstrate that the ATT sliding-window pipeline generalizes from synthetic to real EEG without algorithmic modification, and that topological changepoint detection provides a high-precision, zero-false-alarm detector for neural regime transitions during bistable perception.
 
+\subsection{Experiment 8: Cross-Region Oz--Pz Binding}\label{sec:res-cross-binding}
+
+\begin{figure}[t]
+    \centering
+    \includegraphics[width=\textwidth]{../figures/fig8_eeg_binding.pdf}
+    \caption{Cross-region topological binding between Oz and Pz during binocular rivalry (Subject~1, Epoch~0, 4--13\,Hz). Sliding-window binding scores (10\,s windows, 5\,s step) with per-dimension breakdown ($H_0$: component merging/splitting; $H_1$: loops), perceptual switch density overlay, and binding--switch correlation. Binding ranges from 5.1 to 34.1 (6.7$\times$ variation), with Spearman $\rho = 0.51$ ($p = 0.016$) between binding and switch count per window.}
+    \label{fig:cross-binding}
+\end{figure}
+
+Figure~\ref{fig:cross-binding} shows the sliding-window binding score between Oz and Pz across the 120\,s binocular rivalry epoch.
+The binding score exhibits substantial temporal variation, ranging from 5.1 to 34.1 (a 6.7$\times$ ratio between minimum and maximum), demonstrating that occipital--parietal topological coupling is dynamic rather than static.
+
+The binding score correlates positively with perceptual instability: Spearman $\rho = 0.51$ ($p = 0.016$) between binding and the number of perceptual switches per window.
+Windows during high-activity periods (top tercile by switch count) show a mean binding score of 24.5, compared to 11.0 during low-activity periods (bottom tercile), a 2.2$\times$ difference that is statistically significant (Mann--Whitney $U$ test, $p = 0.0014$).
+Additionally, windows adjacent to CUSUM-detected changepoints (from Experiment~7) show significantly elevated binding compared to other windows ($p = 0.042$, Mann--Whitney $U$), confirming that topological regime transitions in the single-channel Oz signal coincide with elevated inter-region coupling.
+
+The per-dimension breakdown reveals that $H_0$ (connected components) dominates the binding signal, consistent with the coupled Lorenz results (Experiment~1).
+$H_0$ binding reflects the merging and splitting of connected components in the joint Oz--Pz point cloud that are absent from either marginal cloud --- i.e., the joint attractor has connectivity structure that neither channel's attractor possesses alone.
+$H_1$ (loops) contributes a smaller but nonzero component, indicating that some coupling-induced loop structure emerges in the joint embedding.
+
+These results establish three points.
+First, the binding detection framework (Sections~\ref{sec:method}--\ref{sec:binding}), validated on synthetic coupled chaotic systems in Experiments~1--5, generalizes to real multi-channel neural data without modification.
+Second, occipital--parietal topological coupling is not constant but modulates with perceptual state, rising during periods of frequent switching and declining during stable percepts.
+Third, the joint topology captures coupling structure absent from either marginal: neither the Oz nor the Pz channel alone contains the topological features detected in the joint embedding, confirming that this is genuine inter-region binding rather than an artifact of single-channel complexity.
+
 
 \section{Discussion}
 
@@ -467,6 +506,7 @@ To our knowledge, this is the first method that:
     \item Detects coupling between dynamical systems by comparing persistent homology of joint vs.\ marginal Takens embeddings.
     \item Provides a head-to-head comparison of a TDA-based coupling measure against TE, PAC, and CRQA on identical coupled chaotic systems.
     \item Addresses the heterogeneous timescale problem in joint delay embeddings via per-channel parameter estimation with automated quality gating.
+    \item Applies joint-vs-marginal persistent homology to multi-channel EEG, demonstrating that inter-region topological coupling modulates with perceptual state during binocular rivalry.
 \end{enumerate}
 
 \subsection{Limitations}
@@ -479,8 +519,8 @@ GPU-accelerated Ripser (Ripser++) and witness complexes could extend the method 
 We provide both and recommend max for confirmatory analysis, but a theoretically optimal baseline (the persistence image of the product complex) remains computationally intractable.
 
 \textbf{Preliminary real-data validation}: The binding detection experiments (1--5) use coupled chaotic systems with known ground truth.
-The transition detection pipeline is validated on both synthetic bistable EEG (Experiment~6) and real binocular rivalry EEG from a single subject (Experiment~7).
-While the $N = 1$ real-data validation demonstrates feasibility and high precision, multi-subject analysis is required to establish generalizability across individuals, electrode montages, and rivalry paradigms.
+The transition detection pipeline is validated on both synthetic bistable EEG (Experiment~6) and real binocular rivalry EEG from a single subject (Experiment~7), and cross-region binding is validated on the same subject's Oz--Pz channels (Experiment~8).
+While the $N = 1$ real-data validation demonstrates feasibility and significant correlations with behavior, multi-subject analysis is required to establish generalizability across individuals, electrode montages, and rivalry paradigms.
 
 \textbf{Parameter sensitivity}: The binding score depends on embedding parameters ($\tau$, $m$), persistence image resolution and bandwidth ($\sigma$), and subsampling.
 The quality gate catches gross failures but does not optimize these parameters.
@@ -488,7 +528,7 @@ The quality gate catches gross failures but does not optimize these parameters.
 \subsection{Future Directions}
 
 \begin{itemize}
-    \item \textbf{Multi-subject neural validation}: The $N = 1$ real EEG validation (Experiment~7) demonstrates feasibility on the \citet{nie2023accumulating} dataset. The full dataset comprises 84 subjects with multiple rivalry epochs each, enabling systematic analysis of precision--recall tradeoffs across subjects, electrode sites, and CUSUM threshold settings. Cross-region binding detection during stable percepts vs.\ transition periods is a natural extension.
+    \item \textbf{Multi-subject neural validation}: The $N = 1$ real EEG validation (Experiments~7--8) demonstrates feasibility on the \citet{nie2023accumulating} dataset. The full dataset comprises 84 subjects with multiple rivalry epochs each, enabling systematic analysis of precision--recall tradeoffs across subjects, electrode sites, and CUSUM threshold settings. Extending the cross-region binding analysis (Experiment~8) to all electrode pairs would yield a full topological connectivity matrix, complementing functional connectivity measures based on coherence or Granger causality.
     \item \textbf{R-Cross-Barcodes}: The R-Cross-Barcode construction provides a theoretically cleaner way to identify features present in one filtration but absent from another. Extending this from graphs to Vietoris--Rips complexes on point clouds would provide a stronger theoretical foundation.
     \item \textbf{Diagram matching}: Hungarian algorithm matching between joint and marginal persistence diagrams as an alternative to image subtraction.
     \item \textbf{Multi-system binding}: Extension to $N > 2$ coupled systems, detecting higher-order interactions.
