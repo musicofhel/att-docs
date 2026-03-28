@@ -21,8 +21,6 @@ from matplotlib.gridspec import GridSpec
 
 from att.config import set_seed
 from att.synthetic import lorenz_system, coupled_rossler_lorenz
-from att.embedding import TakensEmbedder, JointEmbedder
-from att.topology import PersistenceAnalyzer
 from att.binding import BindingDetector
 
 
