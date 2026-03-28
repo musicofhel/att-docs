@@ -430,3 +430,65 @@ class TestBindingEdgeCases:
         assert isinstance(fig, matplotlib.figure.Figure)
         import matplotlib.pyplot as plt
         plt.close(fig)
+
+    def test_ensemble_binding(self, coupled_pair):
+        """Ensemble binding with n_ensemble > 1 returns mean of K scores."""
+        det = BindingDetector(max_dim=1)
+        det.fit(*coupled_pair, subsample=300, seed=42, n_ensemble=3)
+        score = det.binding_score()
+        assert isinstance(score, float)
+        assert np.isfinite(score)
+        assert det.ensemble_scores is not None
+        assert len(det.ensemble_scores) == 3
+        assert abs(score - float(np.mean(det.ensemble_scores))) < 1e-10
+
+    def test_ensemble_no_subsample_skips(self):
+        """Ensemble requires subsample; without it, ensemble_scores is None."""
+        # Use small data — subsample=None runs ripser on the full cloud,
+        # so we need n < 1000 embedded points to avoid a hang.
+        ts_x, ts_y = coupled_lorenz(n_steps=1500, coupling=0.3, seed=42)
+        x, y = ts_x[500:, 0], ts_y[500:, 0]
+        det = BindingDetector(max_dim=1)
+        det.fit(x, y, subsample=None, seed=42, n_ensemble=5)
+        assert det.ensemble_scores is None
+
+    def test_confidence_interval_requires_ensemble(self, coupled_pair):
+        """confidence_interval() returns None without ensemble."""
+        det = BindingDetector(max_dim=1)
+        det.fit(*coupled_pair, subsample=300, seed=42)
+        assert det.confidence_interval() is None
+
+    def test_confidence_interval_with_ensemble(self, coupled_pair):
+        """confidence_interval() returns (lo, hi) with ensemble."""
+        det = BindingDetector(max_dim=1)
+        det.fit(*coupled_pair, subsample=300, seed=42, n_ensemble=5)
+        ci = det.confidence_interval()
+        assert ci is not None
+        lo, hi = ci
+        assert lo < hi
+
+    def test_zscore_in_significance_result(self, coupled_pair):
+        """test_significance() returns z_score and calibrated_score."""
+        det = BindingDetector(max_dim=1)
+        det.fit(*coupled_pair, subsample=300, seed=42)
+        result = det.test_significance(n_surrogates=3, seed=42, subsample=300)
+        assert "z_score" in result
+        assert "calibrated_score" in result
+        assert "surrogate_mean" in result
+        assert "surrogate_std" in result
+        assert isinstance(result["z_score"], float)
+        assert isinstance(result["calibrated_score"], float)
+
+    def test_cached_params_used_in_surrogates(self, coupled_pair):
+        """After fit(), surrogate computation reuses embedding params."""
+        det = BindingDetector(max_dim=1)
+        det.fit(*coupled_pair, subsample=300, seed=42)
+        # Verify params were cached
+        assert det._marginal_delay_x is not None
+        assert det._marginal_dim_x is not None
+        assert det._marginal_delay_y is not None
+        assert det._marginal_dim_y is not None
+        assert det._joint_delays is not None
+        assert det._joint_dims is not None
+        assert len(det._joint_delays) == 2
+        assert len(det._joint_dims) == 2

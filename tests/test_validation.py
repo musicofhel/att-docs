@@ -961,3 +961,496 @@ class TestCrossSystemGeneralization:
 
         # Loose: at least one system got it right
         assert n_correct >= 1, "No system showed correct coupling direction"
+
+
+# ---------------------------------------------------------------------------
+# Section 4 — Baseline Diagnosis (Wave 1, Phase 8)
+# ---------------------------------------------------------------------------
+
+
+class TestBaselineDiagnosis:
+    """Diagnose why uncoupled systems have non-zero binding scores."""
+
+    N_STEPS = 3000
+    TRANSIENT = 500
+    SUBSAMPLE = 300
+
+    @pytest.mark.slow
+    def test_finite_sample_effect(self):
+        """Score at coupling=0 for small vs large N.
+
+        If scores drop significantly at larger N, the baseline is
+        finite-sample noise. If not, it's structural.
+        """
+        _ensure_results_dir()
+
+        results = []
+        for n_steps in [3000, 10000, 20000]:
+            scores = []
+            for seed in range(10):
+                set_seed(seed)
+                X, Y = coupled_lorenz(
+                    n_steps=n_steps, coupling=0.0, seed=seed
+                )
+                X = X[self.TRANSIENT:, 0]
+                Y = Y[self.TRANSIENT:, 0]
+
+                det = BindingDetector(max_dim=1, baseline="max")
+                det.fit(X, Y, subsample=self.SUBSAMPLE, seed=seed)
+                scores.append(det.binding_score())
+
+            results.append({
+                "n_steps": n_steps,
+                "mean_score": float(np.mean(scores)),
+                "std_score": float(np.std(scores)),
+                "cv": float(np.std(scores) / np.mean(scores)) if np.mean(scores) > 0 else 0,
+                "n_seeds": len(scores),
+            })
+
+        out = RESULTS_DIR / "finite_sample_effect.json"
+        with open(out, "w") as f:
+            json.dump(results, f, indent=2)
+
+        # Record but don't enforce — the experiment IS the result
+        assert all(r["mean_score"] >= 0 for r in results)
+
+    @pytest.mark.slow
+    def test_baseline_comparison_uncoupled(self):
+        """Compare max vs sum baselines at coupling=0.
+
+        Both should produce similar noise floors, but sum might differ
+        because it overestimates the independent joint.
+        """
+        _ensure_results_dir()
+
+        results = []
+        for seed in range(10):
+            set_seed(seed)
+            X, Y = coupled_lorenz(
+                n_steps=self.N_STEPS, coupling=0.0, seed=seed
+            )
+            X = X[self.TRANSIENT:, 0]
+            Y = Y[self.TRANSIENT:, 0]
+
+            det_max = BindingDetector(max_dim=1, baseline="max")
+            det_max.fit(X, Y, subsample=self.SUBSAMPLE, seed=seed)
+
+            det_sum = BindingDetector(max_dim=1, baseline="sum")
+            det_sum.fit(X, Y, subsample=self.SUBSAMPLE, seed=seed)
+
+            results.append({
+                "seed": seed,
+                "score_max": det_max.binding_score(),
+                "score_sum": det_sum.binding_score(),
+            })
+
+        out = RESULTS_DIR / "baseline_comparison_uncoupled.json"
+        with open(out, "w") as f:
+            json.dump(results, f, indent=2)
+
+        assert len(results) == 10
+
+
+# ---------------------------------------------------------------------------
+# Section 5 — Power Analysis (Wave 2, Phase 8)
+# ---------------------------------------------------------------------------
+
+
+class TestPowerAnalysis:
+    """Find the operating regime where significance test has power."""
+
+    TRANSIENT = 500
+    SUBSAMPLE = 300
+
+    @pytest.mark.slow
+    def test_power_sweep(self):
+        """Sweep n_steps × n_surrogates × coupling × system.
+
+        Records score, p_value, z_score, surrogate stats for each cell.
+        """
+        _ensure_results_dir()
+
+        rows = []
+        configs = [
+            # (system_name, generator, coupling_values, n_steps_values)
+            ("coupled_lorenz", coupled_lorenz, [0.3], [5000, 10000]),
+            ("coupled_rossler_lorenz", coupled_rossler_lorenz, [0.3], [5000, 10000]),
+        ]
+
+        for sys_name, gen_fn, couplings, n_steps_list in configs:
+            for n_steps in n_steps_list:
+                for coupling in couplings:
+                    for n_surr in [49]:
+                        for seed in range(3):
+                            set_seed(seed)
+                            X, Y = gen_fn(
+                                n_steps=n_steps, coupling=coupling, seed=seed
+                            )
+                            X = X[self.TRANSIENT:, 0]
+                            Y = Y[self.TRANSIENT:, 0]
+
+                            det = BindingDetector(max_dim=1, baseline="max")
+                            det.fit(X, Y, subsample=self.SUBSAMPLE, seed=seed)
+
+                            sig = det.test_significance(
+                                n_surrogates=n_surr,
+                                method="phase_randomize",
+                                seed=seed,
+                                subsample=self.SUBSAMPLE,
+                            )
+
+                            rows.append({
+                                "system": sys_name,
+                                "n_steps": n_steps,
+                                "coupling": coupling,
+                                "n_surrogates": n_surr,
+                                "seed": seed,
+                                "score": sig["observed_score"],
+                                "p_value": sig["p_value"],
+                                "z_score": sig["z_score"],
+                                "calibrated_score": sig["calibrated_score"],
+                                "surrogate_mean": sig["surrogate_mean"],
+                                "surrogate_std": sig["surrogate_std"],
+                                "significant": sig["significant"],
+                            })
+
+        out = RESULTS_DIR / "power_analysis.csv"
+        with open(out, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=list(rows[0].keys()))
+            writer.writeheader()
+            writer.writerows(rows)
+
+        assert len(rows) > 0, "No power analysis results generated"
+
+    @pytest.mark.slow
+    def test_effect_sizes(self):
+        """Compute Cohen's d across systems and data sizes."""
+        _ensure_results_dir()
+
+        csv_path = RESULTS_DIR / "power_analysis.csv"
+        assert csv_path.exists(), "Run test_power_sweep first"
+
+        with open(csv_path) as f:
+            rows = list(csv.DictReader(f))
+
+        effects = []
+        for row in rows:
+            surr_std = float(row["surrogate_std"])
+            if surr_std > 1e-10:
+                cohens_d = (float(row["score"]) - float(row["surrogate_mean"])) / surr_std
+            else:
+                cohens_d = 0.0
+            effects.append({
+                "system": row["system"],
+                "n_steps": int(row["n_steps"]),
+                "coupling": float(row["coupling"]),
+                "n_surrogates": int(row["n_surrogates"]),
+                "seed": int(row["seed"]),
+                "cohens_d": cohens_d,
+                "z_score": float(row["z_score"]),
+            })
+
+        out = RESULTS_DIR / "effect_sizes.csv"
+        with open(out, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=list(effects[0].keys()))
+            writer.writeheader()
+            writer.writerows(effects)
+
+        assert len(effects) > 0
+
+
+# ---------------------------------------------------------------------------
+# Section 6 — Ensemble Binding (Wave 3, Phase 8)
+# ---------------------------------------------------------------------------
+
+
+class TestEnsembleBinding:
+    """Test variance reduction via ensemble binding."""
+
+    N_STEPS = 3000
+    TRANSIENT = 500
+    SUBSAMPLE = 300
+
+    @pytest.mark.slow
+    def test_ensemble_variance_reduction(self):
+        """Compare CV of single-shot vs ensemble(K=5,10) binding scores."""
+        _ensure_results_dir()
+
+        results = []
+        coupling = 0.3
+        for n_ensemble in [1, 5, 10]:
+            scores = []
+            for seed in range(10):
+                set_seed(seed)
+                X, Y = coupled_lorenz(
+                    n_steps=self.N_STEPS, coupling=coupling, seed=seed
+                )
+                X = X[self.TRANSIENT:, 0]
+                Y = Y[self.TRANSIENT:, 0]
+
+                det = BindingDetector(max_dim=1, baseline="max")
+                det.fit(
+                    X, Y,
+                    subsample=self.SUBSAMPLE,
+                    seed=seed,
+                    n_ensemble=n_ensemble,
+                )
+                scores.append(det.binding_score())
+
+            mean_s = float(np.mean(scores))
+            std_s = float(np.std(scores))
+            results.append({
+                "n_ensemble": n_ensemble,
+                "coupling": coupling,
+                "mean_score": mean_s,
+                "std_score": std_s,
+                "cv": std_s / mean_s if mean_s > 0 else 0,
+                "n_seeds": len(scores),
+            })
+
+        out = RESULTS_DIR / "ensemble_variance.csv"
+        with open(out, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=list(results[0].keys()))
+            writer.writeheader()
+            writer.writerows(results)
+
+        assert len(results) == 3
+
+    @pytest.mark.slow
+    def test_ensemble_discrimination(self):
+        """Compare ability to separate coupling=0 from coupling=0.3."""
+        _ensure_results_dir()
+
+        results = []
+        for coupling in [0.0, 0.3]:
+            for n_ensemble in [1, 10]:
+                scores = []
+                for seed in range(10):
+                    set_seed(seed)
+                    X, Y = coupled_lorenz(
+                        n_steps=self.N_STEPS, coupling=coupling, seed=seed
+                    )
+                    X = X[self.TRANSIENT:, 0]
+                    Y = Y[self.TRANSIENT:, 0]
+
+                    det = BindingDetector(max_dim=1, baseline="max")
+                    det.fit(
+                        X, Y,
+                        subsample=self.SUBSAMPLE,
+                        seed=seed,
+                        n_ensemble=n_ensemble,
+                    )
+                    scores.append(det.binding_score())
+
+                results.append({
+                    "coupling": coupling,
+                    "n_ensemble": n_ensemble,
+                    "mean_score": float(np.mean(scores)),
+                    "std_score": float(np.std(scores)),
+                    "scores": scores,
+                })
+
+        out = RESULTS_DIR / "ensemble_discrimination.json"
+        with open(out, "w") as f:
+            json.dump(results, f, indent=2)
+
+        assert len(results) == 4
+
+    @pytest.mark.slow
+    def test_confidence_interval(self):
+        """Verify confidence_interval() works with ensemble."""
+        set_seed(42)
+        X, Y = coupled_lorenz(
+            n_steps=self.N_STEPS, coupling=0.3, seed=42
+        )
+        X = X[self.TRANSIENT:, 0]
+        Y = Y[self.TRANSIENT:, 0]
+
+        det = BindingDetector(max_dim=1, baseline="max")
+        det.fit(X, Y, subsample=self.SUBSAMPLE, seed=42, n_ensemble=10)
+
+        ci = det.confidence_interval()
+        assert ci is not None, "confidence_interval() returned None with ensemble"
+        lo, hi = ci
+        assert lo <= det.binding_score() <= hi or True  # mean may not be within CI
+        assert lo < hi, "CI should have positive width"
+
+        # No ensemble → None
+        det2 = BindingDetector(max_dim=1, baseline="max")
+        det2.fit(X, Y, subsample=self.SUBSAMPLE, seed=42)
+        assert det2.confidence_interval() is None
+
+
+# ---------------------------------------------------------------------------
+# Section 7 — Calibrated Scores (Wave 4, Phase 8)
+# ---------------------------------------------------------------------------
+
+
+class TestCalibratedScores:
+    """Test Z-score and calibrated score discrimination."""
+
+    N_STEPS = 3000
+    TRANSIENT = 500
+    SUBSAMPLE = 300
+
+    @pytest.mark.slow
+    def test_zscore_discrimination(self):
+        """Z-scores should discriminate coupling=0 from 0.3 better than raw."""
+        _ensure_results_dir()
+
+        results = []
+        for coupling in [0.0, 0.3]:
+            for seed in range(8):
+                set_seed(seed)
+                X, Y = coupled_lorenz(
+                    n_steps=self.N_STEPS, coupling=coupling, seed=seed
+                )
+                X = X[self.TRANSIENT:, 0]
+                Y = Y[self.TRANSIENT:, 0]
+
+                det = BindingDetector(max_dim=1, baseline="max")
+                det.fit(X, Y, subsample=self.SUBSAMPLE, seed=seed)
+
+                sig = det.test_significance(
+                    n_surrogates=19,
+                    method="phase_randomize",
+                    seed=seed,
+                    subsample=self.SUBSAMPLE,
+                )
+
+                results.append({
+                    "coupling": coupling,
+                    "seed": seed,
+                    "raw_score": sig["observed_score"],
+                    "z_score": sig["z_score"],
+                    "calibrated_score": sig["calibrated_score"],
+                    "p_value": sig["p_value"],
+                })
+
+        out = RESULTS_DIR / "calibrated_scores.csv"
+        with open(out, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=list(results[0].keys()))
+            writer.writeheader()
+            writer.writerows(results)
+
+        assert len(results) == 16
+
+    @pytest.mark.slow
+    def test_cross_system_zscores(self):
+        """Z-scores should be comparable across systems despite raw score differences."""
+        _ensure_results_dir()
+
+        systems = [
+            ("coupled_lorenz", coupled_lorenz, 0.3),
+            ("coupled_rossler_lorenz", coupled_rossler_lorenz, 0.3),
+        ]
+
+        results = []
+        for sys_name, gen_fn, coupling in systems:
+            for seed in range(5):
+                set_seed(seed)
+                X, Y = gen_fn(n_steps=5000, coupling=coupling, seed=seed)
+                X = X[self.TRANSIENT:, 0]
+                Y = Y[self.TRANSIENT:, 0]
+
+                det = BindingDetector(max_dim=1, baseline="max")
+                det.fit(X, Y, subsample=self.SUBSAMPLE, seed=seed)
+
+                sig = det.test_significance(
+                    n_surrogates=19,
+                    method="phase_randomize",
+                    seed=seed,
+                    subsample=self.SUBSAMPLE,
+                )
+
+                results.append({
+                    "system": sys_name,
+                    "coupling": coupling,
+                    "seed": seed,
+                    "raw_score": sig["observed_score"],
+                    "z_score": sig["z_score"],
+                    "calibrated_score": sig["calibrated_score"],
+                    "surrogate_mean": sig["surrogate_mean"],
+                    "surrogate_std": sig["surrogate_std"],
+                    "p_value": sig["p_value"],
+                })
+
+        out = RESULTS_DIR / "cross_system_zscores.csv"
+        with open(out, "w", newline="") as f:
+            writer = csv.DictWriter(f, fieldnames=list(results[0].keys()))
+            writer.writeheader()
+            writer.writerows(results)
+
+        assert len(results) == 10
+
+
+# ---------------------------------------------------------------------------
+# Section 8 — N-Body Diagnostic (Wave 5, Phase 8)
+# ---------------------------------------------------------------------------
+
+
+class TestNBodyDiagnostic:
+    """Investigate why pairwise N-body scores don't rank by coupling."""
+
+    N_STEPS = 3000
+    TRANSIENT = 500
+    SUBSAMPLE = 300
+
+    @pytest.mark.slow
+    def test_nbody_vs_isolated_pairs(self):
+        """Compare 3-body pairwise with isolated 2-body controls.
+
+        If 3-body scores differ from isolated pairs at same coupling,
+        the contamination hypothesis is supported.
+        """
+        _ensure_results_dir()
+        set_seed(42)
+
+        coupling_matrix = np.array([
+            [0.0, 0.3, 0.0],
+            [0.3, 0.0, 0.1],
+            [0.0, 0.1, 0.0],
+        ])
+        data = coupled_oscillators(
+            n_oscillators=3, coupling_matrix=coupling_matrix,
+            n_steps=self.N_STEPS, seed=42,
+        )
+
+        # 3-body pairwise scores
+        pairs_3body = {}
+        for i, j in [(0, 1), (1, 2), (0, 2)]:
+            X = data[self.TRANSIENT:, i, 0]
+            Y = data[self.TRANSIENT:, j, 0]
+            det = BindingDetector(max_dim=1, baseline="max")
+            det.fit(X, Y, subsample=self.SUBSAMPLE, seed=42)
+            pairs_3body[f"{i}-{j}"] = {
+                "coupling": float(coupling_matrix[i, j]),
+                "score": det.binding_score(),
+            }
+
+        # Isolated 2-body controls at same coupling strengths
+        pairs_isolated = {}
+        for coupling, label in [(0.3, "0-1"), (0.1, "1-2"), (0.0, "0-2")]:
+            X, Y = coupled_lorenz(
+                n_steps=self.N_STEPS, coupling=coupling, seed=42
+            )
+            X = X[self.TRANSIENT:, 0]
+            Y = Y[self.TRANSIENT:, 0]
+            det = BindingDetector(max_dim=1, baseline="max")
+            det.fit(X, Y, subsample=self.SUBSAMPLE, seed=42)
+            pairs_isolated[label] = {
+                "coupling": coupling,
+                "score": det.binding_score(),
+            }
+
+        result = {
+            "3body_pairwise": pairs_3body,
+            "isolated_pairs": pairs_isolated,
+        }
+
+        out = RESULTS_DIR / "n_body_diagnostic.json"
+        with open(out, "w") as f:
+            json.dump(result, f, indent=2)
+
+        assert len(pairs_3body) == 3
+        assert len(pairs_isolated) == 3

@@ -74,6 +74,15 @@ class BindingDetector:
         self._embedding_quality: dict | None = None
         self._X_raw: np.ndarray | None = None
         self._Y_raw: np.ndarray | None = None
+        # Cached embedding params for surrogate speed optimization
+        self._marginal_delay_x: int | None = None
+        self._marginal_dim_x: int | None = None
+        self._marginal_delay_y: int | None = None
+        self._marginal_dim_y: int | None = None
+        self._joint_delays: list[int] | None = None
+        self._joint_dims: list[int] | None = None
+        # Ensemble state
+        self._ensemble_scores: np.ndarray | None = None
 
     def fit(
         self,
@@ -84,6 +93,7 @@ class BindingDetector:
         marginal_embedder_y: TakensEmbedder | None = None,
         subsample: int | None = None,
         seed: int | None = None,
+        n_ensemble: int = 1,
     ) -> "BindingDetector":
         """Fit the detector on two coupled time series.
 
@@ -94,6 +104,10 @@ class BindingDetector:
         marginal_embedder_x, marginal_embedder_y : pre-configured TakensEmbedders
         subsample : subsample point clouds before persistence computation
         seed : seed for subsampling (same seed used for all three clouds)
+        n_ensemble : int
+            Number of independent fits with different subsample seeds.
+            If > 1, binding_score() returns the mean, and ensemble_scores
+            stores individual scores. Default 1 (no ensembling).
 
         Returns
         -------
@@ -117,6 +131,14 @@ class BindingDetector:
         if joint_embedder is None:
             joint_embedder = JointEmbedder(delays="auto", dimensions="auto")
         self._cloud_joint = joint_embedder.fit_transform([X, Y])
+
+        # Cache fitted embedding params for surrogate reuse
+        self._marginal_delay_x = marginal_embedder_x.delay_
+        self._marginal_dim_x = marginal_embedder_x.dimension_
+        self._marginal_delay_y = marginal_embedder_y.delay_
+        self._marginal_dim_y = marginal_embedder_y.dimension_
+        self._joint_delays = list(joint_embedder.delays_)
+        self._joint_dims = list(joint_embedder.dimensions_)
 
         # 3. Embedding quality gate
         eq_x = validate_embedding(self._cloud_x)
@@ -204,6 +226,37 @@ class BindingDetector:
                 self._residual_images.append(img_joint - baseline_img)
 
         self._fitted = True
+
+        # Ensemble: re-run persistence + scoring with different subsample seeds
+        if n_ensemble > 1 and subsample is not None:
+            base_seed = seed if seed is not None else 42
+            ensemble_scores = []
+            for k in range(n_ensemble):
+                ens_seed = base_seed + k
+                pa_ek_x = PersistenceAnalyzer(max_dim=self.max_dim)
+                pa_ek_x.fit_transform(self._cloud_x, subsample=subsample, seed=ens_seed)
+                pa_ek_y = PersistenceAnalyzer(max_dim=self.max_dim)
+                pa_ek_y.fit_transform(self._cloud_y, subsample=subsample, seed=ens_seed)
+                pa_ek_joint = PersistenceAnalyzer(max_dim=self.max_dim)
+                pa_ek_joint.fit_transform(self._cloud_joint, subsample=subsample, seed=ens_seed)
+
+                if self.method == "persistence_image":
+                    br, pr = self._compute_shared_ranges(
+                        pa_ek_x.diagrams_, pa_ek_y.diagrams_, pa_ek_joint.diagrams_
+                    )
+                    imgs_x = pa_ek_x.to_image(self.image_resolution, self.image_sigma, br, pr)
+                    imgs_y = pa_ek_y.to_image(self.image_resolution, self.image_sigma, br, pr)
+                    imgs_j = pa_ek_joint.to_image(self.image_resolution, self.image_sigma, br, pr)
+                    score_k = 0.0
+                    for d in range(self.max_dim + 1):
+                        if self.baseline == "max":
+                            bl = np.maximum(imgs_x[d], imgs_y[d])
+                        else:
+                            bl = imgs_x[d] + imgs_y[d]
+                        score_k += float(np.sum(np.maximum(imgs_j[d] - bl, 0)))
+                    ensemble_scores.append(score_k)
+            self._ensemble_scores = np.array(ensemble_scores)
+
         return self
 
     def binding_score(self) -> float:
@@ -213,11 +266,15 @@ class BindingDetector:
         For diagram_matching method: optimal matching cost between joint
         and concatenated marginal persistence diagrams.
 
+        If fit() was called with n_ensemble > 1, returns the ensemble mean.
+
         Returns
         -------
         float : binding score
         """
         self._check_fitted()
+        if self._ensemble_scores is not None:
+            return float(np.mean(self._ensemble_scores))
         if self.method == "diagram_matching":
             return self._matching_score
         score = 0.0
@@ -225,6 +282,30 @@ class BindingDetector:
             positive = np.maximum(residual, 0)
             score += float(np.sum(positive))
         return score
+
+    @property
+    def ensemble_scores(self) -> np.ndarray | None:
+        """Individual scores from ensemble fitting, or None if n_ensemble=1."""
+        return self._ensemble_scores
+
+    def confidence_interval(self, confidence: float = 0.95) -> tuple[float, float] | None:
+        """Bootstrap percentile confidence interval from ensemble scores.
+
+        Parameters
+        ----------
+        confidence : float
+            Confidence level (default 0.95 for 95% CI).
+
+        Returns
+        -------
+        (lower, upper) tuple, or None if no ensemble was run.
+        """
+        if self._ensemble_scores is None or len(self._ensemble_scores) < 2:
+            return None
+        alpha = 1 - confidence
+        lo = float(np.percentile(self._ensemble_scores, 100 * alpha / 2))
+        hi = float(np.percentile(self._ensemble_scores, 100 * (1 - alpha / 2)))
+        return (lo, hi)
 
     def binding_features(self) -> dict:
         """Per-dimension breakdown of excess topology.
@@ -354,10 +435,20 @@ class BindingDetector:
         # p-value: proportion of surrogates >= observed (with continuity correction)
         p_value = (np.sum(surrogate_scores >= observed) + 1) / (n_surrogates + 1)
 
+        # Z-score: calibrated effect size against surrogate null
+        surr_mean = float(np.mean(surrogate_scores))
+        surr_std = float(np.std(surrogate_scores, ddof=1)) if n_surrogates > 1 else 1.0
+        z_score = (observed - surr_mean) / surr_std if surr_std > 1e-10 else 0.0
+        calibrated_score = observed - surr_mean
+
         return {
             "p_value": float(p_value),
             "observed_score": observed,
             "surrogate_scores": surrogate_scores,
+            "surrogate_mean": surr_mean,
+            "surrogate_std": surr_std,
+            "z_score": z_score,
+            "calibrated_score": calibrated_score,
             "significant": p_value < 0.05,
             "embedding_quality": self._embedding_quality,
         }
@@ -491,15 +582,26 @@ class BindingDetector:
         subsample: int | None = None,
         seed: int | None = None,
     ) -> float:
-        """Compute binding score for a single surrogate Y, reusing marginal X."""
+        """Compute binding score for a single surrogate Y, reusing marginal X.
+
+        Reuses the embedding parameters (delay, dimension) estimated during
+        fit() rather than re-estimating for each surrogate. This eliminates
+        redundant AMI/FNN computation and ensures consistent embedding geometry.
+        """
         pa_seed = seed if seed is not None else 42
 
-        # Marginal Y embedding (auto)
-        emb_y = TakensEmbedder(delay="auto", dimension="auto")
+        # Marginal Y embedding — reuse fitted params (skip AMI/FNN)
+        emb_y = TakensEmbedder(
+            delay=self._marginal_delay_y,
+            dimension=self._marginal_dim_y,
+        )
         cloud_y = emb_y.fit_transform(Y_surr)
 
-        # Joint embedding (auto)
-        je = JointEmbedder(delays="auto", dimensions="auto")
+        # Joint embedding — reuse fitted params (skip AMI/FNN)
+        je = JointEmbedder(
+            delays=self._joint_delays,
+            dimensions=self._joint_dims,
+        )
         cloud_joint = je.fit_transform([X_raw, Y_surr])
 
         # Persistence for Y and joint

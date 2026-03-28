@@ -45,7 +45,7 @@ Created `.github/workflows/docs.yml`:
 
 Updated README.md with docs badge and link to https://musicofhel.github.io/att-docs/
 
-**Note**: Needs GitHub Pages enabled in repo settings (Settings > Pages > Source: "GitHub Actions") for first deployment.
+GitHub Pages enabled and deployed successfully (build 47s, deploy 8s). Site live at https://musicofhel.github.io/att-docs/
 
 ### 5. Blog Post Finalization
 
@@ -98,8 +98,7 @@ Polished `blog/post.md`:
 
 ## What's Next
 
-1. **Enable GitHub Pages**: Settings > Pages > Source: "GitHub Actions" (first push will trigger build)
-2. **PyPI upload**: `twine upload dist/* -u __token__ -p pypi-TOKEN` (needs API token)
+1. **PyPI upload**: `twine upload dist/* -u __token__ -p pypi-TOKEN` (needs API token)
 3. **Multi-subject EEG**: Download remaining subjects, run `scripts/batch_eeg.py`
 4. **Publish blog**: dev.to / personal site, update README with link
 5. **Phase 2b remaining**: Cross-barcode integration (R-Cross-Barcode on VR complexes)
