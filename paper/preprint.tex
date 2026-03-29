@@ -29,8 +29,9 @@
 We introduce a method for detecting emergent topological structure in coupled dynamical systems using persistent homology on delay embeddings.
 Given two coupled time series, we construct Takens delay embeddings of each marginal system and of the joint system, compute persistence images on all three point clouds using a shared grid, and identify excess homology in the joint embedding that is absent from both marginals.
 This \emph{topological binding score} quantifies coupling-induced geometric structure that information-theoretic and recurrence-based measures cannot capture.
-We validate the method on coupled Lorenz and R\"ossler--Lorenz systems, demonstrating: (i) a coupling-dependent binding response that rises from baseline at low coupling and collapses at synchronization; (ii) surrogate-tested significance with controlled false positive rates; (iii) robustness to heterogeneous intrinsic timescales via per-channel delay estimation; (iv) greater sensitivity to coupling than transfer entropy, phase-amplitude coupling, and cross-recurrence quantification in a head-to-head benchmark; (v) sliding-window topological transition detection on synthetic bistable EEG, identifying regime changes between oscillatory states; (vi) real EEG validation on binocular rivalry SSVEP data \citep{nie2023accumulating} across $N = 80$ subjects, where the detector achieves $94.1\%$ mean precision at 5\,s tolerance (median 100\%, 80\% of subjects with zero false alarms) and $40.6\%$ mean recall, capturing major perceptual switches as topological reorganizations; (vii) cross-region binding analysis on occipital--parietal EEG channels, where joint topology of Oz--Pz embeddings reveals coupling that modulates with perceptual instability (Spearman $\rho = 0.51$, $p = 0.016$ between binding and switch density);
-and (viii) z-score calibration against surrogate null distributions, revealing that the method is selectively sensitive to heterogeneous-timescale coupling (R\"ossler--Lorenz: 3/5 seeds significant at $p \leq 0.05$) while having zero power for same-timescale coupling (Lorenz--Lorenz: all z-scores negative).
+We validate the method on coupled Lorenz and R\"ossler--Lorenz systems, demonstrating: (i) a coupling-dependent binding response that rises from baseline at low coupling and collapses at synchronization; (ii) surrogate-tested significance with controlled false positive rates; (iii) robustness to heterogeneous intrinsic timescales via per-channel delay estimation; (iv) greater sensitivity to coupling than transfer entropy, phase-amplitude coupling, and cross-recurrence quantification in a head-to-head benchmark; (v) sliding-window topological transition detection on synthetic bistable EEG, identifying regime changes between oscillatory states; (vi) real EEG validation on binocular rivalry SSVEP data \citep{nie2023accumulating} across $N = 80$ subjects, where the detector achieves $94.1\%$ mean precision at 5\,s tolerance (median 100\%, 80\% of subjects with zero false alarms) and $40.6\%$ mean recall, capturing major perceptual switches as topological reorganizations; (vii) cross-region binding analysis on occipital--parietal EEG channels, where joint topology of Oz--Pz embeddings reveals coupling that modulates with perceptual instability (single-subject: Spearman $\rho = 0.51$, $p = 0.016$);
+(viii) multi-subject cross-region binding ($N = 79$), where the population mean binding--switch correlation is significantly positive (mean $\rho = 0.10$, $t_{78} = 3.35$, $p = 0.001$; Wilcoxon $p = 0.001$; 60.8\% of subjects showing positive correlations, binomial $p = 0.036$), confirming that occipital--parietal topological coupling modulates with perceptual state at the population level;
+and (ix) z-score calibration against surrogate null distributions, revealing that the method is selectively sensitive to heterogeneous-timescale coupling (R\"ossler--Lorenz: 3/5 seeds significant at $p \leq 0.05$) while having zero power for same-timescale coupling (Lorenz--Lorenz: all z-scores negative).
 The method is implemented in the open-source \texttt{att-toolkit} Python package.
 \end{abstract}
 
@@ -290,8 +291,9 @@ Forward CUSUM changepoint detection is applied to the L2 persistence image dista
 While Experiments 6--7 analyze single-channel topology over time, this experiment returns to the core binding detection framework (Experiments 1--5) and applies it to real multi-channel EEG.
 We compute the topological binding score between two spatially separated electrode sites during binocular rivalry, testing whether joint occipital--parietal topology captures inter-region coupling that modulates with perceptual state.
 
-We analyze Subject~1, Epoch~0 from the \citet{nie2023accumulating} dataset, using channels Oz (occipital midline) and Pz (parietal midline), bandpass-filtered to 4--13\,Hz.
-The \texttt{BindingDetector} is configured with per-channel delay estimation (delay $\tau = 12$, embedding dimension $m = 5$), and applied in a sliding-window fashion: 10\,s windows with 5\,s step, yielding 23 overlapping windows across the 120\,s epoch.
+We first present detailed results for Subject~1, Epoch~0, then extend to the full dataset ($N = 79$ subjects with behavioral data and non-degenerate embeddings).
+For each subject, channels Oz (occipital midline) and Pz (parietal midline) are bandpass-filtered to 4--13\,Hz.
+The \texttt{BindingDetector} is configured with per-channel delay estimation (delay $\tau = 12$, embedding dimension $m = 5$), and applied in a sliding-window fashion: 10\,s windows with 5\,s step, yielding $\sim$23 overlapping windows across the 120\,s epoch.
 Within each window, the binding score quantifies topological structure present in the joint Oz--Pz embedding but absent from either marginal embedding.
 
 \textbf{Expected result}: Binding should vary over time, with elevated scores during periods of perceptual instability (frequent switching) and reduced scores during stable percepts, consistent with the hypothesis that inter-region topological coupling reflects the coordination demands of perceptual reorganization.
@@ -528,10 +530,22 @@ The per-dimension breakdown reveals that $H_0$ (connected components) dominates 
 $H_0$ binding reflects the merging and splitting of connected components in the joint Oz--Pz point cloud that are absent from either marginal cloud --- i.e., the joint attractor has connectivity structure that neither channel's attractor possesses alone.
 $H_1$ (loops) contributes a smaller but nonzero component, indicating that some coupling-induced loop structure emerges in the joint embedding.
 
-These results establish three points.
+These single-subject results establish three points.
 First, the binding detection framework (Sections~\ref{sec:method}--\ref{sec:binding}), validated on synthetic coupled chaotic systems in Experiments~1--5, generalizes to real multi-channel neural data without modification.
 Second, occipital--parietal topological coupling is not constant but modulates with perceptual state, rising during periods of frequent switching and declining during stable percepts.
 Third, the joint topology captures coupling structure absent from either marginal: neither the Oz nor the Pz channel alone contains the topological features detected in the joint embedding, confirming that this is genuine inter-region binding rather than an artifact of single-channel complexity.
+
+\paragraph{Multi-subject validation.}
+We extend the cross-region binding analysis to the full dataset ($N = 79$ subjects with both behavioral data and non-degenerate Oz--Pz embeddings; 1 subject excluded for NaN binding).
+The population mean binding score is $18.3 \pm 16.5$ (median 14.0, range 1.1--87.7), confirming substantial cross-subject variability in occipital--parietal topological coupling strength.
+
+The critical question is whether binding--switch correlation generalizes beyond the single-subject demonstration.
+At the individual level, 9 of 79 subjects (11.4\%) show individually significant positive binding--switch correlations ($p < 0.05$, uncorrected), with a further 4 subjects significant at $p < 0.01$.
+However, individual correlations have limited power due to the small number of windows per epoch ($\sim$22 windows at 10\,s window / 5\,s step over 120\,s).
+
+At the population level, the evidence is strong: the mean Spearman $\rho = 0.10$ is significantly greater than zero (one-sample $t_{78} = 3.35$, $p = 0.001$; Wilcoxon signed-rank $W = 2204$, $p = 0.001$), and 48 of 79 subjects (60.8\%) show positive correlations (binomial test $p = 0.036$).
+Cohen's $d = 0.38$ indicates a small-to-medium effect size, consistent with the high inter-subject variability characteristic of EEG coupling measures.
+These results confirm that the binding--switch association observed in Subject~1 ($\rho = 0.51$) represents a population-level phenomenon, albeit with substantial individual differences.
 
 
 \subsection{Experiment 9: Z-Score Calibration and Timescale Selectivity}\label{sec:res-zscore}
@@ -633,8 +647,9 @@ GPU-accelerated Ripser (Ripser++) and witness complexes could extend the method 
 \textbf{Baseline ambiguity}: The choice of baseline (max vs.\ sum) affects sensitivity and specificity.
 We provide both and recommend max for confirmatory analysis, but a theoretically optimal baseline (the persistence image of the product complex) remains computationally intractable.
 
-\textbf{Real-data validation scope}: The multi-subject transition detection (Experiment~7, $N = 80$) provides population-level evidence for high-precision changepoint detection. However, the cross-region binding analysis (Experiment~8) remains single-subject ($N = 1$), single-epoch, and two-electrode.
-Multi-subject analysis is required to establish generalizability.
+\textbf{Real-data validation scope}: Both transition detection (Experiment~7, $N = 80$) and cross-region binding (Experiment~8, $N = 79$) now have population-level evidence. However, binding analysis remains single-epoch and two-electrode (Oz--Pz only).
+The population effect size for binding--switch correlation is small (Cohen's $d = 0.38$), and only 11.4\% of individual subjects reach significance, reflecting the limited statistical power of within-subject correlations on $\sim$22-window epochs.
+Extension to multiple electrode pairs and longer recordings would enable full topological connectivity matrices.
 
 \textbf{Parameter sensitivity}: The binding score depends on embedding parameters ($\tau$, $m$), persistence image resolution and bandwidth ($\sigma$), and subsampling.
 The quality gate catches gross failures but does not optimize these parameters.
@@ -652,7 +667,7 @@ This is not a bug to be fixed but a fundamental property of the construction.
 \subsection{Future Directions}
 
 \begin{itemize}
-    \item \textbf{Multi-subject cross-region binding}: While multi-subject transition detection is now complete ($N = 80$, Experiment~7), extending the cross-region binding analysis (Experiment~8) across all subjects and electrode pairs would enable full topological connectivity matrices.
+    \item \textbf{Multi-electrode topological connectivity}: With multi-subject cross-region binding now complete ($N = 79$, Experiment~8), extending to all electrode pairs would yield full topological connectivity matrices, enabling comparison with conventional functional connectivity measures (coherence, phase-locking value).
     \item \textbf{R-Cross-Barcodes}: Extending the R-Cross-Barcode construction from graphs to Vietoris--Rips complexes on point clouds would provide a theoretically cleaner way to identify excess features.
     \item \textbf{Diagram matching}: We have implemented Hungarian algorithm matching between joint and marginal persistence diagrams as an alternative to image subtraction. Preliminary results show low correlation with the PI method (Spearman $\rho = 0.2$), suggesting the two approaches capture different topological aspects of coupling. Investigation of what each method resolves is ongoing.
     \item \textbf{Multi-system binding}: Extension to $N > 2$ coupled systems. The N-body contamination finding (above) indicates that pairwise decomposition is insufficient; higher-order topological approaches may be needed.

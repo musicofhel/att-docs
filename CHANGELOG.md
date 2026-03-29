@@ -1,5 +1,23 @@
 # Changelog
 
+## v0.1.1 (2026-03-28)
+
+Phase 11-12: Multi-subject EEG validation + ROADMAP gap closure.
+
+### Multi-Subject EEG (Phase 11-12)
+
+- Transition detection batch: N=80, precision 94.1%±14.9%, recall 40.6%±13.9%
+- Cross-region binding batch: N=79, population mean rho=0.10 (p=0.001)
+- Parallel processing: `--workers N` flag with ProcessPoolExecutor
+- Precision/recall bug fix in `evaluate_alignment()`
+
+### Tutorials & Infrastructure
+
+- Tutorial notebook: Lorenz end-to-end walkthrough (ROADMAP 1.13)
+- Tutorial notebook: heterogeneous timescales demo (ROADMAP 1.14)
+- Root Makefile: test, lint, docs, demo, notebook-test targets
+- Preprint: 22 pages with N=79 binding + N=80 transition results
+
 ## v0.1.0 (2026-03-28)
 
 Initial release. 9 development phases, 232 tests, 21-page preprint.
