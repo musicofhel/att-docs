@@ -29,7 +29,7 @@
 We introduce a method for detecting emergent topological structure in coupled dynamical systems using persistent homology on delay embeddings.
 Given two coupled time series, we construct Takens delay embeddings of each marginal system and of the joint system, compute persistence images on all three point clouds using a shared grid, and identify excess homology in the joint embedding that is absent from both marginals.
 This \emph{topological binding score} quantifies coupling-induced geometric structure that information-theoretic and recurrence-based measures cannot capture.
-We validate the method on coupled Lorenz and R\"ossler--Lorenz systems, demonstrating: (i) a coupling-dependent binding response that rises from baseline at low coupling and collapses at synchronization; (ii) surrogate-tested significance with controlled false positive rates; (iii) robustness to heterogeneous intrinsic timescales via per-channel delay estimation; (iv) greater sensitivity to coupling than transfer entropy, phase-amplitude coupling, and cross-recurrence quantification in a head-to-head benchmark; (v) sliding-window topological transition detection on synthetic bistable EEG, identifying regime changes between oscillatory states; (vi) real EEG validation on binocular rivalry SSVEP data \citep{nie2023accumulating}, where the detector achieves 100\% precision (zero false alarms) and captures major perceptual switches as topological reorganizations; (vii) cross-region binding analysis on occipital--parietal EEG channels, where joint topology of Oz--Pz embeddings reveals coupling that modulates with perceptual instability (Spearman $\rho = 0.51$, $p = 0.016$ between binding and switch density);
+We validate the method on coupled Lorenz and R\"ossler--Lorenz systems, demonstrating: (i) a coupling-dependent binding response that rises from baseline at low coupling and collapses at synchronization; (ii) surrogate-tested significance with controlled false positive rates; (iii) robustness to heterogeneous intrinsic timescales via per-channel delay estimation; (iv) greater sensitivity to coupling than transfer entropy, phase-amplitude coupling, and cross-recurrence quantification in a head-to-head benchmark; (v) sliding-window topological transition detection on synthetic bistable EEG, identifying regime changes between oscillatory states; (vi) real EEG validation on binocular rivalry SSVEP data \citep{nie2023accumulating} across $N = 80$ subjects, where the detector achieves $94.1\%$ mean precision at 5\,s tolerance (median 100\%, 80\% of subjects with zero false alarms) and $40.6\%$ mean recall, capturing major perceptual switches as topological reorganizations; (vii) cross-region binding analysis on occipital--parietal EEG channels, where joint topology of Oz--Pz embeddings reveals coupling that modulates with perceptual instability (Spearman $\rho = 0.51$, $p = 0.016$ between binding and switch density);
 and (viii) z-score calibration against surrogate null distributions, revealing that the method is selectively sensitive to heterogeneous-timescale coupling (R\"ossler--Lorenz: 3/5 seeds significant at $p \leq 0.05$) while having zero power for same-timescale coupling (Lorenz--Lorenz: all z-scores negative).
 The method is implemented in the open-source \texttt{att-toolkit} Python package.
 \end{abstract}
@@ -271,10 +271,11 @@ The $H_1$ persistence entropy should show modulation correlated with regime tran
 
 \subsection{Experiment 7: Real EEG Validation}\label{sec:exp-real-eeg}
 
-To validate the transition detector on real neural data, we apply it to the binocular rivalry SSVEP dataset of \citet{nie2023accumulating}, which provides concurrent EEG and behavioral reports of perceptual alternations during binocular rivalry.
+To validate the transition detector on real neural data, we apply it to the binocular rivalry SSVEP dataset of \citet{nie2023accumulating}, which provides concurrent EEG and behavioral reports of perceptual alternations during binocular rivalry across 84 subjects (34-channel EEG, 360\,Hz, preprocessed with CSD transform and ICA artifact rejection).
 
-We analyze Subject~1, Epoch~0, using the Oz (occipital midline) channel bandpass-filtered to the theta--alpha range (4--13\,Hz) to isolate rivalry-relevant oscillatory dynamics.
-The epoch contains 43{,}196 samples at 360\,Hz (120\,s), with 41 behavioral perceptual switches reported by the subject (29 clear alternations between left and right percepts, 12 involving a mixed/piecemeal percept).
+We first present detailed results for Subject~1, then extend to the full dataset ($N = 80$ subjects with behavioral data).
+For each subject, Epoch~0 is analyzed using the Oz (occipital midline) channel bandpass-filtered to the theta--alpha range (4--13\,Hz) to isolate rivalry-relevant oscillatory dynamics.
+Subject~1's epoch contains 43{,}196 samples at 360\,Hz (120\,s), with 41 behavioral perceptual switches (29 clear alternations, 12 mixed/piecemeal).
 
 The signal is embedded using the auto-with-fallback strategy (Section~\ref{sec:quality}).
 The \texttt{TransitionDetector} is configured with window size 500 samples, step size 200 samples, and 300-point subsampling per window, yielding 214 overlapping windows.
@@ -494,6 +495,19 @@ Entropy increases during periods of rapid alternation and stabilizes during sust
 
 These results demonstrate that the ATT sliding-window pipeline generalizes from synthetic to real EEG without algorithmic modification, and that topological changepoint detection provides a high-precision, zero-false-alarm detector for neural regime transitions during bistable perception.
 
+\paragraph{Multi-subject validation ($N = 80$).}
+To assess generalizability, we applied the identical pipeline to the full \citet{nie2023accumulating} dataset.
+Of 84 subjects, 81 had the required epoch file (3 excluded due to missing preprocessed data); of these, 80 had behavioral switch data and 1 had none.
+Processing used 10-way parallelization across 84 subjects (77\,min total wall time).
+
+Across 80 subjects with behavioral data, CUSUM detected a mean of $6.3 \pm 3.0$ changepoints per 120\,s epoch (range: 3--16), compared to $46.9 \pm 18.3$ behavioral switches per epoch.
+At 5\,s tolerance, mean precision was $\mathbf{94.1\% \pm 14.9\%}$ (median 100\%; 80\% of subjects achieved perfect precision) and mean recall was $\mathbf{40.6\% \pm 13.9\%}$ (median 36.6\%; 76\% of subjects above 30\%).
+At 3\,s tolerance, precision was $88.4\% \pm 20.6\%$ and recall was $27.0\% \pm 10.7\%$.
+
+The population-level results confirm the single-subject pattern: the detector is conservative (high precision, few false alarms) and captures major topological regime shifts rather than individual perceptual alternations.
+The lower population recall ($40.6\%$) compared to Subject~1 ($80.5\%$) reflects inter-subject variability in switch rate and the fixed CUSUM threshold (mean $+ 2\sigma$), which may be suboptimal for subjects with many rapid switches.
+Adaptive thresholding or subject-specific parameter tuning could improve recall without sacrificing precision.
+
 \subsection{Experiment 8: Cross-Region Oz--Pz Binding}\label{sec:res-cross-binding}
 
 \begin{figure}[t]
@@ -619,7 +633,7 @@ GPU-accelerated Ripser (Ripser++) and witness complexes could extend the method 
 \textbf{Baseline ambiguity}: The choice of baseline (max vs.\ sum) affects sensitivity and specificity.
 We provide both and recommend max for confirmatory analysis, but a theoretically optimal baseline (the persistence image of the product complex) remains computationally intractable.
 
-\textbf{Preliminary real-data validation}: The EEG results (Experiments~7--8) are from a single subject ($N = 1$), a single epoch, and two electrodes.
+\textbf{Real-data validation scope}: The multi-subject transition detection (Experiment~7, $N = 80$) provides population-level evidence for high-precision changepoint detection. However, the cross-region binding analysis (Experiment~8) remains single-subject ($N = 1$), single-epoch, and two-electrode.
 Multi-subject analysis is required to establish generalizability.
 
 \textbf{Parameter sensitivity}: The binding score depends on embedding parameters ($\tau$, $m$), persistence image resolution and bandwidth ($\sigma$), and subsampling.
@@ -638,7 +652,7 @@ This is not a bug to be fixed but a fundamental property of the construction.
 \subsection{Future Directions}
 
 \begin{itemize}
-    \item \textbf{Multi-subject neural validation}: The full \citet{nie2023accumulating} dataset comprises 84 subjects, enabling group-level precision--recall analysis and full topological connectivity matrices across all electrode pairs.
+    \item \textbf{Multi-subject cross-region binding}: While multi-subject transition detection is now complete ($N = 80$, Experiment~7), extending the cross-region binding analysis (Experiment~8) across all subjects and electrode pairs would enable full topological connectivity matrices.
     \item \textbf{R-Cross-Barcodes}: Extending the R-Cross-Barcode construction from graphs to Vietoris--Rips complexes on point clouds would provide a theoretically cleaner way to identify excess features.
     \item \textbf{Diagram matching}: We have implemented Hungarian algorithm matching between joint and marginal persistence diagrams as an alternative to image subtraction. Preliminary results show low correlation with the PI method (Spearman $\rho = 0.2$), suggesting the two approaches capture different topological aspects of coupling. Investigation of what each method resolves is ongoing.
     \item \textbf{Multi-system binding}: Extension to $N > 2$ coupled systems. The N-body contamination finding (above) indicates that pairwise decomposition is insufficient; higher-order topological approaches may be needed.

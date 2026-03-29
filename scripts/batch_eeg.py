@@ -42,6 +42,7 @@ import sys
 import time
 import traceback
 import warnings
+from concurrent.futures import ProcessPoolExecutor, as_completed
 from datetime import datetime
 from pathlib import Path
 
@@ -411,7 +412,8 @@ def evaluate_alignment(
     """Compute precision and recall of changepoints vs behavioral switches."""
     if len(detected_samples) == 0:
         return {
-            "hits": 0,
+            "true_positives": 0,
+            "switches_detected": 0,
             "false_alarms": 0,
             "precision": 0.0,
             "recall": 0.0,
@@ -421,7 +423,8 @@ def evaluate_alignment(
 
     if len(switch_samples) == 0:
         return {
-            "hits": 0,
+            "true_positives": 0,
+            "switches_detected": 0,
             "false_alarms": int(len(detected_samples)),
             "precision": 0.0,
             "recall": 0.0,
@@ -429,28 +432,32 @@ def evaluate_alignment(
             "n_changepoints": int(len(detected_samples)),
         }
 
-    # Hits: switches with a nearby changepoint
-    hits = 0
+    # Recall: how many switches have a nearby changepoint?
+    switches_detected = 0
     for sw_s in switch_samples:
         for det_s in detected_samples:
             if abs(det_s - sw_s) < tolerance_samples:
-                hits += 1
+                switches_detected += 1
                 break
 
-    # False alarms: changepoints with no nearby switch
+    # Precision: how many changepoints have a nearby switch?
+    true_positives = 0
     false_alarms = 0
     for det_s in detected_samples:
         matched = any(abs(det_s - sw_s) < tolerance_samples for sw_s in switch_samples)
-        if not matched:
+        if matched:
+            true_positives += 1
+        else:
             false_alarms += 1
 
     n_det = len(detected_samples)
     n_sw = len(switch_samples)
-    precision = hits / n_det if n_det > 0 else 0.0
-    recall = hits / n_sw if n_sw > 0 else 0.0
+    precision = true_positives / n_det if n_det > 0 else 0.0
+    recall = switches_detected / n_sw if n_sw > 0 else 0.0
 
     return {
-        "hits": hits,
+        "true_positives": true_positives,
+        "switches_detected": switches_detected,
         "false_alarms": false_alarms,
         "precision": precision,
         "recall": recall,
@@ -798,6 +805,44 @@ def save_subject_json(result: dict, output_dir: Path) -> Path:
 # Main
 # ---------------------------------------------------------------------------
 
+# ---------------------------------------------------------------------------
+# Parallel worker (module-level for pickling)
+# ---------------------------------------------------------------------------
+
+def _worker(subject_dict: dict, cfg: dict, skip_binding: bool, output_dir: str) -> dict:
+    """Process a single subject in a worker process. Returns a result dict."""
+    output_path = Path(output_dir)
+    name = subject_dict["name"]
+
+    # Reconstruct subject with Path objects
+    subject = {
+        "name": name,
+        "path": Path(subject_dict["path"]),
+        "epochs_dir": Path(subject_dict["epochs_dir"]),
+        "behavior_dir": Path(subject_dict["behavior_dir"]),
+    }
+
+    try:
+        t0 = time.time()
+        result = process_subject(subject, cfg, skip_binding=skip_binding)
+        elapsed = time.time() - t0
+
+        if result is not None:
+            save_subject_json(result, output_path)
+            return {"status": "ok", "name": name, "result": result, "elapsed": elapsed}
+        else:
+            return {"status": "fail", "name": name, "error": "returned None", "elapsed": 0}
+
+    except Exception as e:
+        return {
+            "status": "fail",
+            "name": name,
+            "error": str(e),
+            "traceback": traceback.format_exc(),
+            "elapsed": time.time() - t0,
+        }
+
+
 def setup_logging(output_dir: Path, verbose: bool = False) -> None:
     """Configure logging to both console and file."""
     level = logging.DEBUG if verbose else logging.INFO
@@ -868,6 +913,13 @@ def main() -> None:
         default=None,
         help='Process specific subjects by name substring (comma-separated). '
              'E.g., "3629,3630" to match subject directories containing those IDs.',
+    )
+    parser.add_argument(
+        "--workers", "-w",
+        type=int,
+        default=1,
+        help="Number of parallel workers (default: 1 = sequential). "
+             "Recommended: half of CPU cores for memory safety.",
     )
     parser.add_argument(
         "--verbose", "-v",
@@ -948,46 +1000,93 @@ def main() -> None:
         return
 
     # Process subjects
+    n_workers = min(args.workers, len(all_subjects))
     log.info("")
+    log.info("Workers: %d", n_workers)
     results = []
     failures = []
     total_t0 = time.time()
 
-    for i, subject in enumerate(all_subjects):
-        log.info("")
-        log.info("--- Subject %d/%d ---", i + 1, len(all_subjects))
+    # Serialize subjects for pickling (Path -> str)
+    serialized_subjects = [
+        {
+            "name": s["name"],
+            "path": str(s["path"]),
+            "epochs_dir": str(s["epochs_dir"]),
+            "behavior_dir": str(s["behavior_dir"]),
+        }
+        for s in all_subjects
+    ]
 
-        try:
-            t0 = time.time()
-            result = process_subject(subject, cfg, skip_binding=args.skip_binding)
-            elapsed = time.time() - t0
+    if n_workers <= 1:
+        # Sequential mode (original behavior)
+        for i, subject in enumerate(all_subjects):
+            log.info("")
+            log.info("--- Subject %d/%d ---", i + 1, len(all_subjects))
 
-            if result is not None:
-                results.append(result)
+            try:
+                t0 = time.time()
+                result = process_subject(subject, cfg, skip_binding=args.skip_binding)
+                elapsed = time.time() - t0
 
-                # Save per-subject JSON
-                json_path = save_subject_json(result, output_dir)
-                log.info("  Saved: %s (%.1fs)", json_path.name, elapsed)
+                if result is not None:
+                    results.append(result)
+                    json_path = save_subject_json(result, output_dir)
+                    log.info("  Saved: %s (%.1fs)", json_path.name, elapsed)
 
-                # ETA estimate
-                avg_time = (time.time() - total_t0) / (i + 1)
-                remaining = avg_time * (len(all_subjects) - i - 1)
-                log.info("  ETA for remaining %d subjects: %.0f min",
-                         len(all_subjects) - i - 1, remaining / 60)
-            else:
-                failures.append({"subject": subject["name"], "error": "returned None"})
-                log.error("  FAILED: %s (returned None)", subject["name"])
+                    avg_time = (time.time() - total_t0) / (i + 1)
+                    remaining = avg_time * (len(all_subjects) - i - 1)
+                    log.info("  ETA for remaining %d subjects: %.0f min",
+                             len(all_subjects) - i - 1, remaining / 60)
+                else:
+                    failures.append({"subject": subject["name"], "error": "returned None"})
+                    log.error("  FAILED: %s (returned None)", subject["name"])
 
-        except Exception as e:
-            elapsed = time.time() - t0
-            failures.append({
-                "subject": subject["name"],
-                "error": str(e),
-                "traceback": traceback.format_exc(),
-            })
-            log.error("  FAILED: %s in %.1fs", subject["name"], elapsed)
-            log.error("  Error: %s", e)
-            log.debug("  Traceback:\n%s", traceback.format_exc())
+            except Exception as e:
+                elapsed = time.time() - t0
+                failures.append({
+                    "subject": subject["name"],
+                    "error": str(e),
+                    "traceback": traceback.format_exc(),
+                })
+                log.error("  FAILED: %s in %.1fs", subject["name"], elapsed)
+                log.error("  Error: %s", e)
+                log.debug("  Traceback:\n%s", traceback.format_exc())
+    else:
+        # Parallel mode
+        log.info("Launching %d parallel workers...", n_workers)
+        completed = 0
+
+        with ProcessPoolExecutor(max_workers=n_workers) as executor:
+            futures = {
+                executor.submit(
+                    _worker, ss, cfg, args.skip_binding, str(output_dir)
+                ): ss["name"]
+                for ss in serialized_subjects
+            }
+
+            for future in as_completed(futures):
+                completed += 1
+                name = futures[future]
+                try:
+                    wr = future.result()
+                    if wr["status"] == "ok":
+                        results.append(wr["result"])
+                        log.info("[%d/%d] OK: %s (%.1fs)",
+                                 completed, len(all_subjects), name, wr["elapsed"])
+                    else:
+                        failures.append({"subject": name, "error": wr.get("error", "unknown")})
+                        log.error("[%d/%d] FAIL: %s — %s",
+                                  completed, len(all_subjects), name, wr.get("error"))
+                except Exception as e:
+                    failures.append({"subject": name, "error": str(e)})
+                    log.error("[%d/%d] EXCEPTION: %s — %s",
+                              completed, len(all_subjects), name, e)
+
+                # ETA
+                avg_time = (time.time() - total_t0) / completed
+                remaining = avg_time * (len(all_subjects) - completed) / n_workers
+                log.info("  ETA: %.0f min remaining", remaining / 60)
 
     total_elapsed = time.time() - total_t0
 
