@@ -7,7 +7,7 @@
 
 ### 1. EEG Data Extraction (84 subjects)
 
-Downloaded from `C:\Users\aaron\Downloads\EEGDATA` (UMN DRUM, Nie/Katyal/Engel 2023).
+Downloaded from local EEGDATA archive (UMN DRUM, Nie/Katyal/Engel 2023).
 12 GB multi-part zip (eegdata.zip + .z01 + .z02) extracted with `7z` (Linux `unzip` failed on split archives — only got 28/85 subjects).
 Result: 85 subject dirs, 84 with preprocessed Epochs/ (1 subject had raw CNT only).
 
