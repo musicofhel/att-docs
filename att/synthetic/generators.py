@@ -248,6 +248,50 @@ def coupled_oscillators(
     return result
 
 
+def aizawa_system(
+    n_steps: int = 10000,
+    dt: float = 0.01,
+    alpha: float = 0.95,
+    beta: float = 0.7,
+    gamma: float = 0.6,
+    delta: float = 3.5,
+    epsilon: float = 0.25,
+    zeta: float = 0.1,
+    initial: np.ndarray | None = None,
+    noise: float = 0.0,
+    seed: int | None = None,
+) -> np.ndarray:
+    """Generate an Aizawa attractor trajectory.
+
+    The Aizawa attractor has roughly spherical geometry with a helical
+    escape tube, producing cleaner cross-sections than Lorenz or Rössler
+    when intersected by projections.
+
+    Returns: (n_steps, 3) array.
+    """
+    rng = get_rng(seed)
+    if initial is None:
+        initial = np.array([0.1, 0.0, 0.0]) + rng.normal(0, 0.01, 3)
+
+    def deriv(t, state):
+        x, y, z = state
+        r2 = x * x + y * y
+        dx = (z - beta) * x - delta * y
+        dy = delta * x + (z - beta) * y
+        dz = gamma + alpha * z - z**3 / 3 - r2 * (1 + epsilon * z) + zeta * z * x**3
+        return [dx, dy, dz]
+
+    t_span = (0, n_steps * dt)
+    t_eval = np.linspace(0, n_steps * dt, n_steps)
+    sol = solve_ivp(deriv, t_span, initial, t_eval=t_eval, method="RK45", rtol=1e-10, atol=1e-12)
+    result = sol.y.T  # (n_steps, 3)
+
+    if noise > 0:
+        result += rng.normal(0, noise, result.shape)
+
+    return result
+
+
 def kuramoto_oscillators(
     n_oscillators: int = 2,
     n_steps: int = 10000,

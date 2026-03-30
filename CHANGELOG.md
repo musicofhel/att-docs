@@ -1,5 +1,30 @@
 # Changelog
 
+## v0.2.0-dev (2026-03-29)
+
+Cone prototype: directed cross-layer projection geometry via depth-stratified topology.
+
+### Cone Detection (`att.cone`)
+
+- `ConeDetector` with 6 methods: fit, estimate_projection_axis, slice_at_depth, availability_profile, coupling_influence_subspace, depth_asymmetry, full_chain_emergence
+- Conditional-mean PCA for projection axis estimation
+- CCA-based coupling-influence subspace analysis
+- 6 visualization functions: availability profile, coupling sweep, cross-sections, subspace comparison, cascade verification, directed vs symmetric
+
+### New Synthetic Systems
+
+- Aizawa attractor generator (`aizawa_system()`) — spherical geometry with helical escape tube
+- 5-node directed layered network (`layered_aizawa_network()`) — C→A3→A5, C→B3→B5 with per-layer timescale separation
+- Symmetric all-to-all control network (`layered_aizawa_network_symmetric()`) — Frobenius-norm matched
+
+### Tests
+
+- 35 cone tests (22 synthetic + 13 ConeDetector), 267 total
+
+### Key Early Finding
+
+- Cone appears in CCA coupling-influence subspace (Betti_1 slope > 0) but NOT in full Takens embedding — supports the theoretical claim that the cone is a low-dimensional feature
+
 ## v0.1.1 (2026-03-28)
 
 Phase 11-12: Multi-subject EEG validation + ROADMAP gap closure.

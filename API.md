@@ -403,6 +403,85 @@ Classic Kuramoto model: $d\theta_i/dt = \omega_i + (K/N) \sum \sin(\theta_j - \t
 Returns `(phases, signals)` where `phases` is `(n_steps, n_oscillators)` and `signals = sin(phases)`.
 **Note**: Binding score *decreases* with Kuramoto coupling (77× reduction at strong coupling). Phase synchronization collapses the joint manifold — opposite of chaotic systems. See preprint Discussion.
 
+### `aizawa_system(n_steps=10000, dt=0.01, alpha=0.95, beta=0.7, gamma=0.6, delta=3.5, epsilon=0.25, zeta=0.1, initial=None, noise=0.0, seed=None) -> np.ndarray`
+Aizawa attractor with roughly spherical geometry and helical escape tube. Returns `(n_steps, 3)`. Default IC: `[0.1, 0.0, 0.0]`. Chosen for the cone prototype because cross-sections (circles, deformed annuli) produce cleaner cone geometry than Lorenz butterflies or Rossler bands.
+
+### `layered_aizawa_network(n_steps=80000, coupling_source=0.15, coupling_down=0.15, dt_layer2=0.005, dt_layer3=0.008, dt_layer5=0.012, seed=None) -> dict[str, np.ndarray]`
+5-node directed Aizawa network: `C→A3→A5, C→B3→B5`. Per-layer timescale separation via dt scaling. Diffusive coupling on x,y components only. Returns dict keyed by `'C', 'A3', 'B3', 'A5', 'B5'`, each `(n_steps, 3)`.
+
+### `layered_aizawa_network_symmetric(n_steps=80000, coupling_source=0.15, coupling_down=0.15, seed=None) -> dict[str, np.ndarray]`
+All-to-all symmetric variant of the layered network. Per-edge coupling scaled by `sqrt(4/20)` to match Frobenius norm of the directed topology. Used as a control in Experiment 5.
+
+---
+
+## att.cone
+
+### `ConeDetector(n_depth_bins=5, max_dim=1, n_quantiles=20, cca_components=3)`
+
+Detect conical projection geometry in directed attractor networks via depth-stratified persistent homology.
+
+**Parameters**:
+- `n_depth_bins`: Number of equal-count bins along the projection axis (default 5 for ~3200+ pts/bin at 80k steps)
+- `max_dim`: Maximum homology dimension (0=components, 1=loops)
+- `n_quantiles`: Number of source-state quantiles for axis estimation
+- `cca_components`: Number of CCA dimensions for coupling-influence subspace
+
+**Methods**:
+
+#### `.fit(source_ts, receiver_channels, source_embedder=None, receiver_embedder=None) -> ConeDetector`
+- `source_ts`: 1D source time series (e.g., C's x-component)
+- `receiver_channels`: list of 1D receiver time series
+- Embeds source with TakensEmbedder (auto delay/dim), receivers with JointEmbedder (per-channel auto). Tail-aligns lengths.
+
+#### `.estimate_projection_axis() -> np.ndarray`
+Conditional-mean PCA: bin source state into quantiles, compute conditional means of receiver cloud per bin, take first PC of those means. Returns unit vector.
+
+#### `.slice_at_depth(depth_bin: int) -> np.ndarray`
+Returns `(n_points_in_bin, embedding_dim)` point cloud for a given depth bin.
+
+#### `.availability_profile(subspace="full", subsample=2000) -> dict`
+Core output. Computes Betti numbers as a function of depth.
+```python
+{
+    "depths": np.ndarray,           # bin centers
+    "betti_0": np.ndarray,          # components per bin
+    "betti_1": np.ndarray,          # loops per bin
+    "persistence_entropy": list,    # entropy per bin
+    "diagrams": list,               # raw diagrams per bin
+    "is_monotonic": bool,           # Betti_1 increases with depth?
+    "trend_slope": float,           # linear regression slope of Betti_1 vs depth
+}
+```
+
+#### `.coupling_influence_subspace() -> np.ndarray`
+CCA between embedded source and receiver cloud. Returns `(n_points, cca_components)`.
+
+#### `.depth_asymmetry(source_ts, shallow_ts, deep_ts) -> dict`
+```python
+{"shallow_binding": float, "deep_binding": float, "asymmetry": float, "ratio": float}
+```
+
+#### `.full_chain_emergence(source_ts, shallow_ts, deep_ts) -> dict`
+```python
+{"pairwise_bindings": dict, "full_chain_binding": float, "max_pairwise": float, "emergence": float, "has_emergence": bool}
+```
+
+**Example**:
+```python
+from att.synthetic.layered_network import layered_aizawa_network
+from att.cone import ConeDetector
+
+traj = layered_aizawa_network(n_steps=80000, seed=42)
+ts = {name: traj[name][5000:, 0] for name in traj}  # discard transient
+
+det = ConeDetector(n_depth_bins=5, max_dim=1)
+det.fit(ts['C'], [ts['A3'], ts['B3'], ts['A5'], ts['B5']])
+
+profile = det.availability_profile(subspace='cca', subsample=2000)
+print(f"Trend slope: {profile['trend_slope']:.4f}")
+print(f"Monotonic: {profile['is_monotonic']}")
+```
+
 ---
 
 ## att.neuro

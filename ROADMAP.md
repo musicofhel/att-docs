@@ -233,6 +233,48 @@ Ranked by compounding potential:
 
 ---
 
+## Phase 6 — Cone Prototype (2026-03-29, COMPLETE)
+
+**Scope**: Test whether directed cross-layer coupling through attractor networks creates measurable conical geometry in joint state space. Minimal 2-column, 3-layer network before scaling to grids.
+
+**Status**: ALL EXPERIMENTS COMPLETE. Decision: **PROCEED** to 4×4 grids with revisions.
+
+### All Tasks
+
+| # | Task | Status |
+|---|------|--------|
+| 6.1 | Aizawa attractor generator | Done |
+| 6.2 | 5-node layered network integrator (directed + symmetric) | Done |
+| 6.3 | ConeDetector: fit, axis estimation, depth slicing, availability profile, CCA, depth asymmetry, full chain emergence | Done |
+| 6.4 | Cone visualization (6 plot functions) | Done |
+| 6.5 | Tests (35 total: 22 synthetic + 13 detector) | Done |
+| 6.6 | Notebook with Experiments 0-5 | Done |
+| 6.7 | Run full notebook Experiments 0-5 | Done (80k steps, all 6 experiments) |
+| 6.8 | Analyze results, fill in decision table | Done — PROCEED with revisions |
+| 6.9 | Ripser++ GPU migration | Deferred: nvcc not installed, CPU fast enough |
+| 6.10 | Scale to 4×4 grids | Next phase |
+
+### Key Results
+
+| Experiment | Question | Result | Verdict |
+|---|---|---|---|
+| 0 | Cascade works? | Lag C→A3=-115, A3→A5=-76. Cross-column r=0.636. | PASS |
+| 1 | Cone exists? | Asymmetry Col A: +1745, Col B: +23242, Control: -3768 | YES (no 3-way emergence) |
+| 2 | Cone has direction? | Full slope=+42.25 (β₁: 431→787), CCA=-7.63 | YES — in full embedding |
+| 3 | Optimal coupling? | Asymmetry monotonic 0→+40889. No inverted-U. | Monotonic (no collapse at ε=0.5) |
+| 4 | Timescale ratio? | Peak asymmetry at ratio=2.0 (+12590) | YES — confirms heterogeneous-timescale |
+| 5 | Directed vs symmetric? | Directed slope=+42.25 vs Symmetric=+5.54 | YES — 7.6x steeper |
+
+### Revisions for Grid Scaling
+
+1. Use full embedding (not CCA) — cone is higher-dimensional than 3 CCA components
+2. Depth asymmetry as primary measure (monotonic, clear control separation)
+3. Drop 3-way emergence (pairwise cross-column dominates)
+4. Timescale ratios 2.0-3.0 for optimal sensitivity
+5. Extend coupling range past ε=0.5 to find collapse point
+
+---
+
 ## Risk Register (Updated)
 
 | Risk | Likelihood | Impact | Mitigation |

@@ -28,9 +28,9 @@ ATT is a three-layer system: a computational core (Python library), an analysis 
 │   ┌───────────┐ ┌──────────┐ ┌─────────┐ ┌──────────────────┐  │
 │   │ synthetic │ │  neuro   │ │   viz   │ │   benchmarks     │  │
 │   └───────────┘ └──────────┘ └─────────┘ └──────────────────┘  │
-│   ┌───────────┐ ┌──────────┐                                    │
-│   │surrogates │ │  config  │                                    │
-│   └───────────┘ └──────────┘                                    │
+│   ┌───────────┐ ┌──────────┐ ┌─────────┐                        │
+│   │surrogates │ │  config  │ │  cone   │                        │
+│   └───────────┘ └──────────┘ └─────────┘                        │
 └──────────────────────────────────────────────────────────────────┘
 ```
 
@@ -492,6 +492,74 @@ class TransitionDetector:
 
 ---
 
+### `att.cone`
+
+**Purpose**: Detect conical projection geometry in directed attractor networks. Extends ATT from pairwise symmetric binding to directed multi-node projection geometry in layered networks.
+
+**Core class**: `ConeDetector`
+
+```python
+class ConeDetector:
+    def __init__(self, n_depth_bins: int = 5, max_dim: int = 1,
+                 n_quantiles: int = 20, cca_components: int = 3):
+        """
+        n_depth_bins: Number of bins along the projection axis for depth slicing.
+        max_dim: Maximum homology dimension for persistence computation.
+        n_quantiles: Number of source-state quantiles for axis estimation.
+        cca_components: Number of CCA dimensions for coupling-influence subspace.
+        """
+
+    def fit(self, source_ts, receiver_channels, source_embedder=None,
+            receiver_embedder=None) -> "ConeDetector":
+        """Embed source (TakensEmbedder) and receivers (JointEmbedder),
+        estimate projection axis, compute CCA coupling-influence subspace."""
+
+    def estimate_projection_axis(self) -> np.ndarray:
+        """Conditional-mean PCA: bin source state into quantiles, compute
+        conditional means of receiver cloud, take first PC as axis."""
+
+    def slice_at_depth(self, depth_bin: int) -> np.ndarray:
+        """Extract cross-section point cloud at a given depth bin."""
+
+    def availability_profile(self, subspace="full", subsample=2000) -> dict:
+        """Core output: Betti numbers as a function of depth along the
+        projection axis. Returns depths, betti_0, betti_1, diagrams,
+        persistence_entropy, trend_slope, is_monotonic."""
+
+    def coupling_influence_subspace(self) -> np.ndarray:
+        """CCA between embedded source and receiver cloud. Returns the
+        low-dimensional subspace where source maximally predicts receivers."""
+
+    def depth_asymmetry(self, source_ts, shallow_ts, deep_ts) -> dict:
+        """Compare [source; shallow] vs [source; deep] binding scores
+        using BindingDetector. Returns shallow/deep scores + asymmetry."""
+
+    def full_chain_emergence(self, source_ts, shallow_ts, deep_ts) -> dict:
+        """Test whether 3-way joint [C; A3; A5] has emergent topology
+        beyond max of pairwise bindings. Uses PI subtraction."""
+```
+
+**Visualization** (`att.cone.visualize`):
+```python
+def plot_availability_profile(profile, ax=None, show_betti_0=False) -> Figure
+def plot_coupling_sweep(coupling_values, profiles) -> Figure
+def plot_cross_sections(slices, diagrams, depths) -> Figure
+def plot_subspace_comparison(profile_full, profile_cca) -> Figure
+def plot_cascade_verification(trajectories, max_lag=500) -> Figure
+def plot_directed_vs_symmetric(profile_directed, profile_symmetric) -> Figure
+```
+
+**Design decisions**:
+- ConeDetector **composes with** (not inherits from) BindingDetector — different interface (multi-channel directed vs pairwise symmetric)
+- Conditional-mean PCA for axis estimation captures nonlinear axis structure that a simple centroid-to-centroid line would miss
+- Equal-count quantile bins for depth slicing ensure statistical power per bin
+- Betti counting uses a 10%-of-max-persistence threshold to filter topological noise
+- CCA subspace slicing indexes into pre-computed array (no re-projection needed per bin)
+
+**Key finding**: The cone appears in the CCA coupling-influence subspace (Betti_1 increases with depth) but not in the full Takens embedding. This supports the theoretical claim that the cone is a low-dimensional feature embedded in a high-dimensional attractor state space.
+
+---
+
 ### `att.synthetic`
 
 **Purpose**: Generate well-characterized chaotic time series for validation. All generators accept an optional `seed` parameter. If None, uses global seed state from `set_seed()`.
@@ -525,6 +593,27 @@ def switching_rossler(n_steps=20000, dt=0.01, switch_every=5000,
 def coupled_oscillators(n_oscillators=3, coupling_matrix=None, n_steps=10000,
                         seed=None) -> np.ndarray:
     """Kuramoto model variant with chaotic individual dynamics."""
+
+def aizawa_system(n_steps=10000, dt=0.01, alpha=0.95, beta=0.7, gamma=0.6,
+                  delta=3.5, epsilon=0.25, zeta=0.1, initial=None,
+                  noise=0.0, seed=None) -> np.ndarray:
+    """Aizawa attractor: spherical geometry with helical escape tube.
+    Chosen for cleaner cross-sections than Lorenz/Rossler.
+    Returns (n_steps, 3)."""
+
+def layered_aizawa_network(n_steps=80000, coupling_source=0.15,
+                           coupling_down=0.15, dt_layer2=0.005,
+                           dt_layer3=0.008, dt_layer5=0.012,
+                           seed=None) -> dict[str, np.ndarray]:
+    """5-node directed network: C->A3->A5, C->B3->B5.
+    Per-layer timescale separation, xy-only diffusive coupling.
+    Returns dict keyed by node name ('C','A3','B3','A5','B5')."""
+
+def layered_aizawa_network_symmetric(n_steps=80000, coupling_source=0.15,
+                                     coupling_down=0.15,
+                                     seed=None) -> dict[str, np.ndarray]:
+    """All-to-all symmetric variant for Experiment 5 control.
+    Frobenius-norm matched to directed topology."""
 ```
 
 ---

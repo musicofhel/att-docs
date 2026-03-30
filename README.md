@@ -98,7 +98,7 @@ pip install -e ".[dev]"
 | Module | Description |
 |--------|-------------|
 | `att.config` | Deterministic seeding, YAML experiment configs |
-| `att.synthetic` | Lorenz, Rossler, coupled oscillators (all seeded) |
+| `att.synthetic` | Lorenz, Rossler, Aizawa, Kuramoto, coupled oscillators, layered networks (all seeded) |
 | `att.embedding` | Takens delay embedding, AMI delay estimation, FNN dimension estimation, SVD validation |
 | `att.topology` | Persistent homology via Ripser/GUDHI, persistence images/landscapes |
 | `att.binding` | Joint-vs-marginal persistence image subtraction with significance testing |
@@ -106,6 +106,7 @@ pip install -e ".[dev]"
 | `att.surrogates` | Phase-randomized and time-shuffled surrogates |
 | `att.benchmarks` | Transfer entropy, PAC, CRQA comparison framework |
 | `att.neuro` | EEG/MEG loaders and preprocessing (requires `mne`) |
+| `att.cone` | Directed cross-layer projection geometry (ConeDetector, availability profiles) |
 | `att.viz` | Persistence diagrams, barcodes, Betti curves, 3D attractors, binding images |
 | `att.cli` | Command-line interface for benchmark sweeps |
 
