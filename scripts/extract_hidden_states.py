@@ -49,6 +49,35 @@ def load_math_dataset(seed: int = 42):
         except Exception as e:
             print(f"Could not load lighteval/MATH: {e}")
 
+    # Attempt 3: EleutherAI/hendrycks_math (per-subject configs)
+    if ds is None:
+        try:
+            from datasets import concatenate_datasets
+
+            configs = [
+                "algebra", "counting_and_probability", "geometry",
+                "intermediate_algebra", "number_theory", "prealgebra",
+                "precalculus",
+            ]
+            parts = []
+            for cfg in configs:
+                part = load_dataset("EleutherAI/hendrycks_math", cfg, split="test")
+                parts.append(part)
+            ds = concatenate_datasets(parts)
+            source = "EleutherAI/hendrycks_math (all configs)"
+            print(f"Loaded {len(ds)} problems from {source}")
+        except Exception as e:
+            print(f"Could not load EleutherAI/hendrycks_math: {e}")
+
+    # Attempt 4: HuggingFaceH4/MATH-500 (integer levels, 500 problems)
+    if ds is None:
+        try:
+            ds = load_dataset("HuggingFaceH4/MATH-500", split="test")
+            source = "HuggingFaceH4/MATH-500"
+            print(f"Loaded {len(ds)} problems from {source}")
+        except Exception as e:
+            print(f"Could not load HuggingFaceH4/MATH-500: {e}")
+
     if ds is None:
         print(
             "\nERROR: Could not load MATH dataset from HuggingFace.\n"
@@ -63,11 +92,14 @@ def load_math_dataset(seed: int = 42):
     problems_by_level: dict[int, list] = {k: [] for k in range(1, 6)}
 
     for row in ds:
-        level_str = row.get("level", "")
-        if not level_str:
+        level_raw = row.get("level", "")
+        if not level_raw and level_raw != 0:
             continue
         try:
-            level = int(level_str.replace("Level ", ""))
+            if isinstance(level_raw, int):
+                level = level_raw
+            else:
+                level = int(str(level_raw).replace("Level ", ""))
         except (ValueError, AttributeError):
             continue
         if 1 <= level <= 5:
@@ -124,7 +156,7 @@ def main():
     print(f"Device: {device}")
     if device.type == "cuda":
         print(f"GPU: {torch.cuda.get_device_name(0)}")
-        print(f"VRAM: {torch.cuda.get_device_properties(0).total_mem / 1e9:.1f} GB")
+        print(f"VRAM: {torch.cuda.get_device_properties(0).total_memory / 1e9:.1f} GB")
 
     # Load dataset
     problems = load_math_dataset(seed=args.seed)

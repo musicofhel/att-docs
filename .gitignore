@@ -39,6 +39,9 @@ data/eeg/
 # Precomputed outputs (regenerable)
 data/precomputed/
 
+# Transformer hidden states (large, regenerable)
+data/transformer/*.npz
+
 # Sphinx build output
 docs/_build/
 

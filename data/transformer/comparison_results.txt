@@ -1,0 +1,51 @@
+==========================================================================================
+COMPARISON: BASELINE (threshold=1e4) vs LINDNER (dimension-aware)
+==========================================================================================
+
+## Degeneracy Rate Comparison (Experiment 2)
+
+Level | Old Degen% | New Degen% | Delta  | Mean Cond | DimWarn? | PE(H1) Baseline | PE(H1) Lindner
+------|-----------|-----------|--------|-----------|---------|-----------------|---------------
+  1   |       0% |       0% |   +0% |       3.3 |      no |          2.1825 |         2.1825
+  2   |       0% |       0% |   +0% |       3.7 |      no |          2.5360 |         2.5360
+  3   |       0% |       0% |   +0% |       3.4 |      no |          2.4871 |         2.4871
+  4   |       0% |       0% |   +0% |       3.7 |      no |          2.8312 |         2.8312
+  5   |       0% |       0% |   +0% |       3.3 |      no |          2.7394 |         2.7394
+
+Spearman(difficulty, New Degen%): r=nan, p=nan
+Spearman(difficulty, Old Degen%): r=nan, p=nan
+
+## TopologyDimensionalityWarning Gradient
+Warnings by level: ['no', 'no', 'no', 'no', 'no']
+Top10% Energy:     ['0.8300', '0.8340', '0.8389', '0.8432', '0.8453']
+Warning gradient tracks sparsity gradient: YES
+
+## Effective Rank (Experiment 1 PH)
+  Level 1: eff_rank=50
+  Level 2: eff_rank=50
+  Level 3: eff_rank=50
+  Level 4: eff_rank=50
+  Level 5: eff_rank=50
+
+## Permutation Test (Experiment 4)
+Observed mean Wasserstein (baseline): 437.1385
+Observed mean Wasserstein (lindner):  437.1385
+Baseline p-value: 0.0050 (SIGNIFICANT)
+Lindner p-value:  0.0050 (SIGNIFICANT)
+Baseline z-score: 8.11
+Lindner z-score:  8.11
+
+## PE(H1) vs Top10% Energy Correlation
+Baseline PE(H1) vs Top10%E: r=0.643, p=0.2420
+Lindner  PE(H1) vs Top10%E: r=0.643, p=0.2420
+
+## Sparsity Baselines (shared)
+Spearman(difficulty, Top10%E): r=1.000, p=0.0000
+
+## Layer-wise Transition Ratios (Experiment 3)
+Level 1: terminal/non-terminal = 5.96x (baseline) / 5.96x (lindner)
+Level 5: terminal/non-terminal = 5.20x (baseline) / 5.20x (lindner)
+
+==========================================================================================
+END COMPARISON
+==========================================================================================
