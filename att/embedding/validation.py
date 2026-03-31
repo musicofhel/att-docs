@@ -11,7 +11,7 @@ class EmbeddingDegeneracyWarning(UserWarning):
 def validate_embedding(
     cloud: np.ndarray,
     expected_dim: int | None = None,
-    condition_threshold: float = 1e4,
+    condition_threshold: float | None = None,
 ) -> dict:
     """Check embedding quality via SVD of the centered point cloud matrix.
 
@@ -24,7 +24,9 @@ def validate_embedding(
     cloud : (n_points, dimension) array
     expected_dim : expected intrinsic dimension (informational only)
     condition_threshold : condition number above which embedding is flagged
-        as degenerate. Default 1e4 calibrated on coupled Rössler-Lorenz.
+        as degenerate. Default None uses dimension-aware threshold
+        max(10*d, 100) derived from Lindner et al. (PRR 2026) 1/N_dim
+        scaling. Pass explicit value to override.
 
     Returns
     -------
@@ -34,10 +36,15 @@ def validate_embedding(
         effective_rank: int (singular values > 1e-3 * σ_max)
         degenerate: bool
         warning: str | None
+        threshold_used: float
     """
     cloud = np.asarray(cloud)
     if cloud.ndim != 2:
         raise ValueError(f"Expected 2D array, got shape {cloud.shape}")
+
+    d = cloud.shape[1]
+    if condition_threshold is None:
+        condition_threshold = max(10 * d, 100)
 
     # Center the cloud
     centered = cloud - cloud.mean(axis=0)
@@ -71,6 +78,7 @@ def validate_embedding(
         "effective_rank": effective_rank,
         "degenerate": degenerate,
         "warning": warning_msg,
+        "threshold_used": float(condition_threshold),
     }
 
 

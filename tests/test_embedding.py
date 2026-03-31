@@ -151,6 +151,33 @@ class TestValidateEmbedding:
         assert len(result["singular_values"]) == 3
 
 
+    def test_dimension_aware_threshold_default(self):
+        """d=6 cloud → threshold_used=100; d=50 cloud → threshold_used=500."""
+        rng = np.random.default_rng(42)
+        cloud_6 = rng.standard_normal((200, 6))
+        result_6 = validate_embedding(cloud_6)
+        assert result_6["threshold_used"] == 100.0  # max(10*6, 100) = 100
+
+        cloud_50 = rng.standard_normal((200, 50))
+        result_50 = validate_embedding(cloud_50)
+        assert result_50["threshold_used"] == 500.0  # max(10*50, 100) = 500
+
+    def test_explicit_threshold_overrides(self):
+        """Explicit condition_threshold=1e4 → threshold_used=1e4."""
+        rng = np.random.default_rng(42)
+        cloud = rng.standard_normal((200, 6))
+        result = validate_embedding(cloud, condition_threshold=1e4)
+        assert result["threshold_used"] == 1e4
+
+    def test_threshold_in_result(self):
+        """Verify 'threshold_used' key in returned dict."""
+        rng = np.random.default_rng(42)
+        cloud = rng.standard_normal((100, 3))
+        result = validate_embedding(cloud)
+        assert "threshold_used" in result
+        assert isinstance(result["threshold_used"], float)
+
+
 class TestSvdEmbedding:
     def test_basic(self):
         ts = np.sin(np.linspace(0, 100, 5000))

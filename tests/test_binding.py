@@ -7,7 +7,7 @@ import pytest
 from att.config import set_seed
 from att.synthetic import coupled_lorenz, coupled_rossler_lorenz
 from att.embedding.validation import EmbeddingDegeneracyWarning
-from att.binding import BindingDetector
+from att.binding import BindingDetector, SurrogateMethodWarning
 
 
 @pytest.fixture
@@ -478,6 +478,98 @@ class TestBindingEdgeCases:
         assert "surrogate_std" in result
         assert isinstance(result["z_score"], float)
         assert isinstance(result["calibrated_score"], float)
+
+    def test_kernel_diagnostics_keys(self, coupled_pair):
+        """kernel_diagnostics() should return all expected keys after fit()."""
+        det = BindingDetector(max_dim=1)
+        det.fit(*coupled_pair, subsample=500, seed=42)
+        kd = det.kernel_diagnostics()
+        for name in ("marginal_x", "marginal_y", "joint"):
+            assert name in kd
+            for key in ("mean_dist", "var_dist", "heterogeneity"):
+                assert key in kd[name]
+        assert "perturbative_regime" in kd
+        assert "max_heterogeneity" in kd
+        assert isinstance(kd["perturbative_regime"], bool)
+
+    def test_kernel_diagnostics_perturbative(self, coupled_pair):
+        """Coupled Lorenz joint cloud heterogeneity should be below 0.5."""
+        det = BindingDetector(max_dim=1)
+        det.fit(*coupled_pair, subsample=500, seed=42)
+        kd = det.kernel_diagnostics()
+        # Joint embedding has lower heterogeneity than marginals
+        assert kd["joint"]["heterogeneity"] < 0.5
+        assert kd["max_heterogeneity"] > 0
+
+    def test_kernel_diagnostics_before_fit(self):
+        """kernel_diagnostics() before fit() should raise RuntimeError."""
+        det = BindingDetector(max_dim=1)
+        with pytest.raises(RuntimeError, match="fit"):
+            det.kernel_diagnostics()
+
+    def test_residual_energy_fraction_key(self, coupled_pair):
+        """binding_features() should include residual_energy_fraction for each dim."""
+        det = BindingDetector(max_dim=1)
+        det.fit(*coupled_pair, subsample=500, seed=42)
+        features = det.binding_features()
+        for d in (0, 1):
+            assert "residual_energy_fraction" in features[d]
+            assert isinstance(features[d]["residual_energy_fraction"], float)
+
+    def test_residual_energy_fraction_uncoupled(self, uncoupled_pair):
+        """Uncoupled: H1 residual energy fraction should be non-negative and bounded."""
+        det = BindingDetector(max_dim=1, baseline="max")
+        det.fit(*uncoupled_pair, subsample=500, seed=42)
+        features = det.binding_features()
+        frac = features[1]["residual_energy_fraction"]
+        assert 0.0 <= frac <= 1.0, f"H1 fraction {frac} outside [0, 1]"
+
+    def test_residual_energy_fraction_coupled(self, coupled_pair):
+        """Coupled: H1 residual energy fraction should be positive and bounded."""
+        det = BindingDetector(max_dim=1, baseline="max")
+        det.fit(*coupled_pair, subsample=500, seed=42)
+        features = det.binding_features()
+        frac = features[1]["residual_energy_fraction"]
+        assert 0.0 < frac <= 1.0, f"H1 fraction {frac} outside (0, 1]"
+
+    def test_surrogate_acf_warning(self):
+        """Cumulative-sum noise (acf > 0.99) with time_shuffle should warn."""
+        rng = np.random.default_rng(42)
+        x = np.cumsum(rng.standard_normal(3000))
+        y = np.cumsum(rng.standard_normal(3000))
+        det = BindingDetector(max_dim=1)
+        det.fit(x, y, subsample=300, seed=42)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            det.test_significance(n_surrogates=3, method="time_shuffle", seed=42, subsample=300)
+            acf_warnings = [x for x in w if issubclass(x.category, SurrogateMethodWarning)]
+            assert len(acf_warnings) > 0, "Should warn about autocorrelation"
+
+    def test_surrogate_acf_silent_phase(self):
+        """Same autocorrelated data with phase_randomize should not warn."""
+        rng = np.random.default_rng(42)
+        x = np.cumsum(rng.standard_normal(3000))
+        y = np.cumsum(rng.standard_normal(3000))
+        det = BindingDetector(max_dim=1)
+        det.fit(x, y, subsample=300, seed=42)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            det.test_significance(n_surrogates=3, method="phase_randomize", seed=42, subsample=300)
+            acf_warnings = [x for x in w if issubclass(x.category, SurrogateMethodWarning)]
+            assert len(acf_warnings) == 0
+
+    def test_surrogate_acf_silent_white(self):
+        """White noise with time_shuffle should not warn."""
+        rng = np.random.default_rng(42)
+        x = rng.standard_normal(3000)
+        y = rng.standard_normal(3000)
+        det = BindingDetector(max_dim=1)
+        det.fit(x, y, subsample=300, seed=42)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            det.test_significance(n_surrogates=3, method="time_shuffle", seed=42, subsample=300)
+            acf_warnings = [x for x in w if issubclass(x.category, SurrogateMethodWarning)]
+            assert len(acf_warnings) == 0
 
     def test_cached_params_used_in_surrogates(self, coupled_pair):
         """After fit(), surrogate computation reuses embedding params."""

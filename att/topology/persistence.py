@@ -1,7 +1,14 @@
 """Persistent homology computation via Ripser/GUDHI."""
 
+import warnings
+
 import numpy as np
 from att.config.seed import get_rng
+
+
+class TopologyDimensionalityWarning(UserWarning):
+    """Issued when point cloud effective rank is below minimum for stable PH."""
+    pass
 
 
 class PersistenceAnalyzer:
@@ -38,6 +45,7 @@ class PersistenceAnalyzer:
         cloud: np.ndarray,
         subsample: int | None = None,
         seed: int | None = None,
+        min_effective_dim: int = 5,
     ) -> dict:
         """Compute persistence diagrams and derived representations.
 
@@ -60,6 +68,19 @@ class PersistenceAnalyzer:
             cloud = cloud[indices]
 
         self._cloud = cloud
+
+        # Effective dimensionality check
+        centered = cloud - cloud.mean(axis=0)
+        sv = np.linalg.svd(centered, compute_uv=False)
+        effective_rank = int(np.sum(sv > 1e-3 * sv[0])) if len(sv) > 0 and sv[0] > 0 else 0
+
+        if effective_rank < min_effective_dim:
+            warnings.warn(
+                f"Point cloud effective dimensionality ({effective_rank}) below "
+                f"minimum ({min_effective_dim}). Topological features may reflect "
+                f"sampling noise rather than manifold structure.",
+                TopologyDimensionalityWarning,
+            )
 
         if self.backend == "ripser":
             diagrams = self._ripser_compute(cloud)
@@ -87,6 +108,7 @@ class PersistenceAnalyzer:
             "bottleneck_norms": bottleneck_norms,
             "persistence_images": persistence_images,
             "persistence_landscapes": persistence_landscapes,
+            "effective_rank": effective_rank,
         }
 
     def _ripser_compute(self, cloud: np.ndarray) -> list[np.ndarray]:

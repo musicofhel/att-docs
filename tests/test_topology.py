@@ -1,12 +1,14 @@
 """Tests for att.topology — persistent homology computation."""
 
+import warnings
+
 import numpy as np
 import pytest
 
 from att.config import set_seed
 from att.synthetic import lorenz_system, rossler_system
 from att.embedding import TakensEmbedder
-from att.topology import PersistenceAnalyzer
+from att.topology import PersistenceAnalyzer, TopologyDimensionalityWarning
 
 
 class TestPersistenceAnalyzer:
@@ -185,3 +187,40 @@ class TestTopologyEdgeCases:
         assert isinstance(dist, float)
         assert np.isfinite(dist)
         assert dist >= 0
+
+
+class TestDimensionalityWarning:
+    """Tests for effective dimensionality warning in fit_transform."""
+
+    def test_dimensionality_warning_fires(self):
+        """50d cloud living on 3d manifold should trigger warning."""
+        rng = np.random.default_rng(42)
+        # Create a 50d cloud with only 3 effective dimensions
+        base = rng.standard_normal((200, 3))
+        cloud = base @ rng.standard_normal((3, 50))
+        pa = PersistenceAnalyzer(max_dim=1)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            pa.fit_transform(cloud, subsample=100, seed=42)
+            dim_warnings = [x for x in w if issubclass(x.category, TopologyDimensionalityWarning)]
+            assert len(dim_warnings) > 0, "Should warn about low effective dimensionality"
+
+    def test_dimensionality_warning_silent(self):
+        """Well-spread 10d cloud should not trigger warning."""
+        rng = np.random.default_rng(42)
+        cloud = rng.standard_normal((200, 10))
+        pa = PersistenceAnalyzer(max_dim=1)
+        with warnings.catch_warnings(record=True) as w:
+            warnings.simplefilter("always")
+            pa.fit_transform(cloud, subsample=100, seed=42)
+            dim_warnings = [x for x in w if issubclass(x.category, TopologyDimensionalityWarning)]
+            assert len(dim_warnings) == 0
+
+    def test_effective_rank_in_result(self):
+        """effective_rank should be present and an int."""
+        rng = np.random.default_rng(42)
+        cloud = rng.standard_normal((200, 5))
+        pa = PersistenceAnalyzer(max_dim=1)
+        result = pa.fit_transform(cloud, subsample=100, seed=42)
+        assert "effective_rank" in result
+        assert isinstance(result["effective_rank"], int)

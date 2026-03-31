@@ -9,6 +9,11 @@ from att.embedding.validation import validate_embedding, EmbeddingDegeneracyWarn
 from att.topology.persistence import PersistenceAnalyzer
 
 
+class SurrogateMethodWarning(UserWarning):
+    """Issued when time_shuffle is used on strongly autocorrelated data."""
+    pass
+
+
 class BindingDetector:
     """Detect topological binding between coupled dynamical systems.
 
@@ -323,10 +328,16 @@ class BindingDetector:
         features = {}
         for d, residual in enumerate(self._residual_images):
             positive = np.maximum(residual, 0)
+            joint_img = self._images_joint[d]
+            joint_energy = float(np.sum(joint_img ** 2))
+            residual_energy = float(np.sum(positive ** 2))
+            fraction = residual_energy / joint_energy if joint_energy > 1e-15 else 0.0
+
             features[d] = {
                 "n_excess": int(np.sum(positive > 1e-10)),
                 "total_persistence": float(np.sum(positive)),
                 "max_persistence": float(np.max(positive)) if positive.max() > 0 else 0.0,
+                "residual_energy_fraction": float(fraction),
             }
         return features
 
@@ -361,6 +372,39 @@ class BindingDetector:
         """
         self._check_fitted()
         return self._embedding_quality
+
+    def kernel_diagnostics(self) -> dict:
+        """Kernel heterogeneity indices for the three point clouds.
+
+        For each cloud, computes mean and variance of pairwise squared
+        distances. The heterogeneity index (var / mean²) indicates whether
+        the analysis is in the perturbative regime where persistence image
+        subtraction is theoretically grounded (Lindner et al., PRR 2026).
+
+        Returns
+        -------
+        dict with marginal_x, marginal_y, joint (each: mean_dist, var_dist,
+        heterogeneity), plus perturbative_regime (bool) and max_heterogeneity.
+        """
+        self._check_fitted()
+        from scipy.spatial.distance import pdist
+
+        results = {}
+        for name, cloud in [
+            ("marginal_x", self._cloud_x),
+            ("marginal_y", self._cloud_y),
+            ("joint", self._cloud_joint),
+        ]:
+            dists = pdist(cloud, metric="sqeuclidean")
+            mu = float(np.mean(dists))
+            var = float(np.var(dists))
+            het = var / (mu ** 2) if mu > 1e-15 else float("inf")
+            results[name] = {"mean_dist": mu, "var_dist": var, "heterogeneity": het}
+
+        max_het = max(r["heterogeneity"] for r in results.values())
+        results["perturbative_regime"] = bool(max_het < 0.5)
+        results["max_heterogeneity"] = float(max_het)
+        return results
 
     def test_significance(
         self,
@@ -408,6 +452,18 @@ class BindingDetector:
                 f"Unknown method: {method}. "
                 "Use 'phase_randomize', 'time_shuffle', or 'twin_surrogate'."
             )
+
+        if method == "time_shuffle":
+            for label, ts in [("X", self._X_raw), ("Y", self._Y_raw)]:
+                if len(ts) > 1:
+                    acf1 = float(np.corrcoef(ts[:-1], ts[1:])[0, 1])
+                    if acf1 > 0.9:
+                        warnings.warn(
+                            f"Time series {label} has lag-1 autocorrelation "
+                            f"{acf1:.3f}. time_shuffle surrogates assume i.i.d. "
+                            f"samples. Use method='phase_randomize' instead.",
+                            SurrogateMethodWarning,
+                        )
 
         if method == "twin_surrogate":
             surr_Y = twin_surrogate(self._Y_raw, n_surrogates=n_surrogates, seed=seed)
