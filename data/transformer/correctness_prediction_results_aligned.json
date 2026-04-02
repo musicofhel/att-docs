@@ -1,0 +1,48 @@
+{
+  "overall_auroc": 0.7872061482820977,
+  "overall_auroc_std": 0.09468283889818009,
+  "overall_accuracy": 0.9145682972467254,
+  "n_problems": 433,
+  "n_correct": 38,
+  "per_level": {
+    "1": {
+      "auroc": 0.7571428571428572,
+      "n": 43,
+      "n_correct": 10
+    },
+    "2": {
+      "auroc": 0.6912698412698413,
+      "n": 90,
+      "n_correct": 16
+    },
+    "3": {
+      "auroc": 0.7418128654970761,
+      "n": 100,
+      "n_correct": 8
+    },
+    "4": {
+      "auroc": 0.6672979797979798,
+      "n": 100,
+      "n_correct": 3
+    },
+    "5": {
+      "auroc": null,
+      "n": 100,
+      "n_correct": 1
+    }
+  },
+  "top_features": {
+    "H0_persistence_entropy": 0.8242323947428665,
+    "H1_max_lifetime": 0.8028582881164085,
+    "H0_total_persistence": 0.6747261203047039,
+    "H0_n_features": 0.5138302758586152,
+    "H0_std_lifetime": 0.36299031753199107,
+    "H1_std_lifetime": 0.3358010476941086,
+    "H1_mean_birth": 0.3106287817615123,
+    "H1_persistence_entropy": 0.26856610808571285,
+    "H1_max_birth": 0.26835557944371025,
+    "H1_mean_lifetime": 0.22562193498366984
+  },
+  "alignment": "pool-index matching via MATH-500 + seed=42",
+  "old_auroc_mismatched": 0.58
+}

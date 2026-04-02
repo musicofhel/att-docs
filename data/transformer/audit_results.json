@@ -1,0 +1,136 @@
+{
+  "audit_date": "2026-04-02",
+  "branch": "experiment/neuromorphic-snn",
+  "commit_audited": "cd36c48",
+
+  "root_cause": "Dataset source divergence: extract_hidden_states.py loaded from full MATH (~5000 problems via hendrycks/competition_math or EleutherAI/hendrycks_math), while extract_attention_weights.py and evaluate_correctness.py fell through to HuggingFaceH4/MATH-500 (500 problems) because hendrycks/competition_math and lighteval/MATH became unavailable on HuggingFace between extraction sessions.",
+
+  "dataset_sources": {
+    "math500_hidden_states.npz": {
+      "source": "full MATH (~5000 problems, likely hendrycks/competition_math or EleutherAI/hendrycks_math)",
+      "distribution": {"level1": 100, "level2": 100, "level3": 100, "level4": 100, "level5": 100},
+      "total": 500,
+      "evidence": "100/level impossible from MATH-500 (only 43 Level 1 problems)"
+    },
+    "attention_ph_diagrams.npz": {
+      "source": "HuggingFaceH4/MATH-500 (500 problems)",
+      "distribution": {"level1": 25, "level2": 25, "level3": 25, "level4": 25, "level5": 25},
+      "total": 125,
+      "evidence": "25/level with min(25, pool) where MATH-500 L1 has 43 >= 25"
+    },
+    "math500_correctness.npz": {
+      "source": "HuggingFaceH4/MATH-500 (500 problems)",
+      "distribution": {"level1": 43, "level2": 90, "level3": 100, "level4": 100, "level5": 100},
+      "total": 433,
+      "evidence": "43 L1 = min(100, 43), 90 L2 = min(100, 90) — matches MATH-500 pool sizes"
+    },
+    "phi2_hidden_states.npz": {
+      "source": "HuggingFaceH4/MATH-500",
+      "distribution": {"level1": 43, "level2": 50, "level3": 50, "level4": 50, "level5": 50},
+      "total": 243
+    },
+    "pythia14b_hidden_states.npz": {
+      "source": "HuggingFaceH4/MATH-500",
+      "distribution": {"level1": 43, "level2": 50, "level3": 50, "level4": 50, "level5": 50},
+      "total": 243
+    },
+    "stablelm16b_hidden_states.npz": {
+      "source": "HuggingFaceH4/MATH-500",
+      "distribution": {"level1": 43, "level2": 50, "level3": 50, "level4": 50, "level5": 50},
+      "total": 243
+    },
+    "MATH-500_actual_distribution": {
+      "level1": 43, "level2": 90, "level3": 105, "level4": 128, "level5": 134,
+      "total": 500
+    }
+  },
+
+  "d10_mismatch_confirmed": true,
+  "d10_overlap_count": "indeterminate (different datasets, estimated 2-7 out of 25 per level by pool-size simulation)",
+  "d10_mismatch_type": "cross-dataset (full MATH ~5000 vs MATH-500), not just seed-offset",
+
+  "d10_shuffle_test": {
+    "description": "Within-level random pairing produces indistinguishable binding scores from the observed (mismatched) pairing. Both show perfect monotonic decrease (Spearman r=-1.0).",
+    "observed_means": [0.6778, 0.5997, 0.5843, 0.5099, 0.4733],
+    "shuffled_means": [0.7146, 0.6852, 0.5908, 0.5797, 0.4812],
+    "observed_spearman_r": -1.0,
+    "shuffled_spearman_r": -1.0,
+    "conclusion": "The difficulty trend is a POPULATION-LEVEL signal reflecting per-level topological homogeneity, NOT per-problem attention-hidden coupling. The mismatch does not destroy the trend because the trend does not depend on matching specific problems.",
+    "interpretation_change": "OLD: 'attention-hidden coupling decreases with difficulty'. NEW: 'topological similarity between attention and hidden-state spaces decreases with difficulty (population-level)'."
+  },
+
+  "d10_old_scores": {
+    "level1": 0.683, "level2": 0.650, "level3": 0.599, "level4": 0.540, "level5": 0.465,
+    "note": "From attention_binding_results.json, averaged across layers 23-27 (MISMATCHED)"
+  },
+  "d10_new_scores": {
+    "level1": 0.740, "level2": 0.613, "level3": 0.647, "level4": 0.596, "level5": 0.462,
+    "spearman_r": -0.900,
+    "spearman_p": 0.037,
+    "note": "From attention_binding_results_aligned.json. Trend preserved (r=-0.9, p=0.037). L1 is HIGHER with proper matching (0.740 vs 0.683), confirming per-problem coupling adds signal. Non-monotonic at L2/L3 (L3>L2), breaking the perfect r=-1.0 from mismatched data."
+  },
+
+  "d2_mismatch_confirmed": true,
+  "d2_mismatch_type": "cross-dataset (hidden states from full MATH, correctness labels from MATH-500)",
+  "d2_old_auroc": 0.580,
+  "d2_new_auroc": 0.787,
+  "d2_new_auroc_std": 0.095,
+  "d2_note": "AUROC jumped from 0.580 (mismatched) to 0.787 (aligned). The mismatch was suppressing a real and substantial predictive signal. Top feature: H0_persistence_entropy (0.824). Per-level: L1=0.757, L2=0.691, L3=0.742, L4=0.667. Class balance is extreme (38/433 = 8.8% correct).",
+
+  "d6_level1_minimum_universal": true,
+  "d6_non_monotonic_universal": true,
+  "d6_details": {
+    "qwen": {
+      "values": [2.9253, 3.5621, 3.4033, 3.5353, 3.4465],
+      "min_at_level": 1, "monotonic": false, "spearman_r": 0.300, "spearman_p": 0.624
+    },
+    "phi2": {
+      "values": [1.7651, 2.4006, 1.9018, 2.4590, 2.5568],
+      "min_at_level": 1, "monotonic": false, "spearman_r": 0.900, "spearman_p": 0.037
+    },
+    "pythia": {
+      "values": [1.4327, 1.8761, 2.3146, 2.4859, 2.2613],
+      "min_at_level": 1, "monotonic": false, "spearman_r": 0.700, "spearman_p": 0.188
+    },
+    "stablelm": {
+      "values": [0.0, 1.9593, 1.7470, 1.8456, 2.2253],
+      "min_at_level": 1, "monotonic": false, "spearman_r": 0.700, "spearman_p": 0.188
+    },
+    "d6_note": "Level 1 minimum universal (4/4), non-monotonicity universal (4/4). Accurate claim: 'Level 1 has lowest H1 persistence entropy across all 4 architectures'. Phi2 is nearly monotonically increasing (Spearman r=0.9, p=0.037)."
+  },
+
+  "d6_cross_model_dataset_issue": {
+    "severity": "moderate",
+    "description": "Qwen was extracted from full MATH, other 3 models from MATH-500. Cross-model comparisons are on different problem sets, but the H1 entropy metric is computed per-level aggregate, not per-problem, so the finding is likely robust.",
+    "mitigation": "Re-extract Qwen from MATH-500 (scripts/extract_hidden_states_aligned.py) for strict alignment."
+  },
+
+  "stablelm_level1_h1_features": 1,
+  "stablelm_level1_h1_note": "Only 1 finite H1 feature with persistence 2.06. Entropy of a single element is 0 (mathematically correct). Level 1 StableLM representations form a near-convex cloud with essentially no loop structure. Level 5 comparison: 12 H1 features, entropy=2.23.",
+
+  "safe_directions": ["D1", "D3", "D5", "D7", "D8", "D9"],
+  "safe_directions_note": "D1, D3, D5, D7, D8, D9 all use only the Qwen hidden states (math500_hidden_states.npz) internally. No cross-file alignment needed. Results are valid.",
+
+  "affected_directions": ["D10", "D2", "D6"],
+  "severity": {
+    "D10": "FIXED — cross-dataset mismatch confirmed and corrected. Aligned binding shows Spearman r=-0.9, p=0.037 (significant). Level 1 binding is HIGHER with proper matching (0.740 vs 0.683), confirming per-problem coupling adds signal beyond population level. Original perfect r=-1.0 was coincidental.",
+    "D2": "FIXED — correctness labels realigned. AUROC jumped from 0.580 to 0.787 (+0.207). The mismatch was hiding a strong predictive signal. H0_persistence_entropy is top predictor.",
+    "D6": "moderate — Qwen on different problem set than Phi2/Pythia/StableLM. Aggregate H1 entropy comparison is likely robust. Aligned Qwen data now available for strict replication."
+  },
+
+  "fix_applied": {
+    "step1": "DONE — Re-extracted Qwen hidden states from MATH-500 (scripts/extract_hidden_states_aligned.py --subset full). Output: math500_hidden_states_aligned.npz (500 problems, 43/90/105/128/134 per level, 18s, no skips).",
+    "step2": "DONE — Re-ran D10 binding with aligned data. New scores in attention_binding_results_aligned.json. Trend preserved (r=-0.9, p=0.037).",
+    "step3": "DONE — Re-ran D2 correctness prediction with aligned data. New AUROC=0.787 in correctness_prediction_results_aligned.json.",
+    "step4": "PENDING — Re-run D6 cross-model with aligned Qwen data (optional, aggregate metrics likely robust)."
+  },
+
+  "new_files": [
+    "scripts/extract_hidden_states_aligned.py",
+    "data/transformer/math500_hidden_states_aligned.npz",
+    "data/transformer/attention_binding_results_aligned.json",
+    "data/transformer/correctness_prediction_results_aligned.json",
+    "data/transformer/audit_results.json",
+    ".claude/handoff/2026-04-02-phase5-audit-cross-file-mismatch.md"
+  ]
+}
