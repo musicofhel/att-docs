@@ -1,0 +1,21 @@
+\begin{table}[htbp]
+\centering
+\caption{TDA-LLM Analysis Summary: 10 Directions on Qwen2.5-1.5B}
+\label{tab:tda-llm-summary}
+\begin{tabular}{llll}
+\toprule
+Direction & Key Metric & Value & Significance \\
+\midrule
+D1 Per-layer z-score & Peak z-score & 8.12 & Layer 28 \\
+Phase 5 Wasserstein & z-score & 8.11 & p=0.0050 \\
+D2 Correctness pred. & AUROC / Accuracy & 0.580 / 0.912 & 16 features \\
+D5 CROCKER & L1 dist (easy$\rightarrow$hard) & 43.0 & gradient=monotonic \\
+D7 Intrinsic dim & Terminal ID (L1$\rightarrow$L5) & 6.7$\rightarrow$12.0 & monotonic \\
+D9 Compression & Pattern & compression & --- \\
+D6 Cross-model & Terminal effect & 1/4 replicate & H1 non-mono: 4/4 \\
+D3 Spectral PH & Eucl vs Spec H1 features & 29 vs 1 & Euclidean richer \\
+D8 Token topology & Best region & problem & $|\Delta|$=0.815 \\
+D10 Attn-hidden binding & Coupling (L1$\rightarrow$L5) & 0.683$\rightarrow$0.465 & monotonic $\downarrow$ \\
+\bottomrule
+\end{tabular}
+\end{table}

@@ -1,0 +1,2902 @@
+{
+  "L1_Ly0": {
+    "0": {
+      "total_persistence": 1.1889353502304258,
+      "n_features": 73,
+      "mean_lifetime": 0.016286785619594873,
+      "max_lifetime": 1.188931941986084
+    },
+    "1": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "2": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    }
+  },
+  "L1_Ly1": {
+    "0": {
+      "total_persistence": 94.91663441061974,
+      "n_features": 99,
+      "mean_lifetime": 0.9587538829355529,
+      "max_lifetime": 13.894800186157227
+    },
+    "1": {
+      "total_persistence": 1.6316401362419128,
+      "n_features": 29,
+      "mean_lifetime": 0.05626345297385906,
+      "max_lifetime": 0.14324486255645752
+    },
+    "2": {
+      "total_persistence": 0.06681311130523682,
+      "n_features": 3,
+      "mean_lifetime": 0.022271037101745605,
+      "max_lifetime": 0.04043543338775635
+    }
+  },
+  "L1_Ly2": {
+    "0": {
+      "total_persistence": 126.58518454432487,
+      "n_features": 99,
+      "mean_lifetime": 1.2786382277204533,
+      "max_lifetime": 16.76914405822754
+    },
+    "1": {
+      "total_persistence": 1.977902591228485,
+      "n_features": 33,
+      "mean_lifetime": 0.05993644215843894,
+      "max_lifetime": 0.25119102001190186
+    },
+    "2": {
+      "total_persistence": 0.10832905769348145,
+      "n_features": 3,
+      "mean_lifetime": 0.03610968589782715,
+      "max_lifetime": 0.06097710132598877
+    }
+  },
+  "L1_Ly3": {
+    "0": {
+      "total_persistence": 179.9539985358715,
+      "n_features": 99,
+      "mean_lifetime": 1.817717156927995,
+      "max_lifetime": 25.08517837524414
+    },
+    "1": {
+      "total_persistence": 2.667198061943054,
+      "n_features": 29,
+      "mean_lifetime": 0.0919723469635536,
+      "max_lifetime": 0.30587708950042725
+    },
+    "2": {
+      "total_persistence": 0.024777650833129883,
+      "n_features": 1,
+      "mean_lifetime": 0.024777650833129883,
+      "max_lifetime": 0.024777650833129883
+    }
+  },
+  "L1_Ly4": {
+    "0": {
+      "total_persistence": 217.27097316086292,
+      "n_features": 99,
+      "mean_lifetime": 2.194656294554171,
+      "max_lifetime": 28.855560302734375
+    },
+    "1": {
+      "total_persistence": 2.745283365249634,
+      "n_features": 29,
+      "mean_lifetime": 0.09466494362929771,
+      "max_lifetime": 0.49050283432006836
+    },
+    "2": {
+      "total_persistence": 0.053121328353881836,
+      "n_features": 3,
+      "mean_lifetime": 0.017707109451293945,
+      "max_lifetime": 0.03072071075439453
+    }
+  },
+  "L1_Ly5": {
+    "0": {
+      "total_persistence": 233.93985229730606,
+      "n_features": 99,
+      "mean_lifetime": 2.3630288110838995,
+      "max_lifetime": 31.374889373779297
+    },
+    "1": {
+      "total_persistence": 3.2102521657943726,
+      "n_features": 26,
+      "mean_lifetime": 0.12347123714593741,
+      "max_lifetime": 0.43756651878356934
+    },
+    "2": {
+      "total_persistence": 0.009625673294067383,
+      "n_features": 1,
+      "mean_lifetime": 0.009625673294067383,
+      "max_lifetime": 0.009625673294067383
+    }
+  },
+  "L1_Ly6": {
+    "0": {
+      "total_persistence": 253.31743821501732,
+      "n_features": 99,
+      "mean_lifetime": 2.558762002171892,
+      "max_lifetime": 31.737619400024414
+    },
+    "1": {
+      "total_persistence": 3.8758429288864136,
+      "n_features": 25,
+      "mean_lifetime": 0.15503371715545655,
+      "max_lifetime": 0.3883845806121826
+    },
+    "2": {
+      "total_persistence": 0.1347672939300537,
+      "n_features": 2,
+      "mean_lifetime": 0.06738364696502686,
+      "max_lifetime": 0.11903166770935059
+    }
+  },
+  "L1_Ly7": {
+    "0": {
+      "total_persistence": 253.92484943568707,
+      "n_features": 99,
+      "mean_lifetime": 2.5648974690473443,
+      "max_lifetime": 32.650203704833984
+    },
+    "1": {
+      "total_persistence": 3.719883680343628,
+      "n_features": 28,
+      "mean_lifetime": 0.132852988583701,
+      "max_lifetime": 0.44168782234191895
+    },
+    "2": {
+      "total_persistence": 0.048221588134765625,
+      "n_features": 2,
+      "mean_lifetime": 0.024110794067382812,
+      "max_lifetime": 0.030363082885742188
+    }
+  },
+  "L1_Ly8": {
+    "0": {
+      "total_persistence": 285.77645540237427,
+      "n_features": 99,
+      "mean_lifetime": 2.8866308626502453,
+      "max_lifetime": 37.087867736816406
+    },
+    "1": {
+      "total_persistence": 3.7247378826141357,
+      "n_features": 26,
+      "mean_lifetime": 0.14325914933131292,
+      "max_lifetime": 0.4214308261871338
+    },
+    "2": {
+      "total_persistence": 0.31270575523376465,
+      "n_features": 4,
+      "mean_lifetime": 0.07817643880844116,
+      "max_lifetime": 0.250917911529541
+    }
+  },
+  "L1_Ly9": {
+    "0": {
+      "total_persistence": 314.7632305920124,
+      "n_features": 99,
+      "mean_lifetime": 3.179426571636489,
+      "max_lifetime": 37.618648529052734
+    },
+    "1": {
+      "total_persistence": 4.538392066955566,
+      "n_features": 29,
+      "mean_lifetime": 0.1564962781708816,
+      "max_lifetime": 0.5344593524932861
+    },
+    "2": {
+      "total_persistence": 0.25336599349975586,
+      "n_features": 6,
+      "mean_lifetime": 0.04222766558329264,
+      "max_lifetime": 0.13004589080810547
+    }
+  },
+  "L1_Ly10": {
+    "0": {
+      "total_persistence": 360.8149821162224,
+      "n_features": 99,
+      "mean_lifetime": 3.644595778951741,
+      "max_lifetime": 43.16279602050781
+    },
+    "1": {
+      "total_persistence": 5.272758960723877,
+      "n_features": 31,
+      "mean_lifetime": 0.1700889987330283,
+      "max_lifetime": 0.5157637596130371
+    },
+    "2": {
+      "total_persistence": 0.6389904022216797,
+      "n_features": 6,
+      "mean_lifetime": 0.10649840037027995,
+      "max_lifetime": 0.1991286277770996
+    }
+  },
+  "L1_Ly11": {
+    "0": {
+      "total_persistence": 400.86259028315544,
+      "n_features": 99,
+      "mean_lifetime": 4.049117073567227,
+      "max_lifetime": 46.54841613769531
+    },
+    "1": {
+      "total_persistence": 6.592649936676025,
+      "n_features": 32,
+      "mean_lifetime": 0.2060203105211258,
+      "max_lifetime": 0.7029690742492676
+    },
+    "2": {
+      "total_persistence": 0.2161855697631836,
+      "n_features": 5,
+      "mean_lifetime": 0.04323711395263672,
+      "max_lifetime": 0.10834980010986328
+    }
+  },
+  "L1_Ly12": {
+    "0": {
+      "total_persistence": 398.43947353959084,
+      "n_features": 99,
+      "mean_lifetime": 4.024641146864554,
+      "max_lifetime": 48.56343078613281
+    },
+    "1": {
+      "total_persistence": 5.307119846343994,
+      "n_features": 26,
+      "mean_lifetime": 0.20411999409015363,
+      "max_lifetime": 0.4290323257446289
+    },
+    "2": {
+      "total_persistence": 0.2488083839416504,
+      "n_features": 4,
+      "mean_lifetime": 0.0622020959854126,
+      "max_lifetime": 0.11744308471679688
+    }
+  },
+  "L1_Ly13": {
+    "0": {
+      "total_persistence": 411.48983004689217,
+      "n_features": 99,
+      "mean_lifetime": 4.156462929766588,
+      "max_lifetime": 49.857704162597656
+    },
+    "1": {
+      "total_persistence": 6.562832355499268,
+      "n_features": 33,
+      "mean_lifetime": 0.19887370774240204,
+      "max_lifetime": 0.5700173377990723
+    },
+    "2": {
+      "total_persistence": 0.8403506278991699,
+      "n_features": 5,
+      "mean_lifetime": 0.16807012557983397,
+      "max_lifetime": 0.38045740127563477
+    }
+  },
+  "L1_Ly14": {
+    "0": {
+      "total_persistence": 464.9272997677326,
+      "n_features": 99,
+      "mean_lifetime": 4.696235351189219,
+      "max_lifetime": 53.4524040222168
+    },
+    "1": {
+      "total_persistence": 6.97304892539978,
+      "n_features": 30,
+      "mean_lifetime": 0.23243496417999268,
+      "max_lifetime": 0.654820442199707
+    },
+    "2": {
+      "total_persistence": 0.5292577743530273,
+      "n_features": 5,
+      "mean_lifetime": 0.10585155487060546,
+      "max_lifetime": 0.30626583099365234
+    }
+  },
+  "L1_Ly15": {
+    "0": {
+      "total_persistence": 488.3866760134697,
+      "n_features": 99,
+      "mean_lifetime": 4.933198747610805,
+      "max_lifetime": 54.15643310546875
+    },
+    "1": {
+      "total_persistence": 7.4103007316589355,
+      "n_features": 28,
+      "mean_lifetime": 0.2646535975592477,
+      "max_lifetime": 0.7491722106933594
+    },
+    "2": {
+      "total_persistence": 0.37470245361328125,
+      "n_features": 4,
+      "mean_lifetime": 0.09367561340332031,
+      "max_lifetime": 0.20317697525024414
+    }
+  },
+  "L1_Ly16": {
+    "0": {
+      "total_persistence": 508.40174102783203,
+      "n_features": 99,
+      "mean_lifetime": 5.135371121493253,
+      "max_lifetime": 59.70857238769531
+    },
+    "1": {
+      "total_persistence": 8.59945821762085,
+      "n_features": 34,
+      "mean_lifetime": 0.25292524169473085,
+      "max_lifetime": 0.7879714965820312
+    },
+    "2": {
+      "total_persistence": 0.2731361389160156,
+      "n_features": 3,
+      "mean_lifetime": 0.09104537963867188,
+      "max_lifetime": 0.24937152862548828
+    }
+  },
+  "L1_Ly17": {
+    "0": {
+      "total_persistence": 563.7344896495342,
+      "n_features": 99,
+      "mean_lifetime": 5.694287774237719,
+      "max_lifetime": 62.87489700317383
+    },
+    "1": {
+      "total_persistence": 9.449758529663086,
+      "n_features": 33,
+      "mean_lifetime": 0.2863563190806996,
+      "max_lifetime": 1.1415605545043945
+    },
+    "2": {
+      "total_persistence": 0.07110977172851562,
+      "n_features": 2,
+      "mean_lifetime": 0.03555488586425781,
+      "max_lifetime": 0.051839351654052734
+    }
+  },
+  "L1_Ly18": {
+    "0": {
+      "total_persistence": 617.2466124594212,
+      "n_features": 99,
+      "mean_lifetime": 6.234814267266881,
+      "max_lifetime": 67.41255187988281
+    },
+    "1": {
+      "total_persistence": 9.543323516845703,
+      "n_features": 34,
+      "mean_lifetime": 0.2806859857895795,
+      "max_lifetime": 0.9901399612426758
+    },
+    "2": {
+      "total_persistence": 0.0299835205078125,
+      "n_features": 2,
+      "mean_lifetime": 0.01499176025390625,
+      "max_lifetime": 0.023389339447021484
+    }
+  },
+  "L1_Ly19": {
+    "0": {
+      "total_persistence": 731.3751575648785,
+      "n_features": 99,
+      "mean_lifetime": 7.387627854190692,
+      "max_lifetime": 73.16411590576172
+    },
+    "1": {
+      "total_persistence": 12.194914817810059,
+      "n_features": 42,
+      "mean_lifetime": 0.2903551147097633,
+      "max_lifetime": 0.8906044960021973
+    },
+    "2": {
+      "total_persistence": 0.6559281349182129,
+      "n_features": 5,
+      "mean_lifetime": 0.13118562698364258,
+      "max_lifetime": 0.2171955108642578
+    }
+  },
+  "L1_Ly20": {
+    "0": {
+      "total_persistence": 828.0598295927048,
+      "n_features": 99,
+      "mean_lifetime": 8.364240702956614,
+      "max_lifetime": 80.20381164550781
+    },
+    "1": {
+      "total_persistence": 12.405965805053711,
+      "n_features": 35,
+      "mean_lifetime": 0.35445616585867745,
+      "max_lifetime": 1.0654182434082031
+    },
+    "2": {
+      "total_persistence": 0.17383861541748047,
+      "n_features": 2,
+      "mean_lifetime": 0.08691930770874023,
+      "max_lifetime": 0.13515377044677734
+    }
+  },
+  "L1_Ly21": {
+    "0": {
+      "total_persistence": 1588.1525079011917,
+      "n_features": 99,
+      "mean_lifetime": 16.04194452425446,
+      "max_lifetime": 93.82308959960938
+    },
+    "1": {
+      "total_persistence": 24.2511625289917,
+      "n_features": 29,
+      "mean_lifetime": 0.8362469837583345,
+      "max_lifetime": 2.1300048828125
+    },
+    "2": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    }
+  },
+  "L1_Ly22": {
+    "0": {
+      "total_persistence": 2094.090883076191,
+      "n_features": 99,
+      "mean_lifetime": 21.152433162385766,
+      "max_lifetime": 117.47447967529297
+    },
+    "1": {
+      "total_persistence": 40.71336364746094,
+      "n_features": 33,
+      "mean_lifetime": 1.233738292347301,
+      "max_lifetime": 5.018274307250977
+    },
+    "2": {
+      "total_persistence": 1.6296977996826172,
+      "n_features": 4,
+      "mean_lifetime": 0.4074244499206543,
+      "max_lifetime": 0.7707672119140625
+    }
+  },
+  "L1_Ly23": {
+    "0": {
+      "total_persistence": 2518.9544330835342,
+      "n_features": 99,
+      "mean_lifetime": 25.443984172560953,
+      "max_lifetime": 140.7131805419922
+    },
+    "1": {
+      "total_persistence": 40.54408836364746,
+      "n_features": 33,
+      "mean_lifetime": 1.2286087382923474,
+      "max_lifetime": 5.715461730957031
+    },
+    "2": {
+      "total_persistence": 2.383392333984375,
+      "n_features": 4,
+      "mean_lifetime": 0.5958480834960938,
+      "max_lifetime": 0.9819450378417969
+    }
+  },
+  "L1_Ly24": {
+    "0": {
+      "total_persistence": 2942.369408249855,
+      "n_features": 99,
+      "mean_lifetime": 29.7209031136349,
+      "max_lifetime": 169.94900512695312
+    },
+    "1": {
+      "total_persistence": 58.84291076660156,
+      "n_features": 35,
+      "mean_lifetime": 1.6812260219029018,
+      "max_lifetime": 7.215175628662109
+    },
+    "2": {
+      "total_persistence": 4.658351898193359,
+      "n_features": 6,
+      "mean_lifetime": 0.7763919830322266,
+      "max_lifetime": 1.8935356140136719
+    }
+  },
+  "L1_Ly25": {
+    "0": {
+      "total_persistence": 3483.6089552640915,
+      "n_features": 99,
+      "mean_lifetime": 35.187969245091836,
+      "max_lifetime": 181.82347106933594
+    },
+    "1": {
+      "total_persistence": 70.1741943359375,
+      "n_features": 34,
+      "mean_lifetime": 2.063946892233456,
+      "max_lifetime": 7.566814422607422
+    },
+    "2": {
+      "total_persistence": 2.824115753173828,
+      "n_features": 4,
+      "mean_lifetime": 0.706028938293457,
+      "max_lifetime": 0.9408454895019531
+    }
+  },
+  "L1_Ly26": {
+    "0": {
+      "total_persistence": 3953.4017938375473,
+      "n_features": 99,
+      "mean_lifetime": 39.93335145290452,
+      "max_lifetime": 205.3458251953125
+    },
+    "1": {
+      "total_persistence": 95.99920272827148,
+      "n_features": 36,
+      "mean_lifetime": 2.6666445202297635,
+      "max_lifetime": 10.048652648925781
+    },
+    "2": {
+      "total_persistence": 2.5162582397460938,
+      "n_features": 4,
+      "mean_lifetime": 0.6290645599365234,
+      "max_lifetime": 1.8540115356445312
+    }
+  },
+  "L1_Ly27": {
+    "0": {
+      "total_persistence": 4544.669521570206,
+      "n_features": 99,
+      "mean_lifetime": 45.90575274313339,
+      "max_lifetime": 237.85955810546875
+    },
+    "1": {
+      "total_persistence": 103.899169921875,
+      "n_features": 32,
+      "mean_lifetime": 3.2468490600585938,
+      "max_lifetime": 9.458358764648438
+    },
+    "2": {
+      "total_persistence": 2.497478485107422,
+      "n_features": 6,
+      "mean_lifetime": 0.4162464141845703,
+      "max_lifetime": 0.8643646240234375
+    }
+  },
+  "L1_Ly28": {
+    "0": {
+      "total_persistence": 3854.36425113678,
+      "n_features": 99,
+      "mean_lifetime": 38.932972233704845,
+      "max_lifetime": 235.4957275390625
+    },
+    "1": {
+      "total_persistence": 61.22385787963867,
+      "n_features": 27,
+      "mean_lifetime": 2.2675502918384693,
+      "max_lifetime": 8.560546875
+    },
+    "2": {
+      "total_persistence": 2.349620819091797,
+      "n_features": 3,
+      "mean_lifetime": 0.7832069396972656,
+      "max_lifetime": 1.6452789306640625
+    }
+  },
+  "L2_Ly0": {
+    "0": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "1": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "2": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    }
+  },
+  "L2_Ly1": {
+    "0": {
+      "total_persistence": 86.92714335024357,
+      "n_features": 99,
+      "mean_lifetime": 0.8780519530327633,
+      "max_lifetime": 1.8538743257522583
+    },
+    "1": {
+      "total_persistence": 2.0917941331863403,
+      "n_features": 45,
+      "mean_lifetime": 0.04648431407080756,
+      "max_lifetime": 0.20387113094329834
+    },
+    "2": {
+      "total_persistence": 0.3939037322998047,
+      "n_features": 12,
+      "mean_lifetime": 0.032825311024983726,
+      "max_lifetime": 0.12645936012268066
+    }
+  },
+  "L2_Ly2": {
+    "0": {
+      "total_persistence": 119.25662238895893,
+      "n_features": 99,
+      "mean_lifetime": 1.2046123473632215,
+      "max_lifetime": 2.8043806552886963
+    },
+    "1": {
+      "total_persistence": 2.5362629890441895,
+      "n_features": 39,
+      "mean_lifetime": 0.0650323843344664,
+      "max_lifetime": 0.386599063873291
+    },
+    "2": {
+      "total_persistence": 0.12359380722045898,
+      "n_features": 5,
+      "mean_lifetime": 0.024718761444091797,
+      "max_lifetime": 0.05007028579711914
+    }
+  },
+  "L2_Ly3": {
+    "0": {
+      "total_persistence": 167.3548659682274,
+      "n_features": 99,
+      "mean_lifetime": 1.6904531915982564,
+      "max_lifetime": 3.9066579341888428
+    },
+    "1": {
+      "total_persistence": 3.296138644218445,
+      "n_features": 31,
+      "mean_lifetime": 0.10632705303930468,
+      "max_lifetime": 0.3597440719604492
+    },
+    "2": {
+      "total_persistence": 0.05089855194091797,
+      "n_features": 2,
+      "mean_lifetime": 0.025449275970458984,
+      "max_lifetime": 0.02937006950378418
+    }
+  },
+  "L2_Ly4": {
+    "0": {
+      "total_persistence": 206.11248236894608,
+      "n_features": 99,
+      "mean_lifetime": 2.081944266352991,
+      "max_lifetime": 4.115581035614014
+    },
+    "1": {
+      "total_persistence": 3.6735411882400513,
+      "n_features": 28,
+      "mean_lifetime": 0.13119789958000183,
+      "max_lifetime": 0.3889017105102539
+    },
+    "2": {
+      "total_persistence": 0.11239314079284668,
+      "n_features": 6,
+      "mean_lifetime": 0.018732190132141113,
+      "max_lifetime": 0.049918174743652344
+    }
+  },
+  "L2_Ly5": {
+    "0": {
+      "total_persistence": 222.54266899824142,
+      "n_features": 99,
+      "mean_lifetime": 2.247905747456984,
+      "max_lifetime": 4.4599609375
+    },
+    "1": {
+      "total_persistence": 3.3818204402923584,
+      "n_features": 23,
+      "mean_lifetime": 0.14703567131705905,
+      "max_lifetime": 0.5626649856567383
+    },
+    "2": {
+      "total_persistence": 0.13877081871032715,
+      "n_features": 4,
+      "mean_lifetime": 0.03469270467758179,
+      "max_lifetime": 0.08399057388305664
+    }
+  },
+  "L2_Ly6": {
+    "0": {
+      "total_persistence": 243.6494658589363,
+      "n_features": 99,
+      "mean_lifetime": 2.4611057157468315,
+      "max_lifetime": 4.59132194519043
+    },
+    "1": {
+      "total_persistence": 4.275193572044373,
+      "n_features": 30,
+      "mean_lifetime": 0.14250645240147908,
+      "max_lifetime": 0.4864504337310791
+    },
+    "2": {
+      "total_persistence": 0.09486055374145508,
+      "n_features": 2,
+      "mean_lifetime": 0.04743027687072754,
+      "max_lifetime": 0.06367015838623047
+    }
+  },
+  "L2_Ly7": {
+    "0": {
+      "total_persistence": 243.11384814977646,
+      "n_features": 99,
+      "mean_lifetime": 2.455695435856328,
+      "max_lifetime": 4.360654830932617
+    },
+    "1": {
+      "total_persistence": 4.464768648147583,
+      "n_features": 37,
+      "mean_lifetime": 0.12066942292290765,
+      "max_lifetime": 0.369384765625
+    },
+    "2": {
+      "total_persistence": 0.3535315990447998,
+      "n_features": 8,
+      "mean_lifetime": 0.044191449880599976,
+      "max_lifetime": 0.15994715690612793
+    }
+  },
+  "L2_Ly8": {
+    "0": {
+      "total_persistence": 276.8434447646141,
+      "n_features": 99,
+      "mean_lifetime": 2.796398431965799,
+      "max_lifetime": 5.016766548156738
+    },
+    "1": {
+      "total_persistence": 5.05088472366333,
+      "n_features": 33,
+      "mean_lifetime": 0.15305711283828272,
+      "max_lifetime": 0.6207852363586426
+    },
+    "2": {
+      "total_persistence": 0.23460912704467773,
+      "n_features": 4,
+      "mean_lifetime": 0.058652281761169434,
+      "max_lifetime": 0.15932559967041016
+    }
+  },
+  "L2_Ly9": {
+    "0": {
+      "total_persistence": 311.28781175613403,
+      "n_features": 99,
+      "mean_lifetime": 3.144321330870041,
+      "max_lifetime": 5.605618000030518
+    },
+    "1": {
+      "total_persistence": 6.830904245376587,
+      "n_features": 38,
+      "mean_lifetime": 0.17976063803622597,
+      "max_lifetime": 0.6251645088195801
+    },
+    "2": {
+      "total_persistence": 0.25423359870910645,
+      "n_features": 7,
+      "mean_lifetime": 0.03631908552987235,
+      "max_lifetime": 0.0840463638305664
+    }
+  },
+  "L2_Ly10": {
+    "0": {
+      "total_persistence": 357.27616119384766,
+      "n_features": 99,
+      "mean_lifetime": 3.608850113069168,
+      "max_lifetime": 6.025794506072998
+    },
+    "1": {
+      "total_persistence": 6.026531219482422,
+      "n_features": 35,
+      "mean_lifetime": 0.17218660627092633,
+      "max_lifetime": 0.7829279899597168
+    },
+    "2": {
+      "total_persistence": 0.5474526882171631,
+      "n_features": 7,
+      "mean_lifetime": 0.07820752688816615,
+      "max_lifetime": 0.12781333923339844
+    }
+  },
+  "L2_Ly11": {
+    "0": {
+      "total_persistence": 400.30513751506805,
+      "n_features": 99,
+      "mean_lifetime": 4.04348623752594,
+      "max_lifetime": 6.801464080810547
+    },
+    "1": {
+      "total_persistence": 8.363117933273315,
+      "n_features": 37,
+      "mean_lifetime": 0.2260302144127923,
+      "max_lifetime": 0.571108341217041
+    },
+    "2": {
+      "total_persistence": 0.6469364166259766,
+      "n_features": 7,
+      "mean_lifetime": 0.09241948808942523,
+      "max_lifetime": 0.3510470390319824
+    }
+  },
+  "L2_Ly12": {
+    "0": {
+      "total_persistence": 394.53162002563477,
+      "n_features": 99,
+      "mean_lifetime": 3.985167879046816,
+      "max_lifetime": 6.711122035980225
+    },
+    "1": {
+      "total_persistence": 6.223962783813477,
+      "n_features": 34,
+      "mean_lifetime": 0.1830577289356905,
+      "max_lifetime": 0.8546133041381836
+    },
+    "2": {
+      "total_persistence": 0.6151645183563232,
+      "n_features": 10,
+      "mean_lifetime": 0.06151645183563233,
+      "max_lifetime": 0.09596800804138184
+    }
+  },
+  "L2_Ly13": {
+    "0": {
+      "total_persistence": 412.94405710697174,
+      "n_features": 99,
+      "mean_lifetime": 4.1711520919896135,
+      "max_lifetime": 7.365480422973633
+    },
+    "1": {
+      "total_persistence": 8.959562540054321,
+      "n_features": 40,
+      "mean_lifetime": 0.22398906350135803,
+      "max_lifetime": 0.7757554054260254
+    },
+    "2": {
+      "total_persistence": 0.6094694137573242,
+      "n_features": 6,
+      "mean_lifetime": 0.1015782356262207,
+      "max_lifetime": 0.20995092391967773
+    }
+  },
+  "L2_Ly14": {
+    "0": {
+      "total_persistence": 476.0374825000763,
+      "n_features": 99,
+      "mean_lifetime": 4.8084594191926895,
+      "max_lifetime": 7.96437406539917
+    },
+    "1": {
+      "total_persistence": 8.690382957458496,
+      "n_features": 42,
+      "mean_lifetime": 0.206913879939488,
+      "max_lifetime": 0.6522278785705566
+    },
+    "2": {
+      "total_persistence": 1.156404972076416,
+      "n_features": 7,
+      "mean_lifetime": 0.16520071029663086,
+      "max_lifetime": 0.4035491943359375
+    }
+  },
+  "L2_Ly15": {
+    "0": {
+      "total_persistence": 501.45504558086395,
+      "n_features": 99,
+      "mean_lifetime": 5.065202480614787,
+      "max_lifetime": 8.209945678710938
+    },
+    "1": {
+      "total_persistence": 8.977538585662842,
+      "n_features": 40,
+      "mean_lifetime": 0.22443846464157105,
+      "max_lifetime": 0.6962184906005859
+    },
+    "2": {
+      "total_persistence": 1.1623616218566895,
+      "n_features": 9,
+      "mean_lifetime": 0.12915129131740993,
+      "max_lifetime": 0.4235987663269043
+    }
+  },
+  "L2_Ly16": {
+    "0": {
+      "total_persistence": 518.8510771989822,
+      "n_features": 99,
+      "mean_lifetime": 5.240919971706892,
+      "max_lifetime": 8.848852157592773
+    },
+    "1": {
+      "total_persistence": 12.144176483154297,
+      "n_features": 37,
+      "mean_lifetime": 0.3282209860311972,
+      "max_lifetime": 0.8787651062011719
+    },
+    "2": {
+      "total_persistence": 0.7114906311035156,
+      "n_features": 3,
+      "mean_lifetime": 0.23716354370117188,
+      "max_lifetime": 0.3832273483276367
+    }
+  },
+  "L2_Ly17": {
+    "0": {
+      "total_persistence": 575.8879529237747,
+      "n_features": 99,
+      "mean_lifetime": 5.817050029533078,
+      "max_lifetime": 9.852272033691406
+    },
+    "1": {
+      "total_persistence": 12.19692850112915,
+      "n_features": 44,
+      "mean_lifetime": 0.27720292048020795,
+      "max_lifetime": 0.7619171142578125
+    },
+    "2": {
+      "total_persistence": 0.3385915756225586,
+      "n_features": 4,
+      "mean_lifetime": 0.08464789390563965,
+      "max_lifetime": 0.18288803100585938
+    }
+  },
+  "L2_Ly18": {
+    "0": {
+      "total_persistence": 626.7128247022629,
+      "n_features": 99,
+      "mean_lifetime": 6.33043257275013,
+      "max_lifetime": 11.049895286560059
+    },
+    "1": {
+      "total_persistence": 12.333550453186035,
+      "n_features": 41,
+      "mean_lifetime": 0.30081830373624474,
+      "max_lifetime": 1.1806612014770508
+    },
+    "2": {
+      "total_persistence": 1.2392301559448242,
+      "n_features": 5,
+      "mean_lifetime": 0.24784603118896484,
+      "max_lifetime": 0.6080722808837891
+    }
+  },
+  "L2_Ly19": {
+    "0": {
+      "total_persistence": 743.1292538642883,
+      "n_features": 99,
+      "mean_lifetime": 7.506356099639276,
+      "max_lifetime": 13.758835792541504
+    },
+    "1": {
+      "total_persistence": 13.678308010101318,
+      "n_features": 34,
+      "mean_lifetime": 0.40230317676768584,
+      "max_lifetime": 1.1925525665283203
+    },
+    "2": {
+      "total_persistence": 0.7328252792358398,
+      "n_features": 5,
+      "mean_lifetime": 0.14656505584716797,
+      "max_lifetime": 0.2808341979980469
+    }
+  },
+  "L2_Ly20": {
+    "0": {
+      "total_persistence": 832.5228428840637,
+      "n_features": 99,
+      "mean_lifetime": 8.409321645293574,
+      "max_lifetime": 14.306082725524902
+    },
+    "1": {
+      "total_persistence": 13.509453773498535,
+      "n_features": 37,
+      "mean_lifetime": 0.3651203722567172,
+      "max_lifetime": 0.9602785110473633
+    },
+    "2": {
+      "total_persistence": 0.9710483551025391,
+      "n_features": 4,
+      "mean_lifetime": 0.24276208877563477,
+      "max_lifetime": 0.4399747848510742
+    }
+  },
+  "L2_Ly21": {
+    "0": {
+      "total_persistence": 1650.8361766338348,
+      "n_features": 99,
+      "mean_lifetime": 16.67511289529126,
+      "max_lifetime": 28.760772705078125
+    },
+    "1": {
+      "total_persistence": 40.590049743652344,
+      "n_features": 43,
+      "mean_lifetime": 0.9439546452012173,
+      "max_lifetime": 2.746400833129883
+    },
+    "2": {
+      "total_persistence": 2.4780941009521484,
+      "n_features": 6,
+      "mean_lifetime": 0.4130156834920247,
+      "max_lifetime": 0.6290779113769531
+    }
+  },
+  "L2_Ly22": {
+    "0": {
+      "total_persistence": 2199.4707651138306,
+      "n_features": 99,
+      "mean_lifetime": 22.216876415291217,
+      "max_lifetime": 37.67372512817383
+    },
+    "1": {
+      "total_persistence": 57.84142875671387,
+      "n_features": 42,
+      "mean_lifetime": 1.3771768751598539,
+      "max_lifetime": 5.0859222412109375
+    },
+    "2": {
+      "total_persistence": 2.805997848510742,
+      "n_features": 10,
+      "mean_lifetime": 0.28059978485107423,
+      "max_lifetime": 1.0841388702392578
+    }
+  },
+  "L2_Ly23": {
+    "0": {
+      "total_persistence": 2644.3791432380676,
+      "n_features": 99,
+      "mean_lifetime": 26.710900436748158,
+      "max_lifetime": 44.58109664916992
+    },
+    "1": {
+      "total_persistence": 58.85350227355957,
+      "n_features": 39,
+      "mean_lifetime": 1.5090641608605018,
+      "max_lifetime": 5.015180587768555
+    },
+    "2": {
+      "total_persistence": 6.623435974121094,
+      "n_features": 11,
+      "mean_lifetime": 0.6021305431019176,
+      "max_lifetime": 1.6114768981933594
+    }
+  },
+  "L2_Ly24": {
+    "0": {
+      "total_persistence": 3082.0026836395264,
+      "n_features": 99,
+      "mean_lifetime": 31.131340238783096,
+      "max_lifetime": 51.074317932128906
+    },
+    "1": {
+      "total_persistence": 67.25778770446777,
+      "n_features": 35,
+      "mean_lifetime": 1.9216510772705078,
+      "max_lifetime": 5.999423980712891
+    },
+    "2": {
+      "total_persistence": 2.7036094665527344,
+      "n_features": 5,
+      "mean_lifetime": 0.5407218933105469,
+      "max_lifetime": 1.6358566284179688
+    }
+  },
+  "L2_Ly25": {
+    "0": {
+      "total_persistence": 3642.5703296661377,
+      "n_features": 99,
+      "mean_lifetime": 36.79363969359735,
+      "max_lifetime": 61.78827667236328
+    },
+    "1": {
+      "total_persistence": 85.78553771972656,
+      "n_features": 43,
+      "mean_lifetime": 1.9950125051099201,
+      "max_lifetime": 6.453876495361328
+    },
+    "2": {
+      "total_persistence": 5.726879119873047,
+      "n_features": 11,
+      "mean_lifetime": 0.5206253745339133,
+      "max_lifetime": 1.964263916015625
+    }
+  },
+  "L2_Ly26": {
+    "0": {
+      "total_persistence": 4147.419463634491,
+      "n_features": 99,
+      "mean_lifetime": 41.893125895297885,
+      "max_lifetime": 69.04188537597656
+    },
+    "1": {
+      "total_persistence": 99.16412353515625,
+      "n_features": 42,
+      "mean_lifetime": 2.361050560360863,
+      "max_lifetime": 8.090423583984375
+    },
+    "2": {
+      "total_persistence": 4.5167388916015625,
+      "n_features": 6,
+      "mean_lifetime": 0.7527898152669271,
+      "max_lifetime": 2.58148193359375
+    }
+  },
+  "L2_Ly27": {
+    "0": {
+      "total_persistence": 4753.536972999573,
+      "n_features": 99,
+      "mean_lifetime": 48.01552497979367,
+      "max_lifetime": 79.56214141845703
+    },
+    "1": {
+      "total_persistence": 115.63607406616211,
+      "n_features": 44,
+      "mean_lifetime": 2.6280925924127754,
+      "max_lifetime": 8.490951538085938
+    },
+    "2": {
+      "total_persistence": 5.244834899902344,
+      "n_features": 6,
+      "mean_lifetime": 0.874139149983724,
+      "max_lifetime": 2.7565841674804688
+    }
+  },
+  "L2_Ly28": {
+    "0": {
+      "total_persistence": 3975.4774837493896,
+      "n_features": 99,
+      "mean_lifetime": 40.1563382196908,
+      "max_lifetime": 65.669189453125
+    },
+    "1": {
+      "total_persistence": 104.23042678833008,
+      "n_features": 46,
+      "mean_lifetime": 2.265878843224567,
+      "max_lifetime": 7.887714385986328
+    },
+    "2": {
+      "total_persistence": 5.103118896484375,
+      "n_features": 6,
+      "mean_lifetime": 0.8505198160807291,
+      "max_lifetime": 1.9129562377929688
+    }
+  },
+  "L3_Ly0": {
+    "0": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "1": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "2": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    }
+  },
+  "L3_Ly1": {
+    "0": {
+      "total_persistence": 90.80755907297134,
+      "n_features": 99,
+      "mean_lifetime": 0.917248071444155,
+      "max_lifetime": 2.106872797012329
+    },
+    "1": {
+      "total_persistence": 2.308351695537567,
+      "n_features": 41,
+      "mean_lifetime": 0.05630126086676993,
+      "max_lifetime": 0.2506066560745239
+    },
+    "2": {
+      "total_persistence": 0.26302170753479004,
+      "n_features": 10,
+      "mean_lifetime": 0.026302170753479005,
+      "max_lifetime": 0.0776214599609375
+    }
+  },
+  "L3_Ly2": {
+    "0": {
+      "total_persistence": 122.898013651371,
+      "n_features": 99,
+      "mean_lifetime": 1.2413940772865757,
+      "max_lifetime": 2.774893045425415
+    },
+    "1": {
+      "total_persistence": 3.4282554388046265,
+      "n_features": 43,
+      "mean_lifetime": 0.07972687066987504,
+      "max_lifetime": 0.38599908351898193
+    },
+    "2": {
+      "total_persistence": 0.34209179878234863,
+      "n_features": 8,
+      "mean_lifetime": 0.04276147484779358,
+      "max_lifetime": 0.09670794010162354
+    }
+  },
+  "L3_Ly3": {
+    "0": {
+      "total_persistence": 175.63263255357742,
+      "n_features": 99,
+      "mean_lifetime": 1.7740669954906811,
+      "max_lifetime": 3.850614547729492
+    },
+    "1": {
+      "total_persistence": 3.587959051132202,
+      "n_features": 44,
+      "mean_lifetime": 0.08154452388936823,
+      "max_lifetime": 0.24050617218017578
+    },
+    "2": {
+      "total_persistence": 0.46736931800842285,
+      "n_features": 7,
+      "mean_lifetime": 0.0667670454297747,
+      "max_lifetime": 0.12821459770202637
+    }
+  },
+  "L3_Ly4": {
+    "0": {
+      "total_persistence": 214.2246514558792,
+      "n_features": 99,
+      "mean_lifetime": 2.1638853682412043,
+      "max_lifetime": 4.546638011932373
+    },
+    "1": {
+      "total_persistence": 3.403628706932068,
+      "n_features": 36,
+      "mean_lifetime": 0.09454524185922411,
+      "max_lifetime": 0.35738515853881836
+    },
+    "2": {
+      "total_persistence": 0.22557711601257324,
+      "n_features": 6,
+      "mean_lifetime": 0.03759618600209554,
+      "max_lifetime": 0.10569238662719727
+    }
+  },
+  "L3_Ly5": {
+    "0": {
+      "total_persistence": 233.25893306732178,
+      "n_features": 99,
+      "mean_lifetime": 2.356150839063856,
+      "max_lifetime": 4.9100751876831055
+    },
+    "1": {
+      "total_persistence": 5.3729541301727295,
+      "n_features": 34,
+      "mean_lifetime": 0.1580280626521391,
+      "max_lifetime": 0.6281192302703857
+    },
+    "2": {
+      "total_persistence": 0.615119218826294,
+      "n_features": 6,
+      "mean_lifetime": 0.10251986980438232,
+      "max_lifetime": 0.18558144569396973
+    }
+  },
+  "L3_Ly6": {
+    "0": {
+      "total_persistence": 255.33489954471588,
+      "n_features": 99,
+      "mean_lifetime": 2.5791403994415747,
+      "max_lifetime": 4.610727787017822
+    },
+    "1": {
+      "total_persistence": 4.098448157310486,
+      "n_features": 29,
+      "mean_lifetime": 0.1413257985279478,
+      "max_lifetime": 0.783785343170166
+    },
+    "2": {
+      "total_persistence": 0.258237361907959,
+      "n_features": 7,
+      "mean_lifetime": 0.036891051701137,
+      "max_lifetime": 0.06434249877929688
+    }
+  },
+  "L3_Ly7": {
+    "0": {
+      "total_persistence": 256.3424623012543,
+      "n_features": 99,
+      "mean_lifetime": 2.5893178010227706,
+      "max_lifetime": 4.5849199295043945
+    },
+    "1": {
+      "total_persistence": 3.864263415336609,
+      "n_features": 28,
+      "mean_lifetime": 0.13800940769059317,
+      "max_lifetime": 0.6416795253753662
+    },
+    "2": {
+      "total_persistence": 0.04243040084838867,
+      "n_features": 1,
+      "mean_lifetime": 0.04243040084838867,
+      "max_lifetime": 0.04243040084838867
+    }
+  },
+  "L3_Ly8": {
+    "0": {
+      "total_persistence": 290.7228944301605,
+      "n_features": 99,
+      "mean_lifetime": 2.9365948932339445,
+      "max_lifetime": 5.401780605316162
+    },
+    "1": {
+      "total_persistence": 5.480687141418457,
+      "n_features": 34,
+      "mean_lifetime": 0.16119668062995463,
+      "max_lifetime": 0.615145206451416
+    },
+    "2": {
+      "total_persistence": 0.4698483943939209,
+      "n_features": 5,
+      "mean_lifetime": 0.09396967887878419,
+      "max_lifetime": 0.26738452911376953
+    }
+  },
+  "L3_Ly9": {
+    "0": {
+      "total_persistence": 328.2721960544586,
+      "n_features": 99,
+      "mean_lifetime": 3.3158807682268545,
+      "max_lifetime": 5.828123569488525
+    },
+    "1": {
+      "total_persistence": 7.181605100631714,
+      "n_features": 39,
+      "mean_lifetime": 0.1841437205290183,
+      "max_lifetime": 0.6751499176025391
+    },
+    "2": {
+      "total_persistence": 0.7657985687255859,
+      "n_features": 6,
+      "mean_lifetime": 0.12763309478759766,
+      "max_lifetime": 0.26883840560913086
+    }
+  },
+  "L3_Ly10": {
+    "0": {
+      "total_persistence": 377.7742795944214,
+      "n_features": 99,
+      "mean_lifetime": 3.8159018140850645,
+      "max_lifetime": 7.170633792877197
+    },
+    "1": {
+      "total_persistence": 9.710998058319092,
+      "n_features": 42,
+      "mean_lifetime": 0.2312142394837879,
+      "max_lifetime": 0.9037790298461914
+    },
+    "2": {
+      "total_persistence": 0.4322996139526367,
+      "n_features": 7,
+      "mean_lifetime": 0.06175708770751953,
+      "max_lifetime": 0.19115447998046875
+    }
+  },
+  "L3_Ly11": {
+    "0": {
+      "total_persistence": 411.3637981414795,
+      "n_features": 99,
+      "mean_lifetime": 4.155189880216964,
+      "max_lifetime": 8.628666877746582
+    },
+    "1": {
+      "total_persistence": 10.302263736724854,
+      "n_features": 42,
+      "mean_lifetime": 0.24529199373154414,
+      "max_lifetime": 0.9225311279296875
+    },
+    "2": {
+      "total_persistence": 0.5770368576049805,
+      "n_features": 7,
+      "mean_lifetime": 0.0824338368007115,
+      "max_lifetime": 0.18703413009643555
+    }
+  },
+  "L3_Ly12": {
+    "0": {
+      "total_persistence": 406.8194718360901,
+      "n_features": 99,
+      "mean_lifetime": 4.10928759430394,
+      "max_lifetime": 8.740447998046875
+    },
+    "1": {
+      "total_persistence": 9.718695163726807,
+      "n_features": 38,
+      "mean_lifetime": 0.25575513588754756,
+      "max_lifetime": 0.8375916481018066
+    },
+    "2": {
+      "total_persistence": 0.5362381935119629,
+      "n_features": 6,
+      "mean_lifetime": 0.08937303225199382,
+      "max_lifetime": 0.47066831588745117
+    }
+  },
+  "L3_Ly13": {
+    "0": {
+      "total_persistence": 422.7600750923157,
+      "n_features": 99,
+      "mean_lifetime": 4.27030378881127,
+      "max_lifetime": 9.465055465698242
+    },
+    "1": {
+      "total_persistence": 8.986027479171753,
+      "n_features": 37,
+      "mean_lifetime": 0.24286560754518252,
+      "max_lifetime": 0.7674403190612793
+    },
+    "2": {
+      "total_persistence": 1.0769529342651367,
+      "n_features": 11,
+      "mean_lifetime": 0.09790481220592152,
+      "max_lifetime": 0.39479732513427734
+    }
+  },
+  "L3_Ly14": {
+    "0": {
+      "total_persistence": 482.18809390068054,
+      "n_features": 99,
+      "mean_lifetime": 4.870586807077581,
+      "max_lifetime": 10.677937507629395
+    },
+    "1": {
+      "total_persistence": 10.560860633850098,
+      "n_features": 38,
+      "mean_lifetime": 0.27791738510131836,
+      "max_lifetime": 0.8628358840942383
+    },
+    "2": {
+      "total_persistence": 1.9028496742248535,
+      "n_features": 12,
+      "mean_lifetime": 0.15857080618540445,
+      "max_lifetime": 0.34132957458496094
+    }
+  },
+  "L3_Ly15": {
+    "0": {
+      "total_persistence": 510.77755069732666,
+      "n_features": 99,
+      "mean_lifetime": 5.159369198962896,
+      "max_lifetime": 11.604710578918457
+    },
+    "1": {
+      "total_persistence": 10.80061674118042,
+      "n_features": 40,
+      "mean_lifetime": 0.2700154185295105,
+      "max_lifetime": 1.0961027145385742
+    },
+    "2": {
+      "total_persistence": 1.7279930114746094,
+      "n_features": 12,
+      "mean_lifetime": 0.14399941762288412,
+      "max_lifetime": 0.656496524810791
+    }
+  },
+  "L3_Ly16": {
+    "0": {
+      "total_persistence": 528.4122469425201,
+      "n_features": 99,
+      "mean_lifetime": 5.33749744386384,
+      "max_lifetime": 13.008545875549316
+    },
+    "1": {
+      "total_persistence": 11.869903564453125,
+      "n_features": 45,
+      "mean_lifetime": 0.263775634765625,
+      "max_lifetime": 0.8932766914367676
+    },
+    "2": {
+      "total_persistence": 1.7345890998840332,
+      "n_features": 15,
+      "mean_lifetime": 0.11563927332560221,
+      "max_lifetime": 0.39611339569091797
+    }
+  },
+  "L3_Ly17": {
+    "0": {
+      "total_persistence": 583.7891693115234,
+      "n_features": 99,
+      "mean_lifetime": 5.896860296075994,
+      "max_lifetime": 12.641214370727539
+    },
+    "1": {
+      "total_persistence": 14.237199306488037,
+      "n_features": 46,
+      "mean_lifetime": 0.30950433274973993,
+      "max_lifetime": 0.9677853584289551
+    },
+    "2": {
+      "total_persistence": 2.208395481109619,
+      "n_features": 11,
+      "mean_lifetime": 0.20076322555541992,
+      "max_lifetime": 0.4848957061767578
+    }
+  },
+  "L3_Ly18": {
+    "0": {
+      "total_persistence": 642.3591768741608,
+      "n_features": 99,
+      "mean_lifetime": 6.488476534082432,
+      "max_lifetime": 13.59213924407959
+    },
+    "1": {
+      "total_persistence": 15.72227144241333,
+      "n_features": 44,
+      "mean_lifetime": 0.35732435096393933,
+      "max_lifetime": 1.3442988395690918
+    },
+    "2": {
+      "total_persistence": 1.1339569091796875,
+      "n_features": 8,
+      "mean_lifetime": 0.14174461364746094,
+      "max_lifetime": 0.2778444290161133
+    }
+  },
+  "L3_Ly19": {
+    "0": {
+      "total_persistence": 754.3205842971802,
+      "n_features": 99,
+      "mean_lifetime": 7.6193998413856585,
+      "max_lifetime": 15.191119194030762
+    },
+    "1": {
+      "total_persistence": 16.372299194335938,
+      "n_features": 49,
+      "mean_lifetime": 0.3341285549864477,
+      "max_lifetime": 1.371729850769043
+    },
+    "2": {
+      "total_persistence": 1.1449851989746094,
+      "n_features": 7,
+      "mean_lifetime": 0.1635693141392299,
+      "max_lifetime": 0.33700084686279297
+    }
+  },
+  "L3_Ly20": {
+    "0": {
+      "total_persistence": 848.0946869850159,
+      "n_features": 99,
+      "mean_lifetime": 8.566612999848646,
+      "max_lifetime": 17.77138900756836
+    },
+    "1": {
+      "total_persistence": 21.500657558441162,
+      "n_features": 51,
+      "mean_lifetime": 0.4215815207537483,
+      "max_lifetime": 1.457749366760254
+    },
+    "2": {
+      "total_persistence": 1.5765609741210938,
+      "n_features": 9,
+      "mean_lifetime": 0.1751734415690104,
+      "max_lifetime": 0.5445594787597656
+    }
+  },
+  "L3_Ly21": {
+    "0": {
+      "total_persistence": 1650.89816904068,
+      "n_features": 99,
+      "mean_lifetime": 16.67573908121899,
+      "max_lifetime": 30.995540618896484
+    },
+    "1": {
+      "total_persistence": 33.9635648727417,
+      "n_features": 36,
+      "mean_lifetime": 0.9434323575761583,
+      "max_lifetime": 3.0646400451660156
+    },
+    "2": {
+      "total_persistence": 0.47937583923339844,
+      "n_features": 3,
+      "mean_lifetime": 0.1597919464111328,
+      "max_lifetime": 0.2937812805175781
+    }
+  },
+  "L3_Ly22": {
+    "0": {
+      "total_persistence": 2204.5030994415283,
+      "n_features": 99,
+      "mean_lifetime": 22.267708075166954,
+      "max_lifetime": 37.08802032470703
+    },
+    "1": {
+      "total_persistence": 54.653093338012695,
+      "n_features": 40,
+      "mean_lifetime": 1.3663273334503174,
+      "max_lifetime": 4.735597610473633
+    },
+    "2": {
+      "total_persistence": 2.1154232025146484,
+      "n_features": 9,
+      "mean_lifetime": 0.2350470225016276,
+      "max_lifetime": 0.5649871826171875
+    }
+  },
+  "L3_Ly23": {
+    "0": {
+      "total_persistence": 2636.237257003784,
+      "n_features": 99,
+      "mean_lifetime": 26.628659161654387,
+      "max_lifetime": 42.99053955078125
+    },
+    "1": {
+      "total_persistence": 73.56232070922852,
+      "n_features": 47,
+      "mean_lifetime": 1.5651557597708194,
+      "max_lifetime": 5.882270812988281
+    },
+    "2": {
+      "total_persistence": 6.854778289794922,
+      "n_features": 11,
+      "mean_lifetime": 0.6231616627086293,
+      "max_lifetime": 2.0976409912109375
+    }
+  },
+  "L3_Ly24": {
+    "0": {
+      "total_persistence": 3051.527165412903,
+      "n_features": 99,
+      "mean_lifetime": 30.823506721342454,
+      "max_lifetime": 49.46915054321289
+    },
+    "1": {
+      "total_persistence": 84.4879035949707,
+      "n_features": 43,
+      "mean_lifetime": 1.9648349673249002,
+      "max_lifetime": 5.721809387207031
+    },
+    "2": {
+      "total_persistence": 8.354408264160156,
+      "n_features": 10,
+      "mean_lifetime": 0.8354408264160156,
+      "max_lifetime": 2.3988685607910156
+    }
+  },
+  "L3_Ly25": {
+    "0": {
+      "total_persistence": 3595.2195777893066,
+      "n_features": 99,
+      "mean_lifetime": 36.31534927059906,
+      "max_lifetime": 59.09489822387695
+    },
+    "1": {
+      "total_persistence": 97.18893623352051,
+      "n_features": 43,
+      "mean_lifetime": 2.2602078193841977,
+      "max_lifetime": 7.34039306640625
+    },
+    "2": {
+      "total_persistence": 7.958457946777344,
+      "n_features": 7,
+      "mean_lifetime": 1.1369225638253349,
+      "max_lifetime": 2.1383743286132812
+    }
+  },
+  "L3_Ly26": {
+    "0": {
+      "total_persistence": 4077.519006729126,
+      "n_features": 99,
+      "mean_lifetime": 41.18706067403158,
+      "max_lifetime": 63.0889778137207
+    },
+    "1": {
+      "total_persistence": 100.76150512695312,
+      "n_features": 40,
+      "mean_lifetime": 2.519037628173828,
+      "max_lifetime": 9.024845123291016
+    },
+    "2": {
+      "total_persistence": 9.96588134765625,
+      "n_features": 6,
+      "mean_lifetime": 1.660980224609375,
+      "max_lifetime": 3.85693359375
+    }
+  },
+  "L3_Ly27": {
+    "0": {
+      "total_persistence": 4655.802463531494,
+      "n_features": 99,
+      "mean_lifetime": 47.028307712439336,
+      "max_lifetime": 75.023193359375
+    },
+    "1": {
+      "total_persistence": 106.67907333374023,
+      "n_features": 37,
+      "mean_lifetime": 2.8832181982091956,
+      "max_lifetime": 10.476093292236328
+    },
+    "2": {
+      "total_persistence": 18.024658203125,
+      "n_features": 13,
+      "mean_lifetime": 1.3865121694711537,
+      "max_lifetime": 3.61419677734375
+    }
+  },
+  "L3_Ly28": {
+    "0": {
+      "total_persistence": 3852.0002517700195,
+      "n_features": 99,
+      "mean_lifetime": 38.90909345222242,
+      "max_lifetime": 59.46363067626953
+    },
+    "1": {
+      "total_persistence": 98.53512573242188,
+      "n_features": 41,
+      "mean_lifetime": 2.4032957495712655,
+      "max_lifetime": 9.487663269042969
+    },
+    "2": {
+      "total_persistence": 2.9670562744140625,
+      "n_features": 6,
+      "mean_lifetime": 0.49450937906901044,
+      "max_lifetime": 0.8921775817871094
+    }
+  },
+  "L4_Ly0": {
+    "0": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "1": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "2": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    }
+  },
+  "L4_Ly1": {
+    "0": {
+      "total_persistence": 91.30664911866188,
+      "n_features": 99,
+      "mean_lifetime": 0.9222893850369887,
+      "max_lifetime": 1.7894227504730225
+    },
+    "1": {
+      "total_persistence": 3.1818032264709473,
+      "n_features": 55,
+      "mean_lifetime": 0.05785096775401722,
+      "max_lifetime": 0.2605799436569214
+    },
+    "2": {
+      "total_persistence": 0.42455923557281494,
+      "n_features": 18,
+      "mean_lifetime": 0.023586624198489718,
+      "max_lifetime": 0.06826186180114746
+    }
+  },
+  "L4_Ly2": {
+    "0": {
+      "total_persistence": 121.9579710662365,
+      "n_features": 99,
+      "mean_lifetime": 1.2318986976387525,
+      "max_lifetime": 2.559206247329712
+    },
+    "1": {
+      "total_persistence": 4.396721243858337,
+      "n_features": 47,
+      "mean_lifetime": 0.0935472605076242,
+      "max_lifetime": 0.3482625484466553
+    },
+    "2": {
+      "total_persistence": 0.6545010805130005,
+      "n_features": 21,
+      "mean_lifetime": 0.03116671811966669,
+      "max_lifetime": 0.09094655513763428
+    }
+  },
+  "L4_Ly3": {
+    "0": {
+      "total_persistence": 173.1121947169304,
+      "n_features": 99,
+      "mean_lifetime": 1.7486080274437412,
+      "max_lifetime": 3.9424779415130615
+    },
+    "1": {
+      "total_persistence": 5.276556134223938,
+      "n_features": 47,
+      "mean_lifetime": 0.11226715179199868,
+      "max_lifetime": 0.25681328773498535
+    },
+    "2": {
+      "total_persistence": 0.6466450691223145,
+      "n_features": 15,
+      "mean_lifetime": 0.04310967127482097,
+      "max_lifetime": 0.12623834609985352
+    }
+  },
+  "L4_Ly4": {
+    "0": {
+      "total_persistence": 211.872349858284,
+      "n_features": 99,
+      "mean_lifetime": 2.1401247460432726,
+      "max_lifetime": 4.452809810638428
+    },
+    "1": {
+      "total_persistence": 4.568849325180054,
+      "n_features": 42,
+      "mean_lifetime": 0.10878212679000128,
+      "max_lifetime": 0.39383506774902344
+    },
+    "2": {
+      "total_persistence": 0.3984041213989258,
+      "n_features": 7,
+      "mean_lifetime": 0.056914874485560825,
+      "max_lifetime": 0.13053345680236816
+    }
+  },
+  "L4_Ly5": {
+    "0": {
+      "total_persistence": 240.00126111507416,
+      "n_features": 99,
+      "mean_lifetime": 2.4242551627785267,
+      "max_lifetime": 4.681387424468994
+    },
+    "1": {
+      "total_persistence": 3.680985450744629,
+      "n_features": 24,
+      "mean_lifetime": 0.1533743937810262,
+      "max_lifetime": 0.5573854446411133
+    },
+    "2": {
+      "total_persistence": 0.3798198699951172,
+      "n_features": 5,
+      "mean_lifetime": 0.07596397399902344,
+      "max_lifetime": 0.12555336952209473
+    }
+  },
+  "L4_Ly6": {
+    "0": {
+      "total_persistence": 265.876789689064,
+      "n_features": 99,
+      "mean_lifetime": 2.685624138273374,
+      "max_lifetime": 4.954821586608887
+    },
+    "1": {
+      "total_persistence": 5.5188493728637695,
+      "n_features": 40,
+      "mean_lifetime": 0.13797123432159425,
+      "max_lifetime": 0.49512290954589844
+    },
+    "2": {
+      "total_persistence": 0.5949766635894775,
+      "n_features": 6,
+      "mean_lifetime": 0.09916277726491292,
+      "max_lifetime": 0.2965826988220215
+    }
+  },
+  "L4_Ly7": {
+    "0": {
+      "total_persistence": 260.8933801651001,
+      "n_features": 99,
+      "mean_lifetime": 2.6352866683343446,
+      "max_lifetime": 4.816795825958252
+    },
+    "1": {
+      "total_persistence": 6.37821102142334,
+      "n_features": 37,
+      "mean_lifetime": 0.17238408166009025,
+      "max_lifetime": 0.7511916160583496
+    },
+    "2": {
+      "total_persistence": 0.5691211223602295,
+      "n_features": 11,
+      "mean_lifetime": 0.051738283850929954,
+      "max_lifetime": 0.09072732925415039
+    }
+  },
+  "L4_Ly8": {
+    "0": {
+      "total_persistence": 292.68063139915466,
+      "n_features": 99,
+      "mean_lifetime": 2.9563700141328755,
+      "max_lifetime": 5.499341011047363
+    },
+    "1": {
+      "total_persistence": 6.439410448074341,
+      "n_features": 46,
+      "mean_lifetime": 0.13998718365379,
+      "max_lifetime": 0.45700788497924805
+    },
+    "2": {
+      "total_persistence": 0.19112205505371094,
+      "n_features": 5,
+      "mean_lifetime": 0.038224411010742185,
+      "max_lifetime": 0.08237361907958984
+    }
+  },
+  "L4_Ly9": {
+    "0": {
+      "total_persistence": 331.5880573987961,
+      "n_features": 99,
+      "mean_lifetime": 3.3493743171595565,
+      "max_lifetime": 5.8849778175354
+    },
+    "1": {
+      "total_persistence": 8.883101224899292,
+      "n_features": 54,
+      "mean_lifetime": 0.16450187453517207,
+      "max_lifetime": 0.5740599632263184
+    },
+    "2": {
+      "total_persistence": 0.3586103916168213,
+      "n_features": 3,
+      "mean_lifetime": 0.1195367972056071,
+      "max_lifetime": 0.18876314163208008
+    }
+  },
+  "L4_Ly10": {
+    "0": {
+      "total_persistence": 375.30599570274353,
+      "n_features": 99,
+      "mean_lifetime": 3.790969653563066,
+      "max_lifetime": 6.261708736419678
+    },
+    "1": {
+      "total_persistence": 8.539135456085205,
+      "n_features": 51,
+      "mean_lifetime": 0.16743402855069028,
+      "max_lifetime": 0.8287854194641113
+    },
+    "2": {
+      "total_persistence": 0.46416521072387695,
+      "n_features": 8,
+      "mean_lifetime": 0.05802065134048462,
+      "max_lifetime": 0.12212133407592773
+    }
+  },
+  "L4_Ly11": {
+    "0": {
+      "total_persistence": 416.0151423215866,
+      "n_features": 99,
+      "mean_lifetime": 4.202173154763501,
+      "max_lifetime": 7.428123950958252
+    },
+    "1": {
+      "total_persistence": 9.242164134979248,
+      "n_features": 49,
+      "mean_lifetime": 0.18861559459141322,
+      "max_lifetime": 0.6409392356872559
+    },
+    "2": {
+      "total_persistence": 1.245814323425293,
+      "n_features": 13,
+      "mean_lifetime": 0.09583187103271484,
+      "max_lifetime": 0.3338613510131836
+    }
+  },
+  "L4_Ly12": {
+    "0": {
+      "total_persistence": 409.40190601348877,
+      "n_features": 99,
+      "mean_lifetime": 4.135372788015038,
+      "max_lifetime": 7.303467273712158
+    },
+    "1": {
+      "total_persistence": 7.8614771366119385,
+      "n_features": 50,
+      "mean_lifetime": 0.15722954273223877,
+      "max_lifetime": 0.4053773880004883
+    },
+    "2": {
+      "total_persistence": 1.2027006149291992,
+      "n_features": 11,
+      "mean_lifetime": 0.10933641953901811,
+      "max_lifetime": 0.20525884628295898
+    }
+  },
+  "L4_Ly13": {
+    "0": {
+      "total_persistence": 424.55228996276855,
+      "n_features": 99,
+      "mean_lifetime": 4.288406969320895,
+      "max_lifetime": 7.285655975341797
+    },
+    "1": {
+      "total_persistence": 8.603387355804443,
+      "n_features": 47,
+      "mean_lifetime": 0.18305079480434985,
+      "max_lifetime": 0.5954594612121582
+    },
+    "2": {
+      "total_persistence": 1.0416259765625,
+      "n_features": 11,
+      "mean_lifetime": 0.09469327059659091,
+      "max_lifetime": 0.33133363723754883
+    }
+  },
+  "L4_Ly14": {
+    "0": {
+      "total_persistence": 481.5965497493744,
+      "n_features": 99,
+      "mean_lifetime": 4.864611613630045,
+      "max_lifetime": 7.943524360656738
+    },
+    "1": {
+      "total_persistence": 12.538248062133789,
+      "n_features": 49,
+      "mean_lifetime": 0.25588261351293445,
+      "max_lifetime": 0.7047839164733887
+    },
+    "2": {
+      "total_persistence": 1.1044883728027344,
+      "n_features": 8,
+      "mean_lifetime": 0.1380610466003418,
+      "max_lifetime": 0.47544193267822266
+    }
+  },
+  "L4_Ly15": {
+    "0": {
+      "total_persistence": 509.53571224212646,
+      "n_features": 99,
+      "mean_lifetime": 5.146825376183096,
+      "max_lifetime": 8.549824714660645
+    },
+    "1": {
+      "total_persistence": 14.865877628326416,
+      "n_features": 51,
+      "mean_lifetime": 0.29148779663385127,
+      "max_lifetime": 0.8088674545288086
+    },
+    "2": {
+      "total_persistence": 0.9732728004455566,
+      "n_features": 10,
+      "mean_lifetime": 0.09732728004455567,
+      "max_lifetime": 0.3411870002746582
+    }
+  },
+  "L4_Ly16": {
+    "0": {
+      "total_persistence": 523.0005822181702,
+      "n_features": 99,
+      "mean_lifetime": 5.282834163819901,
+      "max_lifetime": 8.650273323059082
+    },
+    "1": {
+      "total_persistence": 14.34483528137207,
+      "n_features": 54,
+      "mean_lifetime": 0.2656450978031865,
+      "max_lifetime": 0.8905110359191895
+    },
+    "2": {
+      "total_persistence": 1.1898393630981445,
+      "n_features": 9,
+      "mean_lifetime": 0.13220437367757162,
+      "max_lifetime": 0.30475330352783203
+    }
+  },
+  "L4_Ly17": {
+    "0": {
+      "total_persistence": 574.7686102390289,
+      "n_features": 99,
+      "mean_lifetime": 5.805743537767969,
+      "max_lifetime": 9.082080841064453
+    },
+    "1": {
+      "total_persistence": 18.36369037628174,
+      "n_features": 52,
+      "mean_lifetime": 0.3531478918515719,
+      "max_lifetime": 1.2269611358642578
+    },
+    "2": {
+      "total_persistence": 1.4656481742858887,
+      "n_features": 9,
+      "mean_lifetime": 0.1628497971428765,
+      "max_lifetime": 0.41069793701171875
+    }
+  },
+  "L4_Ly18": {
+    "0": {
+      "total_persistence": 633.6347932815552,
+      "n_features": 99,
+      "mean_lifetime": 6.400351447288436,
+      "max_lifetime": 10.466778755187988
+    },
+    "1": {
+      "total_persistence": 18.79819965362549,
+      "n_features": 49,
+      "mean_lifetime": 0.38363672762500994,
+      "max_lifetime": 1.2917289733886719
+    },
+    "2": {
+      "total_persistence": 1.2519826889038086,
+      "n_features": 10,
+      "mean_lifetime": 0.12519826889038085,
+      "max_lifetime": 0.4407072067260742
+    }
+  },
+  "L4_Ly19": {
+    "0": {
+      "total_persistence": 748.9849524497986,
+      "n_features": 99,
+      "mean_lifetime": 7.565504570199986,
+      "max_lifetime": 12.129687309265137
+    },
+    "1": {
+      "total_persistence": 27.14513349533081,
+      "n_features": 53,
+      "mean_lifetime": 0.5121723301005814,
+      "max_lifetime": 1.8385529518127441
+    },
+    "2": {
+      "total_persistence": 2.6040096282958984,
+      "n_features": 14,
+      "mean_lifetime": 0.1860006877354213,
+      "max_lifetime": 0.4601554870605469
+    }
+  },
+  "L4_Ly20": {
+    "0": {
+      "total_persistence": 829.4909009933472,
+      "n_features": 99,
+      "mean_lifetime": 8.378695969629769,
+      "max_lifetime": 12.89293098449707
+    },
+    "1": {
+      "total_persistence": 25.19340419769287,
+      "n_features": 56,
+      "mean_lifetime": 0.4498822178159441,
+      "max_lifetime": 1.2939863204956055
+    },
+    "2": {
+      "total_persistence": 4.352173805236816,
+      "n_features": 18,
+      "mean_lifetime": 0.24178743362426758,
+      "max_lifetime": 0.7428560256958008
+    }
+  },
+  "L4_Ly21": {
+    "0": {
+      "total_persistence": 1682.6434726715088,
+      "n_features": 99,
+      "mean_lifetime": 16.996398713853623,
+      "max_lifetime": 24.610925674438477
+    },
+    "1": {
+      "total_persistence": 58.104122161865234,
+      "n_features": 60,
+      "mean_lifetime": 0.9684020360310872,
+      "max_lifetime": 3.505014419555664
+    },
+    "2": {
+      "total_persistence": 5.222816467285156,
+      "n_features": 16,
+      "mean_lifetime": 0.32642602920532227,
+      "max_lifetime": 1.0052967071533203
+    }
+  },
+  "L4_Ly22": {
+    "0": {
+      "total_persistence": 2255.3690786361694,
+      "n_features": 99,
+      "mean_lifetime": 22.781505844809793,
+      "max_lifetime": 33.37815475463867
+    },
+    "1": {
+      "total_persistence": 73.79871559143066,
+      "n_features": 65,
+      "mean_lifetime": 1.1353648552527795,
+      "max_lifetime": 4.397148132324219
+    },
+    "2": {
+      "total_persistence": 13.809856414794922,
+      "n_features": 22,
+      "mean_lifetime": 0.6277207461270419,
+      "max_lifetime": 1.719034194946289
+    }
+  },
+  "L4_Ly23": {
+    "0": {
+      "total_persistence": 2696.9106817245483,
+      "n_features": 99,
+      "mean_lifetime": 27.2415220376217,
+      "max_lifetime": 39.45320129394531
+    },
+    "1": {
+      "total_persistence": 111.45715141296387,
+      "n_features": 64,
+      "mean_lifetime": 1.7415179908275604,
+      "max_lifetime": 5.748401641845703
+    },
+    "2": {
+      "total_persistence": 11.952629089355469,
+      "n_features": 23,
+      "mean_lifetime": 0.5196795256241508,
+      "max_lifetime": 2.0188751220703125
+    }
+  },
+  "L4_Ly24": {
+    "0": {
+      "total_persistence": 3140.1020736694336,
+      "n_features": 99,
+      "mean_lifetime": 31.718202764337715,
+      "max_lifetime": 44.68783187866211
+    },
+    "1": {
+      "total_persistence": 121.43119239807129,
+      "n_features": 66,
+      "mean_lifetime": 1.8398665514859287,
+      "max_lifetime": 5.857765197753906
+    },
+    "2": {
+      "total_persistence": 10.435710906982422,
+      "n_features": 15,
+      "mean_lifetime": 0.6957140604654948,
+      "max_lifetime": 1.8426246643066406
+    }
+  },
+  "L4_Ly25": {
+    "0": {
+      "total_persistence": 3741.4659004211426,
+      "n_features": 99,
+      "mean_lifetime": 37.79258485273881,
+      "max_lifetime": 54.932167053222656
+    },
+    "1": {
+      "total_persistence": 125.07146835327148,
+      "n_features": 59,
+      "mean_lifetime": 2.1198553958181607,
+      "max_lifetime": 5.948127746582031
+    },
+    "2": {
+      "total_persistence": 11.313488006591797,
+      "n_features": 17,
+      "mean_lifetime": 0.6654992945053998,
+      "max_lifetime": 2.499317169189453
+    }
+  },
+  "L4_Ly26": {
+    "0": {
+      "total_persistence": 4260.152145385742,
+      "n_features": 99,
+      "mean_lifetime": 43.03183985238123,
+      "max_lifetime": 62.32700729370117
+    },
+    "1": {
+      "total_persistence": 164.25872802734375,
+      "n_features": 60,
+      "mean_lifetime": 2.737645467122396,
+      "max_lifetime": 9.06228256225586
+    },
+    "2": {
+      "total_persistence": 11.968997955322266,
+      "n_features": 13,
+      "mean_lifetime": 0.920692150409405,
+      "max_lifetime": 2.5960769653320312
+    }
+  },
+  "L4_Ly27": {
+    "0": {
+      "total_persistence": 4869.6518478393555,
+      "n_features": 99,
+      "mean_lifetime": 49.18840250342783,
+      "max_lifetime": 70.54076385498047
+    },
+    "1": {
+      "total_persistence": 187.04678344726562,
+      "n_features": 60,
+      "mean_lifetime": 3.1174463907877605,
+      "max_lifetime": 10.418083190917969
+    },
+    "2": {
+      "total_persistence": 16.255390167236328,
+      "n_features": 18,
+      "mean_lifetime": 0.9030772315131294,
+      "max_lifetime": 1.8550567626953125
+    }
+  },
+  "L4_Ly28": {
+    "0": {
+      "total_persistence": 3952.843744277954,
+      "n_features": 99,
+      "mean_lifetime": 39.927714588666205,
+      "max_lifetime": 59.20549774169922
+    },
+    "1": {
+      "total_persistence": 106.6739730834961,
+      "n_features": 51,
+      "mean_lifetime": 2.091646531048943,
+      "max_lifetime": 6.582141876220703
+    },
+    "2": {
+      "total_persistence": 15.77237319946289,
+      "n_features": 20,
+      "mean_lifetime": 0.7886186599731445,
+      "max_lifetime": 2.4328346252441406
+    }
+  },
+  "L5_Ly0": {
+    "0": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "1": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    },
+    "2": {
+      "total_persistence": 0.0,
+      "n_features": 0,
+      "mean_lifetime": 0.0,
+      "max_lifetime": 0.0
+    }
+  },
+  "L5_Ly1": {
+    "0": {
+      "total_persistence": 88.1802126467228,
+      "n_features": 99,
+      "mean_lifetime": 0.8907092186537656,
+      "max_lifetime": 1.8300409317016602
+    },
+    "1": {
+      "total_persistence": 2.2118459343910217,
+      "n_features": 37,
+      "mean_lifetime": 0.05977961984840599,
+      "max_lifetime": 0.22646582126617432
+    },
+    "2": {
+      "total_persistence": 0.09192156791687012,
+      "n_features": 3,
+      "mean_lifetime": 0.030640522638956707,
+      "max_lifetime": 0.04502749443054199
+    }
+  },
+  "L5_Ly2": {
+    "0": {
+      "total_persistence": 117.3885723054409,
+      "n_features": 99,
+      "mean_lifetime": 1.1857431546004131,
+      "max_lifetime": 2.4444849491119385
+    },
+    "1": {
+      "total_persistence": 2.591115713119507,
+      "n_features": 30,
+      "mean_lifetime": 0.08637052377065023,
+      "max_lifetime": 0.3245919942855835
+    },
+    "2": {
+      "total_persistence": 0.013520240783691406,
+      "n_features": 2,
+      "mean_lifetime": 0.006760120391845703,
+      "max_lifetime": 0.012391924858093262
+    }
+  },
+  "L5_Ly3": {
+    "0": {
+      "total_persistence": 168.63302594423294,
+      "n_features": 99,
+      "mean_lifetime": 1.7033638984265953,
+      "max_lifetime": 3.5422356128692627
+    },
+    "1": {
+      "total_persistence": 3.4244658946990967,
+      "n_features": 41,
+      "mean_lifetime": 0.08352355840729504,
+      "max_lifetime": 0.38906073570251465
+    },
+    "2": {
+      "total_persistence": 0.16583824157714844,
+      "n_features": 7,
+      "mean_lifetime": 0.023691177368164062,
+      "max_lifetime": 0.03943896293640137
+    }
+  },
+  "L5_Ly4": {
+    "0": {
+      "total_persistence": 205.3824818134308,
+      "n_features": 99,
+      "mean_lifetime": 2.0745705233679876,
+      "max_lifetime": 3.9892752170562744
+    },
+    "1": {
+      "total_persistence": 4.047198414802551,
+      "n_features": 34,
+      "mean_lifetime": 0.11903524749419268,
+      "max_lifetime": 0.5818934440612793
+    },
+    "2": {
+      "total_persistence": 0.25827980041503906,
+      "n_features": 7,
+      "mean_lifetime": 0.03689711434500558,
+      "max_lifetime": 0.09254622459411621
+    }
+  },
+  "L5_Ly5": {
+    "0": {
+      "total_persistence": 227.6737489104271,
+      "n_features": 99,
+      "mean_lifetime": 2.2997348374790616,
+      "max_lifetime": 4.715268611907959
+    },
+    "1": {
+      "total_persistence": 3.7558753490448,
+      "n_features": 27,
+      "mean_lifetime": 0.13910649440906667,
+      "max_lifetime": 0.7014193534851074
+    },
+    "2": {
+      "total_persistence": 0.10710740089416504,
+      "n_features": 3,
+      "mean_lifetime": 0.03570246696472168,
+      "max_lifetime": 0.055640220642089844
+    }
+  },
+  "L5_Ly6": {
+    "0": {
+      "total_persistence": 256.90199637413025,
+      "n_features": 99,
+      "mean_lifetime": 2.59496966034475,
+      "max_lifetime": 4.688509941101074
+    },
+    "1": {
+      "total_persistence": 4.925846099853516,
+      "n_features": 36,
+      "mean_lifetime": 0.1368290583292643,
+      "max_lifetime": 0.5601937770843506
+    },
+    "2": {
+      "total_persistence": 0.40837550163269043,
+      "n_features": 5,
+      "mean_lifetime": 0.08167510032653809,
+      "max_lifetime": 0.27857160568237305
+    }
+  },
+  "L5_Ly7": {
+    "0": {
+      "total_persistence": 254.3588329553604,
+      "n_features": 99,
+      "mean_lifetime": 2.5692811409632363,
+      "max_lifetime": 4.943393230438232
+    },
+    "1": {
+      "total_persistence": 4.05493426322937,
+      "n_features": 36,
+      "mean_lifetime": 0.1126370628674825,
+      "max_lifetime": 0.35384225845336914
+    },
+    "2": {
+      "total_persistence": 0.31894493103027344,
+      "n_features": 7,
+      "mean_lifetime": 0.04556356157575335,
+      "max_lifetime": 0.12872838973999023
+    }
+  },
+  "L5_Ly8": {
+    "0": {
+      "total_persistence": 287.27992594242096,
+      "n_features": 99,
+      "mean_lifetime": 2.9018174337618277,
+      "max_lifetime": 5.8520026206970215
+    },
+    "1": {
+      "total_persistence": 5.492783784866333,
+      "n_features": 35,
+      "mean_lifetime": 0.1569366795676095,
+      "max_lifetime": 0.5099716186523438
+    },
+    "2": {
+      "total_persistence": 0.23889493942260742,
+      "n_features": 4,
+      "mean_lifetime": 0.059723734855651855,
+      "max_lifetime": 0.12405204772949219
+    }
+  },
+  "L5_Ly9": {
+    "0": {
+      "total_persistence": 324.33062732219696,
+      "n_features": 99,
+      "mean_lifetime": 3.276066942648454,
+      "max_lifetime": 6.3579277992248535
+    },
+    "1": {
+      "total_persistence": 6.323443651199341,
+      "n_features": 38,
+      "mean_lifetime": 0.16640641187366687,
+      "max_lifetime": 0.6057279109954834
+    },
+    "2": {
+      "total_persistence": 0.2508819103240967,
+      "n_features": 3,
+      "mean_lifetime": 0.08362730344136556,
+      "max_lifetime": 0.13379859924316406
+    }
+  },
+  "L5_Ly10": {
+    "0": {
+      "total_persistence": 370.8427515029907,
+      "n_features": 99,
+      "mean_lifetime": 3.745886378818088,
+      "max_lifetime": 6.914861679077148
+    },
+    "1": {
+      "total_persistence": 8.666697025299072,
+      "n_features": 41,
+      "mean_lifetime": 0.21138285427558712,
+      "max_lifetime": 0.7954871654510498
+    },
+    "2": {
+      "total_persistence": 0.7217316627502441,
+      "n_features": 6,
+      "mean_lifetime": 0.12028861045837402,
+      "max_lifetime": 0.2880210876464844
+    }
+  },
+  "L5_Ly11": {
+    "0": {
+      "total_persistence": 407.8868409395218,
+      "n_features": 99,
+      "mean_lifetime": 4.12006910039921,
+      "max_lifetime": 7.840903282165527
+    },
+    "1": {
+      "total_persistence": 7.802725791931152,
+      "n_features": 30,
+      "mean_lifetime": 0.2600908597310384,
+      "max_lifetime": 0.697721004486084
+    },
+    "2": {
+      "total_persistence": 0.2922329902648926,
+      "n_features": 5,
+      "mean_lifetime": 0.05844659805297851,
+      "max_lifetime": 0.13994407653808594
+    }
+  },
+  "L5_Ly12": {
+    "0": {
+      "total_persistence": 402.52777779102325,
+      "n_features": 99,
+      "mean_lifetime": 4.0659371494042755,
+      "max_lifetime": 7.717393398284912
+    },
+    "1": {
+      "total_persistence": 7.456038236618042,
+      "n_features": 36,
+      "mean_lifetime": 0.20711217323939005,
+      "max_lifetime": 0.7853331565856934
+    },
+    "2": {
+      "total_persistence": 0.3152627944946289,
+      "n_features": 7,
+      "mean_lifetime": 0.045037542070661275,
+      "max_lifetime": 0.20552539825439453
+    }
+  },
+  "L5_Ly13": {
+    "0": {
+      "total_persistence": 419.1878932714462,
+      "n_features": 99,
+      "mean_lifetime": 4.234221144156023,
+      "max_lifetime": 7.761098861694336
+    },
+    "1": {
+      "total_persistence": 7.732582092285156,
+      "n_features": 36,
+      "mean_lifetime": 0.214793947007921,
+      "max_lifetime": 0.6585192680358887
+    },
+    "2": {
+      "total_persistence": 0.08328104019165039,
+      "n_features": 3,
+      "mean_lifetime": 0.02776034673055013,
+      "max_lifetime": 0.048065185546875
+    }
+  },
+  "L5_Ly14": {
+    "0": {
+      "total_persistence": 476.4327838420868,
+      "n_features": 99,
+      "mean_lifetime": 4.812452362041281,
+      "max_lifetime": 8.994824409484863
+    },
+    "1": {
+      "total_persistence": 8.380324363708496,
+      "n_features": 35,
+      "mean_lifetime": 0.2394378389630999,
+      "max_lifetime": 0.8513021469116211
+    },
+    "2": {
+      "total_persistence": 0.25905513763427734,
+      "n_features": 4,
+      "mean_lifetime": 0.06476378440856934,
+      "max_lifetime": 0.12076425552368164
+    }
+  },
+  "L5_Ly15": {
+    "0": {
+      "total_persistence": 508.2868251800537,
+      "n_features": 99,
+      "mean_lifetime": 5.134210355354078,
+      "max_lifetime": 9.320516586303711
+    },
+    "1": {
+      "total_persistence": 9.140070915222168,
+      "n_features": 33,
+      "mean_lifetime": 0.27697184591582324,
+      "max_lifetime": 0.8504586219787598
+    },
+    "2": {
+      "total_persistence": 0.5949892997741699,
+      "n_features": 5,
+      "mean_lifetime": 0.11899785995483399,
+      "max_lifetime": 0.23521947860717773
+    }
+  },
+  "L5_Ly16": {
+    "0": {
+      "total_persistence": 528.8069097995758,
+      "n_features": 99,
+      "mean_lifetime": 5.3414839373694525,
+      "max_lifetime": 9.295641899108887
+    },
+    "1": {
+      "total_persistence": 10.303852558135986,
+      "n_features": 41,
+      "mean_lifetime": 0.251313477027707,
+      "max_lifetime": 0.7056479454040527
+    },
+    "2": {
+      "total_persistence": 0.9027338027954102,
+      "n_features": 10,
+      "mean_lifetime": 0.09027338027954102,
+      "max_lifetime": 0.14590930938720703
+    }
+  },
+  "L5_Ly17": {
+    "0": {
+      "total_persistence": 583.6033508777618,
+      "n_features": 99,
+      "mean_lifetime": 5.894983342199614,
+      "max_lifetime": 10.740941047668457
+    },
+    "1": {
+      "total_persistence": 10.758750915527344,
+      "n_features": 36,
+      "mean_lifetime": 0.29885419209798175,
+      "max_lifetime": 0.8868584632873535
+    },
+    "2": {
+      "total_persistence": 1.0797505378723145,
+      "n_features": 7,
+      "mean_lifetime": 0.15425007683890207,
+      "max_lifetime": 0.3283257484436035
+    }
+  },
+  "L5_Ly18": {
+    "0": {
+      "total_persistence": 635.3581690788269,
+      "n_features": 99,
+      "mean_lifetime": 6.417759283624514,
+      "max_lifetime": 11.49571418762207
+    },
+    "1": {
+      "total_persistence": 13.216146469116211,
+      "n_features": 39,
+      "mean_lifetime": 0.33887555049015927,
+      "max_lifetime": 1.0337204933166504
+    },
+    "2": {
+      "total_persistence": 1.6554250717163086,
+      "n_features": 10,
+      "mean_lifetime": 0.16554250717163085,
+      "max_lifetime": 0.5597524642944336
+    }
+  },
+  "L5_Ly19": {
+    "0": {
+      "total_persistence": 743.0065631866455,
+      "n_features": 99,
+      "mean_lifetime": 7.505116799865106,
+      "max_lifetime": 13.588326454162598
+    },
+    "1": {
+      "total_persistence": 13.3170747756958,
+      "n_features": 40,
+      "mean_lifetime": 0.332926869392395,
+      "max_lifetime": 1.2226362228393555
+    },
+    "2": {
+      "total_persistence": 0.9732389450073242,
+      "n_features": 5,
+      "mean_lifetime": 0.19464778900146484,
+      "max_lifetime": 0.2923135757446289
+    }
+  },
+  "L5_Ly20": {
+    "0": {
+      "total_persistence": 816.737651348114,
+      "n_features": 99,
+      "mean_lifetime": 8.249875266142565,
+      "max_lifetime": 14.254827499389648
+    },
+    "1": {
+      "total_persistence": 12.489659309387207,
+      "n_features": 38,
+      "mean_lifetime": 0.32867524498387385,
+      "max_lifetime": 1.2766180038452148
+    },
+    "2": {
+      "total_persistence": 1.7784357070922852,
+      "n_features": 13,
+      "mean_lifetime": 0.13680274669940656,
+      "max_lifetime": 0.3226461410522461
+    }
+  },
+  "L5_Ly21": {
+    "0": {
+      "total_persistence": 1601.0440006256104,
+      "n_features": 99,
+      "mean_lifetime": 16.172161622480914,
+      "max_lifetime": 26.153507232666016
+    },
+    "1": {
+      "total_persistence": 32.03074359893799,
+      "n_features": 47,
+      "mean_lifetime": 0.6815051829561274,
+      "max_lifetime": 2.546314239501953
+    },
+    "2": {
+      "total_persistence": 1.4757232666015625,
+      "n_features": 8,
+      "mean_lifetime": 0.1844654083251953,
+      "max_lifetime": 0.3511638641357422
+    }
+  },
+  "L5_Ly22": {
+    "0": {
+      "total_persistence": 2124.96861743927,
+      "n_features": 99,
+      "mean_lifetime": 21.464329469083534,
+      "max_lifetime": 33.01139450073242
+    },
+    "1": {
+      "total_persistence": 38.110586166381836,
+      "n_features": 41,
+      "mean_lifetime": 0.9295264918629716,
+      "max_lifetime": 3.025033950805664
+    },
+    "2": {
+      "total_persistence": 3.243532180786133,
+      "n_features": 9,
+      "mean_lifetime": 0.3603924645317925,
+      "max_lifetime": 1.2693557739257812
+    }
+  },
+  "L5_Ly23": {
+    "0": {
+      "total_persistence": 2537.7170667648315,
+      "n_features": 99,
+      "mean_lifetime": 25.633505724897287,
+      "max_lifetime": 39.19947052001953
+    },
+    "1": {
+      "total_persistence": 56.05450630187988,
+      "n_features": 45,
+      "mean_lifetime": 1.2456556955973308,
+      "max_lifetime": 3.1891441345214844
+    },
+    "2": {
+      "total_persistence": 8.696470260620117,
+      "n_features": 12,
+      "mean_lifetime": 0.7247058550516764,
+      "max_lifetime": 1.9173469543457031
+    }
+  },
+  "L5_Ly24": {
+    "0": {
+      "total_persistence": 2956.129789352417,
+      "n_features": 99,
+      "mean_lifetime": 29.859896862145625,
+      "max_lifetime": 45.526668548583984
+    },
+    "1": {
+      "total_persistence": 64.82580375671387,
+      "n_features": 48,
+      "mean_lifetime": 1.3505375782648723,
+      "max_lifetime": 3.5686683654785156
+    },
+    "2": {
+      "total_persistence": 13.32760238647461,
+      "n_features": 14,
+      "mean_lifetime": 0.9519715990339007,
+      "max_lifetime": 3.091022491455078
+    }
+  },
+  "L5_Ly25": {
+    "0": {
+      "total_persistence": 3515.403024673462,
+      "n_features": 99,
+      "mean_lifetime": 35.5091214613481,
+      "max_lifetime": 58.39028549194336
+    },
+    "1": {
+      "total_persistence": 78.4362678527832,
+      "n_features": 44,
+      "mean_lifetime": 1.7826424511996182,
+      "max_lifetime": 5.877513885498047
+    },
+    "2": {
+      "total_persistence": 13.798149108886719,
+      "n_features": 16,
+      "mean_lifetime": 0.8623843193054199,
+      "max_lifetime": 2.413990020751953
+    }
+  },
+  "L5_Ly26": {
+    "0": {
+      "total_persistence": 4002.589307785034,
+      "n_features": 99,
+      "mean_lifetime": 40.430195028131656,
+      "max_lifetime": 65.21664428710938
+    },
+    "1": {
+      "total_persistence": 94.57773971557617,
+      "n_features": 41,
+      "mean_lifetime": 2.306774139404297,
+      "max_lifetime": 6.695930480957031
+    },
+    "2": {
+      "total_persistence": 11.731082916259766,
+      "n_features": 13,
+      "mean_lifetime": 0.9023909935584435,
+      "max_lifetime": 2.5255508422851562
+    }
+  },
+  "L5_Ly27": {
+    "0": {
+      "total_persistence": 4579.974889755249,
+      "n_features": 99,
+      "mean_lifetime": 46.26237262379039,
+      "max_lifetime": 73.50721740722656
+    },
+    "1": {
+      "total_persistence": 91.63105010986328,
+      "n_features": 38,
+      "mean_lifetime": 2.4113434239437708,
+      "max_lifetime": 7.267803192138672
+    },
+    "2": {
+      "total_persistence": 10.656478881835938,
+      "n_features": 15,
+      "mean_lifetime": 0.7104319254557292,
+      "max_lifetime": 2.7000350952148438
+    }
+  },
+  "L5_Ly28": {
+    "0": {
+      "total_persistence": 3697.7349395751953,
+      "n_features": 99,
+      "mean_lifetime": 37.350857975507026,
+      "max_lifetime": 64.79785919189453
+    },
+    "1": {
+      "total_persistence": 80.85414505004883,
+      "n_features": 44,
+      "mean_lifetime": 1.837594205682928,
+      "max_lifetime": 7.863990783691406
+    },
+    "2": {
+      "total_persistence": 15.828536987304688,
+      "n_features": 18,
+      "mean_lifetime": 0.8793631659613715,
+      "max_lifetime": 2.1188011169433594
+    }
+  }
+}
