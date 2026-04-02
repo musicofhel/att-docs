@@ -51,6 +51,9 @@ eeg = [
 gudhi = [
     "gudhi>=3.8",
 ]
+zigzag = [
+    "dionysus>=2.0",
+]
 plotly = [
     "plotly>=5.14",
 ]
@@ -78,7 +81,7 @@ dev = [
     "pyinform>=0.2",
 ]
 all = [
-    "att-toolkit[eeg,gudhi,plotly,demo,benchmarks,docs]",
+    "att-toolkit[eeg,gudhi,plotly,demo,benchmarks,docs,zigzag]",
 ]
 
 [project.scripts]

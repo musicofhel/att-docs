@@ -430,3 +430,544 @@ def plot_transition_timeline(detector, ground_truth=None, figsize=(12, 6)):
     ax.grid(True, alpha=0.3)
     plt.tight_layout()
     return fig
+
+
+# ============================================================
+# LLM hidden-state analysis plots (Wave 1)
+# ============================================================
+
+
+def plot_zscore_profile(
+    z_scores: np.ndarray,
+    p_values: np.ndarray | None = None,
+    per_dim_z_scores: dict | None = None,
+    ax: matplotlib.axes.Axes | None = None,
+    significance_threshold: float = 0.05,
+) -> matplotlib.figure.Figure:
+    """Layer-indexed z-score profile with significance shading.
+
+    Parameters
+    ----------
+    z_scores : (n_layers,) aggregate z-scores.
+    p_values : (n_layers,) p-values for significance shading.
+    per_dim_z_scores : dict mapping dim (int) -> (n_layers,) z-scores.
+    ax : optional axes.
+    significance_threshold : p-value below which to shade.
+    """
+    if per_dim_z_scores is not None and ax is None:
+        fig, ax = plt.subplots(figsize=(12, 5))
+    elif ax is None:
+        fig, ax = plt.subplots(figsize=(10, 5))
+    else:
+        fig = ax.get_figure()
+
+    layers = np.arange(len(z_scores))
+
+    if per_dim_z_scores is not None:
+        dim_colors = {0: "tab:blue", 1: "tab:red", 2: "tab:green"}
+        dim_labels = {0: "H0", 1: "H1", 2: "H2"}
+        for dim, zs in per_dim_z_scores.items():
+            ax.plot(
+                layers, zs, "o-",
+                color=dim_colors.get(dim, "gray"),
+                linewidth=1.5, markersize=3, alpha=0.7,
+                label=dim_labels.get(dim, f"H{dim}"),
+            )
+
+    ax.plot(
+        layers, z_scores, "s-",
+        color="black", linewidth=2.5, markersize=5,
+        label="Aggregate", zorder=10,
+    )
+
+    # Significance shading
+    if p_values is not None:
+        sig_mask = p_values < significance_threshold
+        for i in range(len(layers)):
+            if sig_mask[i]:
+                ax.axvspan(
+                    layers[i] - 0.5, layers[i] + 0.5,
+                    alpha=0.08, color="gold", zorder=0,
+                )
+
+    # Terminal-layer shading
+    n = len(z_scores)
+    if n > 6:
+        ax.axvspan(n - 5.5, n - 0.5, alpha=0.08, color="gray", label="Terminal 5 layers")
+
+    ax.axhline(1.96, color="gray", linestyle="--", alpha=0.5, label="z=1.96")
+    ax.set_xlabel("Layer Index")
+    ax.set_ylabel("z-score")
+    ax.set_title("Per-Layer Topological Discriminability Profile")
+    ax.legend(loc="upper left", fontsize=8)
+    ax.grid(True, alpha=0.3)
+    fig.tight_layout()
+    return fig
+
+
+def plot_crocker(
+    betti_matrix: np.ndarray,
+    parameter_labels: list[str] | None = None,
+    filtration_range: tuple[float, float] | None = None,
+    ax: matplotlib.axes.Axes | None = None,
+    colormap: str = "viridis",
+    title: str | None = None,
+) -> matplotlib.figure.Figure:
+    """2D heatmap of Betti numbers (filtration scale × parameter).
+
+    Parameters
+    ----------
+    betti_matrix : (n_filtration_steps, n_parameters) Betti number matrix.
+    parameter_labels : labels for the parameter axis.
+    filtration_range : (min, max) of filtration values.
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(max(8, betti_matrix.shape[1] * 0.5), 6))
+    else:
+        fig = ax.get_figure()
+
+    extent = None
+    if filtration_range is not None:
+        extent = [
+            -0.5, betti_matrix.shape[1] - 0.5,
+            filtration_range[0], filtration_range[1],
+        ]
+
+    im = ax.imshow(
+        betti_matrix, aspect="auto", origin="lower",
+        cmap=colormap, extent=extent, interpolation="nearest",
+    )
+    fig.colorbar(im, ax=ax, label="Betti number", fraction=0.046, pad=0.04)
+
+    if parameter_labels is not None:
+        ax.set_xticks(range(len(parameter_labels)))
+        ax.set_xticklabels(parameter_labels, rotation=45, ha="right", fontsize=8)
+
+    ax.set_ylabel("Filtration scale (ε)")
+    ax.set_xlabel("Parameter")
+    ax.set_title(title or "CROCKER Plot")
+    fig.tight_layout()
+    return fig
+
+
+def plot_compression_decomposition(
+    levels: list[int],
+    total_persistence: list[float],
+    n_features: list[float],
+    mean_lifetime: list[float],
+    ax: matplotlib.axes.Axes | None = None,
+    title: str = "H1 Persistence Decomposition",
+) -> matplotlib.figure.Figure:
+    """Dual-axis plot of feature count vs mean lifetime by difficulty.
+
+    Parameters
+    ----------
+    levels : difficulty level labels.
+    total_persistence : total persistence per level.
+    n_features : feature count per level.
+    mean_lifetime : mean lifetime per level.
+    """
+    if ax is None:
+        fig, ax1 = plt.subplots(figsize=(8, 5))
+    else:
+        ax1 = ax
+        fig = ax.get_figure()
+
+    ax2 = ax1.twinx()
+
+    x = np.arange(len(levels))
+    width = 0.3
+
+    bars1 = ax1.bar(
+        x - width / 2, n_features, width,
+        color="steelblue", alpha=0.8, label="Feature Count",
+    )
+    bars2 = ax2.bar(
+        x + width / 2, mean_lifetime, width,
+        color="coral", alpha=0.8, label="Mean Lifetime",
+    )
+
+    ax1.set_xlabel("Difficulty Level")
+    ax1.set_ylabel("Feature Count", color="steelblue")
+    ax2.set_ylabel("Mean Lifetime", color="coral")
+    ax1.set_xticks(x)
+    ax1.set_xticklabels([str(lv) for lv in levels])
+    ax1.set_title(title)
+
+    lines1, labels1 = ax1.get_legend_handles_labels()
+    lines2, labels2 = ax2.get_legend_handles_labels()
+    ax1.legend(lines1 + lines2, labels1 + labels2, loc="upper left")
+    ax1.grid(True, alpha=0.3, axis="y")
+    fig.tight_layout()
+    return fig
+
+
+# ============================================================
+# LLM hidden-state analysis plots (Wave 2)
+# ============================================================
+
+
+def plot_roc_curves(
+    roc_data: dict[str, tuple[np.ndarray, np.ndarray, float]],
+    ax: matplotlib.axes.Axes | None = None,
+    title: str = "ROC Curves: Correctness Prediction",
+) -> matplotlib.figure.Figure:
+    """Plot ROC curves for correctness prediction.
+
+    Parameters
+    ----------
+    roc_data : dict mapping label -> (fpr, tpr, auroc).
+    ax : optional axes.
+    title : plot title.
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(7, 7))
+    else:
+        fig = ax.get_figure()
+
+    for label, (fpr, tpr, auroc) in roc_data.items():
+        ax.plot(fpr, tpr, linewidth=2, label=f"{label} (AUROC={auroc:.3f})")
+
+    ax.plot([0, 1], [0, 1], "k--", alpha=0.5, label="Random")
+    ax.set_xlabel("False Positive Rate")
+    ax.set_ylabel("True Positive Rate")
+    ax.set_title(title)
+    ax.legend(loc="lower right")
+    ax.grid(True, alpha=0.3)
+    ax.set_xlim([-0.02, 1.02])
+    ax.set_ylim([-0.02, 1.02])
+    fig.tight_layout()
+    return fig
+
+
+def plot_id_profile(
+    profiles: dict[int, np.ndarray],
+    ax: matplotlib.axes.Axes | None = None,
+    title: str = "Intrinsic Dimension by Layer",
+    method_label: str = "TwoNN",
+) -> matplotlib.figure.Figure:
+    """Plot intrinsic dimension profiles across layers by difficulty level.
+
+    Parameters
+    ----------
+    profiles : dict mapping level -> (n_layers,) array of ID estimates.
+    ax : optional axes.
+    title : plot title.
+    method_label : label for the ID method.
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(12, 5))
+    else:
+        fig = ax.get_figure()
+
+    levels = sorted(profiles.keys())
+    colors = plt.cm.viridis(np.linspace(0, 1, len(levels)))
+
+    for level, color in zip(levels, colors):
+        ids = profiles[level]
+        layers = np.arange(len(ids))
+        ax.plot(layers, ids, "-o", color=color, label=f"Level {level}",
+                markersize=3, linewidth=1.5)
+
+    ax.set_xlabel("Layer Index")
+    ax.set_ylabel(f"Intrinsic Dimension ({method_label})")
+    ax.set_title(title)
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+
+    # Shade terminal layers
+    n_layers = len(next(iter(profiles.values())))
+    terminal_start = max(0, n_layers - 5)
+    ax.axvspan(terminal_start, n_layers - 1, alpha=0.08, color="red")
+
+    fig.tight_layout()
+    return fig
+
+
+def plot_spectral_comparison(
+    euclidean_entropy: dict[int, list[float]],
+    spectral_entropy: dict[int, list[float]],
+    layer_indices: list[int],
+    ax: matplotlib.axes.Axes | None = None,
+    title: str = "Euclidean vs Spectral PH Entropy",
+) -> matplotlib.figure.Figure:
+    """Side-by-side comparison of Euclidean and spectral persistence entropy.
+
+    Parameters
+    ----------
+    euclidean_entropy : dict mapping H-dim -> list of entropies per layer.
+    spectral_entropy : dict mapping H-dim -> list of entropies per layer.
+    layer_indices : list of layer index labels.
+    ax : optional axes.
+    title : plot title.
+    """
+    n_dims = len(euclidean_entropy)
+    if ax is None:
+        fig, axes = plt.subplots(1, n_dims, figsize=(7 * n_dims, 5))
+        if n_dims == 1:
+            axes = [axes]
+    else:
+        fig = ax.get_figure()
+        axes = [ax]
+
+    for dim_idx, dim in enumerate(sorted(euclidean_entropy.keys())):
+        if dim_idx >= len(axes):
+            break
+        a = axes[dim_idx]
+        a.plot(layer_indices, euclidean_entropy[dim], "b-o", label="Euclidean",
+               markersize=4, linewidth=1.5)
+        a.plot(layer_indices, spectral_entropy[dim], "r-s", label="Spectral",
+               markersize=4, linewidth=1.5)
+        a.set_xlabel("Layer")
+        a.set_ylabel("Persistence Entropy")
+        a.set_title(f"H{dim}")
+        a.legend()
+        a.grid(True, alpha=0.3)
+
+    fig.suptitle(title, fontsize=13)
+    fig.tight_layout()
+    return fig
+
+
+# ---------------------------------------------------------------------------
+# Wave 3: Zigzag persistence + token-region plots
+# ---------------------------------------------------------------------------
+
+
+def plot_zigzag_barcode(
+    barcodes: np.ndarray,
+    dim: int = 1,
+    level: int | None = None,
+    ax=None,
+    title: str | None = None,
+    colormap: str = "viridis",
+):
+    """Plot zigzag persistence barcode as horizontal lifetime bars.
+
+    Parameters
+    ----------
+    barcodes : (n, 2) array of (birth_layer, death_layer).
+    dim : homology dimension (for labeling).
+    level : difficulty level (for labeling).
+    ax : optional matplotlib axes.
+    title : plot title override.
+    colormap : matplotlib colormap name.
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(12, 5))
+    else:
+        fig = ax.get_figure()
+
+    if len(barcodes) == 0:
+        ax.text(0.5, 0.5, f"No H{dim} features", ha="center", va="center",
+                transform=ax.transAxes, fontsize=12, color="gray")
+        if title:
+            ax.set_title(title)
+        return fig
+
+    order = np.argsort(barcodes[:, 0])
+    barcodes = barcodes[order]
+    lifetimes = barcodes[:, 1] - barcodes[:, 0]
+    max_lt = max(lifetimes.max(), 1e-10)
+
+    cmap = plt.get_cmap(colormap)
+    colors = cmap(lifetimes / max_lt)
+
+    for i, (bar, color) in enumerate(zip(barcodes, colors)):
+        ax.barh(i, bar[1] - bar[0], left=bar[0], height=0.8, color=color, alpha=0.8)
+
+    ax.set_xlabel("Layer (zigzag time)")
+    ax.set_ylabel("Feature index")
+    default_title = f"H{dim} Zigzag Barcode"
+    if level is not None:
+        default_title += f" — Level {level}"
+    ax.set_title(title or default_title)
+    ax.grid(True, alpha=0.2, axis="x")
+    return fig
+
+
+def plot_zigzag_comparison(
+    results: dict,
+    dim: int = 1,
+    metric: str = "mean_lifetime",
+    ax=None,
+    title: str = "Zigzag Feature Statistics by Difficulty",
+):
+    """Bar chart comparing zigzag statistics across difficulty levels.
+
+    Parameters
+    ----------
+    results : dict mapping level (int) -> stats dict from zigzag_feature_lifetime_stats.
+    dim : homology dimension (for labeling).
+    metric : which stat to plot ('mean_lifetime', 'n_features', 'max_lifetime', 'n_long_lived').
+    ax : optional axes.
+    title : plot title.
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(8, 5))
+    else:
+        fig = ax.get_figure()
+
+    levels = sorted(results.keys())
+    values = [results[l].get(metric, 0) for l in levels]
+
+    colors = plt.cm.viridis(np.linspace(0, 1, len(levels)))
+    ax.bar(levels, values, color=colors, alpha=0.8)
+    ax.set_xlabel("Difficulty Level")
+    ax.set_ylabel(metric.replace("_", " ").title())
+    ax.set_title(title)
+    ax.grid(True, alpha=0.3, axis="y")
+    return fig
+
+
+def plot_token_partition_topology(
+    region_entropy: dict,
+    levels: list[int] | None = None,
+    ax=None,
+    title: str = "Persistence Entropy by Token Region",
+):
+    """Grouped bar chart of persistence entropy across token regions and difficulty.
+
+    Parameters
+    ----------
+    region_entropy : dict mapping region_name -> {level: list_of_entropy_values}.
+    levels : which levels to include (default: all).
+    ax : optional axes.
+    title : plot title.
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(10, 5))
+    else:
+        fig = ax.get_figure()
+
+    regions = sorted(region_entropy.keys())
+    if levels is None:
+        all_levels = set()
+        for r_data in region_entropy.values():
+            all_levels.update(r_data.keys())
+        levels = sorted(all_levels)
+
+    n_regions = len(regions)
+    n_levels = len(levels)
+    x = np.arange(n_regions)
+    width = 0.8 / max(n_levels, 1)
+
+    colors = plt.cm.viridis(np.linspace(0, 1, n_levels))
+
+    for i, (level, color) in enumerate(zip(levels, colors)):
+        means = []
+        errs = []
+        for region in regions:
+            vals = region_entropy[region].get(level, [])
+            if vals:
+                means.append(np.mean(vals))
+                errs.append(np.std(vals))
+            else:
+                means.append(0)
+                errs.append(0)
+
+        offset = (i - n_levels / 2 + 0.5) * width
+        ax.bar(x + offset, means, width, yerr=errs, label=f"Level {level}",
+               color=color, alpha=0.8, capsize=2)
+
+    ax.set_xticks(x)
+    ax.set_xticklabels([r.replace("_", "\n") for r in regions], fontsize=9)
+    ax.set_ylabel("Persistence Entropy")
+    ax.set_title(title)
+    ax.legend()
+    ax.grid(True, alpha=0.3, axis="y")
+    return fig
+
+
+def plot_cross_model_zscore(
+    zscore_results: dict,
+    model_labels: dict | None = None,
+    model_colors: dict | None = None,
+    ax=None,
+    title: str = "Cross-Model Z-Score Profiles",
+):
+    """Overlay z-score profiles from multiple models.
+
+    Parameters
+    ----------
+    zscore_results : dict mapping model_key -> {"z_scores": array, "n_layers": int}.
+    model_labels : optional mapping model_key -> display name.
+    model_colors : optional mapping model_key -> color.
+    ax : optional axes.
+    title : plot title.
+    """
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(12, 6))
+    else:
+        fig = ax.get_figure()
+
+    default_colors = plt.cm.tab10(np.linspace(0, 1, len(zscore_results)))
+
+    for i, (key, data) in enumerate(zscore_results.items()):
+        z = np.asarray(data["z_scores"])
+        x = np.linspace(0, 1, len(z))
+        label = (model_labels or {}).get(key, key)
+        color = (model_colors or {}).get(key, default_colors[i])
+        ax.plot(x, z, label=label, color=color, linewidth=2, alpha=0.8)
+
+    ax.axhline(y=1.96, color="gray", linestyle="--", alpha=0.5, label="p<0.05")
+    ax.axhline(y=2.58, color="gray", linestyle=":", alpha=0.5, label="p<0.01")
+    ax.set_xlabel("Normalized Layer Position (0=embedding, 1=final)")
+    ax.set_ylabel("Z-Score")
+    ax.set_title(title)
+    ax.legend()
+    ax.grid(True, alpha=0.3)
+    return fig
+
+
+def plot_attention_binding_heatmap(
+    scores: dict,
+    levels: list[int],
+    layer_indices: list[int],
+    ax=None,
+    title: str = "Attention-Hidden Binding Score",
+    cmap: str = "RdYlBu_r",
+):
+    """Heatmap of binding scores (difficulty × layer).
+
+    Parameters
+    ----------
+    scores : dict mapping (level, layer) -> float or {"mean": float}.
+    levels : list of difficulty levels.
+    layer_indices : list of layer indices.
+    ax : optional axes.
+    title : plot title.
+    cmap : colormap name.
+    """
+    n_levels = len(levels)
+    n_layers = len(layer_indices)
+    matrix = np.zeros((n_levels, n_layers))
+
+    for i, level in enumerate(levels):
+        for j, layer in enumerate(layer_indices):
+            val = scores.get((level, layer), 0.0)
+            if isinstance(val, dict):
+                val = val.get("mean", 0.0)
+            matrix[i, j] = val
+
+    if ax is None:
+        fig, ax = plt.subplots(figsize=(max(8, n_layers), max(4, n_levels * 0.8)))
+    else:
+        fig = ax.get_figure()
+
+    im = ax.imshow(matrix, aspect="auto", cmap=cmap, interpolation="nearest")
+    ax.set_xticks(range(n_layers))
+    ax.set_xticklabels([str(l) for l in layer_indices])
+    ax.set_yticks(range(n_levels))
+    ax.set_yticklabels([f"Level {l}" for l in levels])
+    ax.set_xlabel("Layer Index")
+    ax.set_ylabel("Difficulty Level")
+    ax.set_title(title)
+
+    for i in range(n_levels):
+        for j in range(n_layers):
+            ax.text(j, i, f"{matrix[i, j]:.3f}", ha="center", va="center",
+                    fontsize=8, color="white" if matrix[i, j] > matrix.mean() else "black")
+
+    fig.colorbar(im, ax=ax, label="Binding Score")
+    return fig

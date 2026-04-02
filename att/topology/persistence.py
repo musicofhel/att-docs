@@ -1,7 +1,14 @@
 """Persistent homology computation via Ripser/GUDHI."""
 
+import warnings
+
 import numpy as np
 from att.config.seed import get_rng
+
+
+class TopologyDimensionalityWarning(UserWarning):
+    """Issued when point cloud effective rank is below minimum for stable PH."""
+    pass
 
 
 class PersistenceAnalyzer:
@@ -25,11 +32,13 @@ class PersistenceAnalyzer:
         backend: str = "ripser",
         use_witness: bool = False,
         n_landmarks: int = 500,
+        metric: str = "euclidean",
     ):
         self.max_dim = max_dim
         self.backend = backend
         self.use_witness = use_witness
         self.n_landmarks = n_landmarks
+        self.metric = metric
         self.diagrams_: list[np.ndarray] | None = None
         self._cloud: np.ndarray | None = None
 
@@ -38,6 +47,7 @@ class PersistenceAnalyzer:
         cloud: np.ndarray,
         subsample: int | None = None,
         seed: int | None = None,
+        min_effective_dim: int = 5,
     ) -> dict:
         """Compute persistence diagrams and derived representations.
 
@@ -60,6 +70,21 @@ class PersistenceAnalyzer:
             cloud = cloud[indices]
 
         self._cloud = cloud
+
+        # Effective dimensionality check (skip for precomputed distance matrices)
+        effective_rank = 0
+        if self.metric != "precomputed":
+            centered = cloud - cloud.mean(axis=0)
+            sv = np.linalg.svd(centered, compute_uv=False)
+            effective_rank = int(np.sum(sv > 1e-3 * sv[0])) if len(sv) > 0 and sv[0] > 0 else 0
+
+            if effective_rank < min_effective_dim:
+                warnings.warn(
+                    f"Point cloud effective dimensionality ({effective_rank}) below "
+                    f"minimum ({min_effective_dim}). Topological features may reflect "
+                    f"sampling noise rather than manifold structure.",
+                    TopologyDimensionalityWarning,
+                )
 
         if self.backend == "ripser":
             diagrams = self._ripser_compute(cloud)
@@ -93,7 +118,11 @@ class PersistenceAnalyzer:
         """Compute persistence via Ripser."""
         import ripser
 
-        result = ripser.ripser(cloud, maxdim=self.max_dim)
+        result = ripser.ripser(
+            cloud,
+            maxdim=self.max_dim,
+            distance_matrix=(self.metric == "precomputed"),
+        )
         diagrams = []
         for dim in range(self.max_dim + 1):
             dgm = result["dgms"][dim]

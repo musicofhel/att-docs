@@ -1,0 +1,49 @@
+{
+  "overall_auroc": 0.5798372513562386,
+  "overall_accuracy": 0.9122694466720128,
+  "per_level": {
+    "1": {
+      "auroc": 0.5642857142857143,
+      "n": 43,
+      "n_correct": 10
+    },
+    "2": {
+      "auroc": 0.4946031746031746,
+      "n": 90,
+      "n_correct": 16
+    },
+    "3": {
+      "auroc": 0.618421052631579,
+      "n": 100,
+      "n_correct": 8
+    },
+    "4": {
+      "auroc": 0.7291666666666666,
+      "n": 100,
+      "n_correct": 3
+    },
+    "5": {
+      "auroc": null,
+      "n": 100
+    }
+  },
+  "top_features": {
+    "H0_total_persistence": 0.9824764321587497,
+    "H1_total_persistence": 0.49111033884836064,
+    "H1_mean_birth": 0.3490266663221391,
+    "H1_mean_lifetime": 0.3098591987865014,
+    "H0_n_features": 0.3061769281005298,
+    "H0_max_lifetime": 0.17933124537037887,
+    "H1_n_features": 0.1741732228007554,
+    "H1_max_birth": 0.16750471406845294,
+    "H1_std_lifetime": 0.1311235805474135,
+    "H0_mean_lifetime": 0.10588025779368918
+  },
+  "feature_set": "summary",
+  "n_features": 16,
+  "n_problems": 433,
+  "config": {
+    "seed": 42,
+    "feature_set": "summary"
+  }
+}
