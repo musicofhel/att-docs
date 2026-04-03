@@ -27,38 +27,49 @@
   },
   "D2_correctness": {
     "status": "complete",
-    "overall_auroc": 0.5798372513562386,
-    "overall_accuracy": 0.9122694466720128,
+    "overall_auroc": 0.787,
+    "overall_auroc_std": 0.095,
+    "overall_auroc_cv50": 0.783,
+    "overall_auroc_cv50_std": 0.054,
+    "overall_auroc_95ci": [
+      0.695,
+      0.889
+    ],
+    "overall_accuracy": 0.915,
     "n_features": 16,
     "n_problems": 433,
+    "n_correct": 38,
+    "class_balance": "8.8% correct",
     "feature_set": "summary",
-    "top_feature": "H0_total_persistence",
+    "top_feature": "H0_persistence_entropy (0.824)",
     "per_level": {
       "1": {
-        "auroc": 0.5642857142857143,
+        "auroc": 0.757,
         "n": 43,
         "n_correct": 10
       },
       "2": {
-        "auroc": 0.4946031746031746,
+        "auroc": 0.691,
         "n": 90,
         "n_correct": 16
       },
       "3": {
-        "auroc": 0.618421052631579,
+        "auroc": 0.742,
         "n": 100,
         "n_correct": 8
       },
       "4": {
-        "auroc": 0.7291666666666666,
+        "auroc": 0.667,
         "n": 100,
         "n_correct": 3
       },
       "5": {
         "auroc": null,
-        "n": 100
+        "n": 100,
+        "n_correct": 1
       }
-    }
+    },
+    "note": "AUROC 0.787 after alignment fix (was 0.580 with mismatched data). Proper 50-fold CV: 0.783 +/- 0.054, 95% CI [0.695, 0.889]. Pool-index matching required for correct alignment."
   },
   "D3_spectral": {
     "status": "complete",
@@ -193,21 +204,71 @@
     },
     "n_terminal_replicated": 1,
     "n_nonmonotonic_entropy": 4,
-    "h1_nonmonotonic_universal": true
+    "h1_nonmonotonic_universal": true,
+    "h1_level1_minimum_universal": true,
+    "aligned_qwen_h1_entropy": {
+      "1": 2.331,
+      "2": 3.186,
+      "3": 3.524,
+      "4": 3.824,
+      "5": 3.796
+    },
+    "old_qwen_h1_entropy": {
+      "1": 2.925,
+      "2": 3.562,
+      "3": 3.403,
+      "4": 3.535,
+      "5": 3.447
+    },
+    "note": "With aligned Qwen data: Level 1 minimum preserved. Pattern shifted to near-monotonic increase (Spearman r=0.9, p=0.037). Non-Qwen models unchanged."
   },
   "D10_binding": {
     "status": "complete",
-    "mode": "real_attention",
+    "mode": "real_attention_aligned",
     "per_level_binding": {
-      "1": 0.6834209445395736,
-      "2": 0.6494227015763215,
-      "3": 0.5992913048296765,
-      "4": 0.5398568529197889,
-      "5": 0.4649780838275893
+      "1": 0.74,
+      "2": 0.613,
+      "3": 0.647,
+      "4": 0.596,
+      "5": 0.462
     },
-    "easy_binding": 0.6834209445395736,
-    "hard_binding": 0.4649780838275893,
-    "monotonic_decrease": true,
-    "note": "Binding decreases with difficulty"
+    "spearman_r": -0.9,
+    "spearman_p": 0.037,
+    "easy_binding": 0.74,
+    "hard_binding": 0.462,
+    "monotonic_decrease": false,
+    "note": "Population-level topological similarity decreases with difficulty. Spearman r=-0.9, p=0.037. Non-monotonic at L2/L3."
+  },
+  "audit": {
+    "date": "2026-04-02",
+    "commit": "6e60605",
+    "fixes_applied": [
+      "D10 alignment",
+      "D2 alignment",
+      "D6 Qwen alignment"
+    ],
+    "affected": [
+      "D10",
+      "D2",
+      "D6"
+    ],
+    "safe": [
+      "D1",
+      "D3",
+      "D5",
+      "D7",
+      "D8",
+      "D9"
+    ],
+    "d2_cv_validation": {
+      "method": "10 seeds x 5-fold stratified CV",
+      "mean": 0.783,
+      "std": 0.054,
+      "ci_95": [
+        0.695,
+        0.889
+      ],
+      "alignment_method": "pool-index matching (evaluate_correctness.py RNG reconstruction)"
+    }
   }
 }

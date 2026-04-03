@@ -224,7 +224,14 @@ def main():
     parser.add_argument("--seed", type=int, default=42)
     parser.add_argument("--skip-zscore", action="store_true", help="Skip z-score (slow)")
     parser.add_argument("--skip-id", action="store_true", help="Skip ID profiles")
+    parser.add_argument("--qwen-data", type=str, default=None,
+                        help="Override Qwen data path (e.g. for aligned extraction)")
+    parser.add_argument("--output", type=str, default=None,
+                        help="Override output JSON path")
     args = parser.parse_args()
+
+    if args.qwen_data:
+        MODEL_FILES["qwen"] = os.path.basename(args.qwen_data)
 
     set_seed(args.seed)
     os.makedirs(FIGURES_DIR, exist_ok=True)
@@ -300,7 +307,7 @@ def main():
               f"— {[f'{v:.3f}' for v in vals]}")
 
     # Save results
-    out_path = os.path.join(DATA_DIR, "cross_model_results.json")
+    out_path = args.output or os.path.join(DATA_DIR, "cross_model_results.json")
     with open(out_path, "w") as f:
         json.dump(results, f, indent=2, default=str)
     print(f"\nSaved: {out_path}")
