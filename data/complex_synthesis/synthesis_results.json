@@ -1,0 +1,99 @@
+{
+  "question_1": {
+    "question": "Does cubical persistence add spatial localization that VR cannot?",
+    "verdict": "Localization fails",
+    "evidence": {
+      "ks_p_value": 0.3211,
+      "ks_significant": false,
+      "hard_late_fraction": 0.2788,
+      "easy_late_fraction": 0.3012,
+      "late_fraction_higher_for_hard": false,
+      "cubical_auroc": 0.6149,
+      "vr_auroc": 0.787,
+      "combined_auroc": 0.5841,
+      "auroc_improvement": -0.2029
+    },
+    "explanation": "KS test p=0.3211 (not significant). Hard-problem features are NOT born later (hard=0.279 vs easy=0.301). Combined cubical+VR AUROC (0.584) is WORSE than VR alone (0.787). Cubical persistence on attention grids does not provide spatial localization beyond what VR captures from hidden states."
+  },
+  "question_2": {
+    "question": "Does preserving attention asymmetry help?",
+    "verdict": "Asymmetry irrelevant",
+    "evidence": {
+      "permutation_z": {
+        "vr": 2.788,
+        "directed_flag": 2.638,
+        "dowker": -0.976
+      },
+      "best_z_construction": "symmetric_vr",
+      "auroc": {
+        "vr": 0.7,
+        "directed_flag": 0.7,
+        "dowker": 0.65,
+        "combined": 0.625
+      },
+      "combined_exceeds_best_individual": false,
+      "vr_flag_landscape_distance": 0.2275,
+      "threshold_stable_range": "k5-k20"
+    },
+    "explanation": "VR z=2.788 vs directed flag z=2.638 vs Dowker z=-0.976. VR wins on permutation test. AUROC: VR=0.700, flag=0.700, Dowker=0.650. VR and directed flag are essentially tied (AUROC identical, landscape distance=0.228). Combined features (0.625) do NOT exceed best individual. Symmetrizing attention loses nothing \u2014 the asymmetric information in A vs A^T does not carry additional topological signal for difficulty discrimination."
+  },
+  "question_3": {
+    "question": "Which complex construction should ATT adopt?",
+    "recommendation": {
+      "PRIMARY": "VR (Vietoris-Rips) on hidden states \u2014 established, highest z-score, best library support (Ripser), no threshold tuning",
+      "SECONDARY": "Cubical on attention grids \u2014 fast, interpretable layer x token heatmaps, useful for exploratory visualization even though not statistically superior",
+      "DROP": "Directed flag complex \u2014 produces near-identical results to VR (landscape distance 0.23) at higher computational cost and threshold sensitivity. Dowker \u2014 high variance, negative z-score, immature library (pyDowker), semantically unclear for self-attention"
+    },
+    "rationale": "VR remains the best choice: it achieved the highest permutation z-score in the 50-problem comparison (2.79 vs flag 2.64 vs Dowker -0.98), matched the flag complex on correctness AUROC (0.70), and requires no threshold selection. The directed flag complex is essentially a noisy copy of VR for this application \u2014 symmetrization loses nothing because attention asymmetry does not encode difficulty-relevant topological information. Cubical persistence offers interpretable spatial heatmaps but no statistical advantage (AUROC 0.615 vs VR 0.787, combined 0.584). It may still be useful for visualization."
+  },
+  "novel_findings": [
+    {
+      "finding": "Cubical birth positions show NO spatial localization of difficulty-dependent features",
+      "category": "Negative",
+      "source": "experiment/tda-cubical, Exp 3",
+      "detail": "KS test p=0.321 between level 1 and level 5 birth position distributions. Hard-problem features are not preferentially born in later (answer-region) tokens. This contradicts the hypothesis that cubical persistence would reveal WHERE in the attention grid difficulty manifests.",
+      "paper_worthy": true,
+      "reason": "Negative result that saves future researchers from pursuing cubical spatial localization on attention matrices."
+    },
+    {
+      "finding": "Symmetrization of attention loses nothing for topological difficulty discrimination",
+      "category": "Novel",
+      "source": "experiment/tda-complex-compare, Exp 2-3",
+      "detail": "VR (symmetric) z=2.79 vs directed flag z=2.64. AUROC identical (0.70). Persistence landscape distance between VR and directed flag = 0.23 (vs 2.58 to Dowker). The asymmetric A vs A^T structure of attention does not carry topological information relevant to problem difficulty.",
+      "paper_worthy": true,
+      "reason": "Justifies the use of simpler symmetric constructions in TDA-on-transformers work."
+    },
+    {
+      "finding": "Dowker complex on self-attention produces unstable, high-variance persistence",
+      "category": "Negative",
+      "source": "experiment/tda-complex-compare, Exp 1-2",
+      "detail": "Dowker H1 counts: 35-70 features with std 47-89 (vs VR: 16-35 with std 6-14). Permutation z = -0.98 (not significant). AUROC = 0.65. The bipartite Dowker construction treats rows and columns of A as separate point sets, but in self-attention these are the same tokens, making the bipartite structure semantically degenerate.",
+      "paper_worthy": true,
+      "reason": "Methodological insight: Dowker complex is inappropriate for self-attention (rows=columns)."
+    },
+    {
+      "finding": "Directed flag complex requires threshold k>=5 for stability",
+      "category": "Methodological",
+      "source": "experiment/tda-complex-compare, Exp 4",
+      "detail": "At k=3: z=0.12 (meaningless). At k=5: z=2.00. Stable range: k5-k20. The directed flag complex is sensitive to the binarization threshold, requiring calibration per model/dataset.",
+      "paper_worthy": false,
+      "reason": "Useful implementation note but not a primary finding."
+    },
+    {
+      "finding": "Cubical and VR persistence are highly correlated (r=0.975 for H0, 0.735 for H1)",
+      "category": "Confirmatory",
+      "source": "experiment/tda-cubical, Exp 5",
+      "detail": "The two constructions capture similar topological structure despite operating on different data representations (attention grid vs hidden-state point cloud). VR consistently produces more features, suggesting richer structure in point clouds.",
+      "paper_worthy": false,
+      "reason": "Expected result given both operate on the same underlying data."
+    },
+    {
+      "finding": "Combined cubical+VR features DECREASE prediction performance",
+      "category": "Negative",
+      "source": "experiment/tda-cubical, Exp 4",
+      "detail": "VR-only AUROC: 0.787. Cubical-only: 0.615. Combined: 0.584. Adding cubical features to VR introduces noise that degrades the classifier, consistent with the high correlation between the two feature sets (r=0.975 for H0).",
+      "paper_worthy": true,
+      "reason": "Important practical guidance: don't combine correlated topological feature sets."
+    }
+  ]
+}

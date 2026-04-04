@@ -1,0 +1,55 @@
+{
+  "constructions": [
+    "VR (baseline)",
+    "Cubical",
+    "Directed Flag",
+    "Dowker"
+  ],
+  "metrics": {
+    "permutation_z_score": {
+      "VR (baseline)": 8.11,
+      "Cubical": -2.37,
+      "Directed Flag": 2.64,
+      "Dowker": -0.98
+    },
+    "correctness_auroc": {
+      "VR (baseline)": 0.787,
+      "Cubical": 0.615,
+      "Directed Flag": 0.7,
+      "Dowker": 0.65
+    },
+    "spatial_localization": {
+      "VR (baseline)": "No",
+      "Cubical": "No (KS p=0.321)",
+      "Directed Flag": "No",
+      "Dowker": "No"
+    },
+    "asymmetry_preserved": {
+      "VR (baseline)": "No",
+      "Cubical": "N/A",
+      "Directed Flag": "Yes",
+      "Dowker": "Yes"
+    },
+    "threshold_dependent": {
+      "VR (baseline)": "No",
+      "Cubical": "No",
+      "Directed Flag": "Yes (stable k5-k20)",
+      "Dowker": "Yes"
+    },
+    "library": {
+      "VR (baseline)": "Ripser (A+)",
+      "Cubical": "cripser (B+)",
+      "Directed Flag": "pyflagser (B)",
+      "Dowker": "pyDowker (C-)"
+    },
+    "interpretability": {
+      "VR (baseline)": "Low (point cloud)",
+      "Cubical": "High (grid heatmap)",
+      "Directed Flag": "Medium (graph)",
+      "Dowker": "Low (bipartite)"
+    }
+  },
+  "notes": {
+    "VR_z_discrepancy": "Full-dataset VR z=8.11 (500 problems, 200 permutations). Compare-branch VR z=2.79 (50 problems, 200 permutations). The lower z in the comparison is due to reduced sample size, not methodology."
+  }
+}
