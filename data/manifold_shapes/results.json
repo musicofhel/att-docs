@@ -1,0 +1,152 @@
+{
+  "branch": "experiment/tda-manifold-shapes",
+  "n_problems": 500,
+  "n_features": 88,
+  "top_10_difficulty_correlations": [
+    {
+      "feature": "H0_lifetime_q75",
+      "spearman_r": -0.4138,
+      "p": 0.0
+    },
+    {
+      "feature": "H0_count",
+      "spearman_r": 0.4126,
+      "p": 0.0
+    },
+    {
+      "feature": "H0_entropy",
+      "spearman_r": 0.4043,
+      "p": 0.0
+    },
+    {
+      "feature": "H0_mean_lifetime",
+      "spearman_r": -0.4032,
+      "p": 0.0
+    },
+    {
+      "feature": "H0_mean_death",
+      "spearman_r": -0.4032,
+      "p": 0.0
+    },
+    {
+      "feature": "hub_entropy",
+      "spearman_r": 0.3906,
+      "p": 0.0
+    },
+    {
+      "feature": "mean_nn_dist",
+      "spearman_r": -0.389,
+      "p": 0.0
+    },
+    {
+      "feature": "euler_approx",
+      "spearman_r": 0.3857,
+      "p": 0.0
+    },
+    {
+      "feature": "H1_mean_death",
+      "spearman_r": -0.3737,
+      "p": 0.0
+    },
+    {
+      "feature": "H1_mean_birth",
+      "spearman_r": -0.373,
+      "p": 0.0
+    }
+  ],
+  "top_10_correctness_correlations": [
+    {
+      "feature": "H2_mean_lifetime",
+      "spearman_r": -0.1234,
+      "p": 0.005741
+    },
+    {
+      "feature": "H2_mean_death",
+      "spearman_r": -0.123,
+      "p": 0.005905
+    },
+    {
+      "feature": "H2_lifetime_q75",
+      "spearman_r": -0.1223,
+      "p": 0.006195
+    },
+    {
+      "feature": "H2_mean_birth",
+      "spearman_r": -0.1219,
+      "p": 0.006346
+    },
+    {
+      "feature": "H2_lifetime_q25",
+      "spearman_r": -0.1146,
+      "p": 0.010355
+    },
+    {
+      "feature": "H2_max_lifetime",
+      "spearman_r": -0.1063,
+      "p": 0.017409
+    },
+    {
+      "feature": "H0_entropy",
+      "spearman_r": -0.1056,
+      "p": 0.018167
+    },
+    {
+      "feature": "H0_lifetime_q75",
+      "spearman_r": 0.1017,
+      "p": 0.022999
+    },
+    {
+      "feature": "dim_variance",
+      "spearman_r": 0.1016,
+      "p": 0.023147
+    },
+    {
+      "feature": "H1_mean_birth",
+      "spearman_r": 0.0989,
+      "p": 0.027011
+    }
+  ],
+  "template_distribution_by_level": {
+    "1": {
+      "two_clusters": 1.0
+    },
+    "2": {
+      "two_clusters": 1.0
+    },
+    "3": {
+      "two_clusters": 0.99,
+      "blob": 0.01
+    },
+    "4": {
+      "two_clusters": 0.992,
+      "blob": 0.008
+    },
+    "5": {
+      "two_clusters": 1.0
+    }
+  },
+  "auroc_by_group": {
+    "full_battery": 0.5133,
+    "persistence": 0.5591,
+    "geometry": 0.4739,
+    "clustering": 0.5376,
+    "curvature": 0.4293,
+    "template": 0.5795
+  },
+  "best_single_feature_difficulty": {
+    "feature": "H0_lifetime_q75",
+    "r": -0.4138
+  },
+  "best_single_feature_correctness": {
+    "feature": "H2_mean_lifetime",
+    "r": -0.1234
+  },
+  "curvature_by_level": {
+    "1": 0.6912,
+    "2": 0.6719,
+    "3": 0.6728,
+    "4": 0.6644,
+    "5": 0.6618
+  },
+  "finding": "88 manifold descriptors computed across 500 problems. Best difficulty predictor: H0_lifetime_q75 (r=-0.414). Best correctness predictor: H2_mean_lifetime (r=-0.123). Full battery AUROC: 0.513. Level 1 most resembles two_clusters; Level 5 most resembles two_clusters. Curvature trends increasingly negative with difficulty (L1=0.691, L5=0.662)."
+}
