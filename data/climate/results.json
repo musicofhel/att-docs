@@ -1,0 +1,67 @@
+{
+  "branch": "experiment/tda-climate",
+  "data_source": "NOAA",
+  "n_months": 915,
+  "exp1_takens_delay": 9,
+  "exp1_takens_dim": 7,
+  "exp1_cloud_shape": [
+    861,
+    7
+  ],
+  "exp1_enso_h0": 199,
+  "exp1_enso_h1_features": 130,
+  "exp1_enso_h1_entropy": 4.5477,
+  "exp1_enso_h2_features": 49,
+  "exp1_enso_h2_entropy": 3.5699,
+  "exp1_rossler_h1": 49,
+  "exp1_rossler_h2": 2,
+  "exp2_n_windows": 66,
+  "exp2_score_range": [
+    5.55,
+    20.44
+  ],
+  "exp2_cusum_changepoints": [
+    1992.5,
+    2012.5
+  ],
+  "exp2_detected_shifts": [
+    {
+      "event": "1976-77 Pacific shift",
+      "year": 1977.0,
+      "detected": true
+    },
+    {
+      "event": "1997-98 super El Ni\u00f1o",
+      "year": 1998.0,
+      "detected": false
+    },
+    {
+      "event": "2015-16 super El Ni\u00f1o",
+      "year": 2016.0,
+      "detected": true
+    }
+  ],
+  "exp2_1977_detected": true,
+  "exp2_1998_detected": false,
+  "exp2_2016_detected": true,
+  "exp3_elnino_n_months": 149,
+  "exp3_elnino_h1_features": 67,
+  "exp3_elnino_h1_entropy": 3.791,
+  "exp3_lanina_n_months": 298,
+  "exp3_lanina_h1_features": 146,
+  "exp3_lanina_h1_entropy": 4.6637,
+  "exp3_wasserstein": 0.0923,
+  "exp3_wasserstein_p": 0.0099,
+  "exp3_wasserstein_z": 4.05,
+  "exp3_n_permutations": 100,
+  "exp4_n_months": 914,
+  "exp4_pearson_correlation": 0.0004,
+  "exp4_enso_nao_binding": 810.77,
+  "exp4_enso_nao_p": 0.6832,
+  "exp4_enso_nao_z": -0.48,
+  "exp4_enso_nao_significant": false,
+  "exp4_enso_self_binding": 1249.56,
+  "exp4_enso_self_p": 0.5347,
+  "exp4_enso_self_z": -0.12,
+  "runtime_seconds": 17.4
+}
