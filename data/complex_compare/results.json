@@ -1,0 +1,103 @@
+{
+  "branch": "experiment/tda-complex-compare",
+  "n_problems": 50,
+  "constructions": [
+    "symmetric_vr",
+    "directed_flag",
+    "dowker"
+  ],
+  "exp1_h1_entropy_by_level": {
+    "symmetric_vr": {
+      "level_1": "3.706 \u00b1 0.469",
+      "level_2": "3.862 \u00b1 0.537",
+      "level_3": "3.378 \u00b1 0.618",
+      "level_4": "3.833 \u00b1 0.773",
+      "level_5": "4.401 \u00b1 0.602"
+    },
+    "directed_flag": {
+      "level_1": "3.705 \u00b1 0.466",
+      "level_2": "3.858 \u00b1 0.536",
+      "level_3": "3.368 \u00b1 0.616",
+      "level_4": "3.823 \u00b1 0.763",
+      "level_5": "4.388 \u00b1 0.562"
+    },
+    "dowker": {
+      "level_1": "3.214 \u00b1 2.043",
+      "level_2": "2.471 \u00b1 1.919",
+      "level_3": "3.858 \u00b1 2.669",
+      "level_4": "3.443 \u00b1 2.387",
+      "level_5": "3.215 \u00b1 3.277"
+    }
+  },
+  "exp1_h1_count_by_level": {
+    "symmetric_vr": {
+      "level_1": "21.0 \u00b1 7.9",
+      "level_2": "23.1 \u00b1 9.6",
+      "level_3": "16.3 \u00b1 6.1",
+      "level_4": "24.1 \u00b1 11.6",
+      "level_5": "35.0 \u00b1 14.0"
+    },
+    "directed_flag": {
+      "level_1": "20.9 \u00b1 7.7",
+      "level_2": "22.8 \u00b1 9.7",
+      "level_3": "16.0 \u00b1 6.1",
+      "level_4": "23.6 \u00b1 10.9",
+      "level_5": "33.6 \u00b1 12.9"
+    },
+    "dowker": {
+      "level_1": "35.4 \u00b1 49.5",
+      "level_2": "23.6 \u00b1 47.0",
+      "level_3": "65.9 \u00b1 75.3",
+      "level_4": "41.9 \u00b1 58.4",
+      "level_5": "69.9 \u00b1 88.8"
+    }
+  },
+  "exp2_permutation_z": {
+    "symmetric_vr": 2.7877515089379057,
+    "directed_flag": 2.6382962319838117,
+    "dowker": -0.9756877984999202
+  },
+  "exp2_permutation_p": {
+    "symmetric_vr": 0.015,
+    "directed_flag": 0.02,
+    "dowker": 0.815
+  },
+  "exp2_winner": "symmetric_vr",
+  "exp3_auroc": {
+    "symmetric_vr": 0.7000000000000001,
+    "directed_flag": 0.7000000000000001,
+    "dowker": 0.65,
+    "combined": 0.625
+  },
+  "exp3_asymmetry_helps": false,
+  "exp4_threshold_stability": {
+    "k3": {
+      "h1_count": 13.24,
+      "z_score": 0.12331658004170863
+    },
+    "k5": {
+      "h1_count": 21.38,
+      "z_score": 1.9963192885257974
+    },
+    "k8": {
+      "h1_count": 23.38,
+      "z_score": 2.8312638027747137
+    },
+    "k12": {
+      "h1_count": 23.76,
+      "z_score": 2.73380267134871
+    },
+    "k20": {
+      "h1_count": 23.9,
+      "z_score": 2.6660803896185907
+    },
+    "stable_range": "k5-k20"
+  },
+  "exp4_stable_range": "k5-k20",
+  "exp5_inter_construction_distances": {
+    "vr_flag": 0.2275428307056427,
+    "vr_dowker": 2.5811319394409655,
+    "flag_dowker": 2.5855072712898255
+  },
+  "overall_verdict": "symmetrization_loses_nothing"
+}
