@@ -1,0 +1,33 @@
+{
+  "branch": "experiment/tda-code",
+  "dataset": "openai/openai_humaneval",
+  "n_problems": 164,
+  "difficulty_bins": {
+    "easy": 54,
+    "medium": 55,
+    "hard": 55
+  },
+  "correctness": {
+    "overall": 0.25609756097560976,
+    "per_difficulty": {
+      "easy": 0.3333333333333333,
+      "medium": 0.2909090909090909,
+      "hard": 0.14545454545454545
+    }
+  },
+  "exp1_h1_entropy_by_difficulty": {
+    "easy": 2.3494752744693,
+    "medium": 2.1884194061329274,
+    "hard": 2.6272537793779485
+  },
+  "exp1_level1_minimum": false,
+  "exp1_non_monotonic": true,
+  "exp1_permutation_p": 0.8109452736318408,
+  "exp1_z_score": -0.8857993245840186,
+  "exp2_math_easy_code_easy_wasserstein": 778.1121011935084,
+  "exp2_math_hard_code_hard_wasserstein": 2349.0520918581374,
+  "exp2_math_easy_code_hard_wasserstein": 817.1421535064728,
+  "exp3_correctness_auroc": 0.7720277777777778,
+  "exp3_top_feature": "H1_n_features",
+  "runtime_seconds": 627.0
+}
