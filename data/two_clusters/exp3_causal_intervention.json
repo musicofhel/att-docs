@@ -1,0 +1,54 @@
+{
+  "bridge_fraction_by_level": {
+    "1": 0.265342266529513,
+    "2": 0.2358668628941307,
+    "3": 0.22443481027002787,
+    "4": 0.18099482431267422,
+    "5": 0.16273866307924548
+  },
+  "bridge_fraction_h1_correlation": -0.3369224607637385,
+  "bridge_fraction_h1_p": 9.749972962213043e-15,
+  "bridge_token_types": {
+    "numeric": 0.02826086956521739,
+    "math_symbol": 0.10753623188405798,
+    "language": 0.698695652173913,
+    "latex": 0.0,
+    "structural": 0.1655072463768116
+  },
+  "core_token_types": {
+    "numeric": 0.18216080402010051,
+    "math_symbol": 0.0728643216080402,
+    "language": 0.7035175879396985,
+    "latex": 0.0,
+    "structural": 0.0414572864321608
+  },
+  "intervention_results": {
+    "bridge_ablation": {
+      "mean_kl_divergence": 2.253391278240209,
+      "answer_changed_fraction": 0.2,
+      "correct_prob_change": 0.0,
+      "n_problems": 30
+    },
+    "steer_to_A": {
+      "mean_kl_divergence": 2.7530750228712955,
+      "answer_changed_fraction": 0.16666666666666666,
+      "correct_prob_change": 0.0,
+      "n_problems": 30
+    },
+    "steer_to_B": {
+      "mean_kl_divergence": 2.3791419746354223,
+      "answer_changed_fraction": 0.16666666666666666,
+      "correct_prob_change": 0.0,
+      "n_problems": 30
+    },
+    "core_swap": {
+      "mean_kl_divergence": 0.06907114917157742,
+      "answer_changed_fraction": 0.0,
+      "correct_prob_change": 0.0,
+      "n_problems": 6
+    }
+  },
+  "goldilocks_explanation": "Bridge fraction peaks at level 1 (0.2653). This does NOT match the Goldilocks H1 effect at level 3. Spearman correlation with difficulty: r=-0.337 (p=9.7e-15).",
+  "goldilocks_level": 1,
+  "patch_layer": 14
+}
