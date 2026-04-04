@@ -1,0 +1,45 @@
+{
+  "branch": "experiment/tda-cubical",
+  "exp1_h0_count_by_level": {
+    "1": 18.27906976744186,
+    "2": 21.855555555555554,
+    "3": 22.79047619047619,
+    "4": 28.453125,
+    "5": 34.32835820895522
+  },
+  "exp1_h0_mean_persistence_by_level": {
+    "1": 25.311028668298896,
+    "2": 26.83261611202642,
+    "3": 27.269384769982473,
+    "4": 27.457567185599416,
+    "5": 28.357547187830377
+  },
+  "exp1_permutation_p": 1.0,
+  "exp1_permutation_z": -2.3691689942182452,
+  "exp2_h1_entropy_by_level": {
+    "1": 1.4013808807782129,
+    "2": 1.5424338859157387,
+    "3": 1.4171811413640616,
+    "4": 1.6687461650814428,
+    "5": 1.8235610201645875
+  },
+  "exp2_h1_count_by_level": {
+    "1": 6.023255813953488,
+    "2": 7.9,
+    "3": 7.019047619047619,
+    "4": 9.6796875,
+    "5": 11.194029850746269
+  },
+  "exp3_ks_statistic_l1_l5": 0.05010008083452019,
+  "exp3_ks_p_value": 0.32113980330568676,
+  "exp3_hard_features_late_fraction": 0.2787539936102236,
+  "exp3_easy_features_late_fraction": 0.30120481927710846,
+  "exp4_cubical_auroc": 0.6149186256781193,
+  "exp4_cubical_auroc_std": 0.03797376861035068,
+  "exp4_vr_auroc": 0.787,
+  "exp4_combined_auroc": 0.5840867992766727,
+  "exp5_h0_entropy_correlation": 0.9754828546368154,
+  "exp5_h1_entropy_correlation": 0.7350171453282889,
+  "exp5_vr_more_features": true,
+  "spatial_localization_finding": "No significant difference in birth positions between levels (KS p=0.3211)."
+}
