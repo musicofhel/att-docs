@@ -1,0 +1,116 @@
+{
+  "branch": "experiment/tda-hallucination",
+  "n_correct": 38,
+  "n_near_miss": 15,
+  "n_moderate": 85,
+  "n_hallucination": 295,
+  "severity_method": "string_distance",
+  "exp1_h0_entropy_by_severity": {
+    "correct": 5.192998254128406,
+    "near_miss": 3.767225714720663,
+    "moderate": 6.360719020494304,
+    "hallucination": 7.580048608180215
+  },
+  "exp1_h1_entropy_by_severity": {
+    "correct": 2.724470365742601,
+    "near_miss": -0.0,
+    "moderate": 4.808415505068317,
+    "hallucination": 6.571024665658941
+  },
+  "exp1_wasserstein_pairs": {
+    "near_miss_vs_hallucination": 272.123127,
+    "near_miss_vs_moderate": 83.504242,
+    "moderate_vs_hallucination": 190.53751,
+    "correct_vs_hallucination": 255.500034
+  },
+  "exp1_wasserstein_z": 0.7767,
+  "exp1_wasserstein_p": 0.24,
+  "exp1_n_perms": 200,
+  "exp2_3class_f1": 0.3107,
+  "exp2_3class_accuracy": 0.873,
+  "exp2_correct_vs_hallucination_auroc": 0.7551,
+  "exp2_nearmiss_vs_hallucination_auroc": 0.6509,
+  "exp2_top_features": [
+    [
+      "H0_entropy",
+      0.6663326699879737
+    ],
+    [
+      "H1_total_persistence",
+      0.538293831273908
+    ],
+    [
+      "H1_n_features",
+      0.33604593100239094
+    ],
+    [
+      "H1_std_birth",
+      0.3265077880268626
+    ],
+    [
+      "H1_max_lifetime",
+      0.3100224682465548
+    ],
+    [
+      "H0_n_features",
+      0.2309045358425327
+    ],
+    [
+      "H1_entropy",
+      0.19008560921665688
+    ],
+    [
+      "H0_total_persistence",
+      0.1670567141156929
+    ],
+    [
+      "H1_mean_birth",
+      0.15512033438937387
+    ],
+    [
+      "H0_max_lifetime",
+      0.1377836574062472
+    ]
+  ],
+  "exp3_layer_z_scores": [
+    -0.1761,
+    0.3547,
+    -0.7642,
+    -1.3295,
+    0.6103,
+    -0.1235,
+    -0.4644,
+    0.9007,
+    -1.6444,
+    0.8681,
+    0.2995,
+    -0.3786,
+    1.3723,
+    0.6357,
+    -1.3588,
+    1.7393,
+    1.1242,
+    -0.152,
+    0.9709,
+    0.534,
+    0.4617,
+    -1.1617,
+    -0.222,
+    -0.1476,
+    1.3887,
+    -1.6187,
+    -1.752,
+    0.2577,
+    1.1764
+  ],
+  "exp3_peak_severity_layer": 16,
+  "exp3_peak_severity_zscore": 1.7393,
+  "exp3_terminal_layer_zscore": 1.1764,
+  "exp3_n_perms_per_layer": 50,
+  "config": {
+    "seed": 42,
+    "n_perms": 200,
+    "subsample": 200,
+    "n_pca": 50
+  }
+}

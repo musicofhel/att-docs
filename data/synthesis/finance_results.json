@@ -1,0 +1,104 @@
+{
+  "branch": "experiment/tda-finance",
+  "ticker": "SPY",
+  "date_range": "2005-01-03 to 2025-12-30",
+  "n_days": 5282,
+  "config": {
+    "window_size": 252,
+    "step_size": 21,
+    "subsample": 200,
+    "ews_window": 252,
+    "cloud_size": 2000,
+    "n_surrogates": 50,
+    "n_permutations": 100,
+    "seed": 42,
+    "embedding_delay": 1,
+    "embedding_dim": 5
+  },
+  "exp1_crisis_detection": {
+    "2008": {
+      "detected": false,
+      "lag_days": 0,
+      "detect_date": "N/A"
+    },
+    "2020": {
+      "detected": false,
+      "lag_days": 0,
+      "detect_date": "N/A"
+    },
+    "2022": {
+      "detected": false,
+      "lag_days": 0,
+      "detect_date": "N/A"
+    }
+  },
+  "exp1_n_changepoints": 14,
+  "exp1_threshold": 1837.5587225770198,
+  "exp2_surrogate_z_scores": {
+    "phase_randomize": -0.07194421395391548,
+    "time_shuffle": 0.05307488756424465
+  },
+  "exp2_linear_explanation": "Phase-randomized surrogates produce similar topology (|z|<2). Signal is likely LINEAR (driven by power spectrum).",
+  "exp2_details": {
+    "phase_randomize": {
+      "z_h1_entropy": -0.7423854542482248,
+      "z_total_persistence": -0.07194421395391548,
+      "z_h0_entropy": -3.4362324119915977,
+      "z_mean": -0.07194421395391548,
+      "real_h1_entropy": 4.237266400220578,
+      "real_total_persistence": 2.3236037145834416,
+      "surr_mean_h1_ent": 4.284788975514033,
+      "surr_std_h1_ent": 0.06401334377109819,
+      "surr_mean_total_pers": 2.3315505436551756,
+      "surr_std_total_pers": 0.11045820970153838,
+      "n_valid": 50
+    },
+    "time_shuffle": {
+      "z_h1_entropy": -0.2791140366476887,
+      "z_total_persistence": 0.05307488756424465,
+      "z_h0_entropy": -3.439955728279429,
+      "z_mean": 0.05307488756424465,
+      "real_h1_entropy": 4.237266400220578,
+      "real_total_persistence": 2.3236037145834416,
+      "surr_mean_h1_ent": 4.262006675765814,
+      "surr_std_h1_ent": 0.08863859317997799,
+      "surr_mean_total_pers": 2.3179367450531574,
+      "surr_std_total_pers": 0.10677308592363248,
+      "n_valid": 50
+    }
+  },
+  "exp3_h1_vix_pearson": -0.19449193065840584,
+  "exp3_h1_vix_spearman": -0.20795245948184016,
+  "exp3_ts_vix_pearson": 0.03951580388057169,
+  "exp3_ts_vix_spearman": 0.08396974473250364,
+  "exp3_details": {
+    "h1_vix_pearson": -0.19449193065840584,
+    "h1_vix_pearson_p": 3.5178201871373214e-46,
+    "h1_vix_spearman": -0.20795245948184016,
+    "h1_vix_spearman_p": 1.1100984520006386e-52,
+    "ts_vix_pearson": 0.03951580388057169,
+    "ts_vix_pearson_p": 0.0040778652280312674,
+    "ts_vix_spearman": 0.08396974473250364,
+    "ts_vix_spearman_p": 9.871558459252655e-10
+  },
+  "exp4_bull_h1_entropy": 5.436613476731141,
+  "exp4_bear_h1_entropy": 4.535655443536054,
+  "exp4_wasserstein_p": 0.0,
+  "exp4_details": {
+    "skipped": false,
+    "n_bull": 2320,
+    "n_bear": 210,
+    "bull_h1_entropy": 5.436613476731141,
+    "bear_h1_entropy": 4.535655443536054,
+    "bull_h0_entropy": 6.107899918389158,
+    "bear_h0_entropy": 5.207009786148756,
+    "bull_h1_count": 330,
+    "bear_h1_count": 126,
+    "wasserstein_1": 4.6822381213050015,
+    "perm_p_value": 0.0,
+    "perm_z_score": 23.597156974207465,
+    "n_permutations": 100
+  },
+  "overall_verdict": "linear-only",
+  "runtime_seconds": 168.9
+}

@@ -1,0 +1,114 @@
+{
+  "compilation_date": "2026-04-04",
+  "branches_analyzed": [
+    "experiment/tda-hallucination",
+    "experiment/tda-sleep",
+    "experiment/tda-tipping",
+    "experiment/tda-cardiac",
+    "experiment/tda-code",
+    "experiment/tda-multilingual",
+    "experiment/tda-music",
+    "experiment/tda-finance",
+    "experiment/tda-climate",
+    "experiment/tda-multiagent",
+    "experiment/neuromorphic-snn (LLM baseline)"
+  ],
+  "branches_missing": [],
+  "strong_positive_domains": [
+    "llm",
+    "sleep",
+    "tipping",
+    "multilingual",
+    "music"
+  ],
+  "weak_positive_domains": [
+    "hallucination",
+    "cardiac",
+    "code",
+    "climate",
+    "multiagent"
+  ],
+  "negative_domains": [
+    "finance"
+  ],
+  "binding_works_in": [
+    "llm",
+    "multiagent"
+  ],
+  "binding_fails_in": [
+    "multilingual",
+    "sleep",
+    "climate"
+  ],
+  "transition_lead_times": {
+    "sleep": {
+      "median_lag": -5.0,
+      "unit": "seconds"
+    },
+    "cardiac": {
+      "median_lag": -9.46,
+      "unit": "seconds"
+    },
+    "tipping_saddle_node": {
+      "median_lag": 2291,
+      "unit": "timesteps"
+    },
+    "tipping_hopf": {
+      "median_lag": 416,
+      "unit": "timesteps"
+    },
+    "tipping_double_well": {
+      "median_lag": 2357,
+      "unit": "timesteps"
+    },
+    "climate": {
+      "median_lag": null,
+      "unit": "events",
+      "note": "2/3 detected, no consistent lead time"
+    },
+    "finance": {
+      "median_lag": null,
+      "unit": "N/A",
+      "note": "0/3 detected"
+    }
+  },
+  "h1_nonmonotonic_domains": [
+    "llm",
+    "code",
+    "hallucination",
+    "sleep",
+    "music"
+  ],
+  "universal_findings": [
+    "H1 non-monotonicity: topological complexity does not scale monotonically with task difficulty (confirmed in 5/7 testable domains)",
+    "Topology leads transitions in nonlinear systems: sleep (5s), cardiac (9.5s), tipping points (hundreds-thousands of steps)",
+    "Permutation testing discriminates conditions when dimensionality is high (LLM d>1500: z>8; EEG d=10: z>20; multilingual: z>27)",
+    "Surrogate testing is essential: finance topology is entirely explainable by linear spectral properties",
+    "Cross-domain H1 entropy correlation is extremely high within the same model (r>0.999 for multilingual), suggesting topology captures architecture more than content"
+  ],
+  "domain_specific_findings": [
+    "LLM: terminal-layer z-score concentration (peak at layer 28/28) \u2014 unique to transformer architecture",
+    "Sleep: REM has highest H1 entropy despite not being deepest stage \u2014 topology captures desynchronized neural activity",
+    "Hallucination: near-miss severity collapses H1 to zero \u2014 topological 'death' at near-correct answers",
+    "Music: Takens embedding reverses genre complexity ordering (raw: jazz>ambient; embedded: ambient>jazz) \u2014 embedding is not neutral",
+    "Multiagent: binding score decreases with Kuramoto coupling (counterintuitive \u2014 synchronized agents are MORE similar, so joint-vs-marginal gap shrinks)",
+    "Climate: ENSO H1 (130 features) >> R\u00f6ssler H1 (49 features) \u2014 real climate has richer topology than canonical chaos",
+    "Code: correctness AUROC 0.77 despite non-significant permutation test \u2014 individual-level prediction works even when population-level discrimination fails"
+  ],
+  "toolkit_limitations": [
+    "Binding detection (joint-vs-marginal PH) fails in 3/5 tested domains \u2014 requires strong, direct coupling and sufficient sample size",
+    "Transition detection has low precision (20-31%) \u2014 many false positives, useful as early warning but not standalone detector",
+    "Finance topology is entirely linear \u2014 surrogate testing reveals no nonlinear topological structure in equity returns",
+    "Music genre boundary detection failed completely \u2014 topological transitions require dynamical regime changes, not content shifts",
+    "Small sample sizes (cardiac n=15/15, hallucination n=38 correct) severely limit permutation test power",
+    "Computational cost scales poorly: LLM analysis (627s for 164 problems at code), multilingual (462s for 250 problems) \u2014 limits real-time application"
+  ],
+  "recommended_next": [
+    "Sleep EEG: larger dataset (>10 subjects) with cross-region binding using higher surrogate count (n>200)",
+    "Cardiac: RR-interval topology on larger arrhythmia dataset (MIMIC-IV) \u2014 RR intervals showed strong discrimination (H1: 318 vs 193)",
+    "Climate: multi-index binding (ENSO \u00d7 PDO \u00d7 AMO) instead of pairwise ENSO-NAO",
+    "Code: combine with LLM hidden states for joint code-reasoning topology (cross-domain transfer)",
+    "Finance: test on intraday/tick data where microstructure introduces genuine nonlinearity",
+    "Hallucination: larger balanced dataset with proper surrogate testing to validate the AUROC 0.755 finding"
+  ]
+}

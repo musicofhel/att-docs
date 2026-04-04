@@ -1,0 +1,154 @@
+{
+  "_meta": {
+    "description": "Single source of truth for all numbers in the TDA-LLM preprint. All 10 directions, final corrected values after Phase 5 audit.",
+    "audit_date": "2026-04-02",
+    "audit_commit": "6e60605",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "dataset": "HuggingFaceH4/MATH-500 (500 problems, 43/90/105/128/134 per level)"
+  },
+
+  "sparsity_baseline": {
+    "spearman_r": 1.0,
+    "spearman_p": 1.40e-24,
+    "top10_energy": {"1": 0.830, "2": 0.834, "3": 0.839, "4": 0.843, "5": 0.845},
+    "terminal_ratio_l1": 5.96,
+    "terminal_ratio_l5": 5.20,
+    "note": "Perfect rank correlation between sparsity (top-10 PCA energy) and difficulty level"
+  },
+
+  "permutation_test": {
+    "z_score": 8.11,
+    "p_value": 0.005,
+    "n_permutations": 200,
+    "metric": "Wasserstein-1 on H1 persistence diagrams",
+    "note": "Terminal-layer topology is significantly more difficulty-sensitive than chance"
+  },
+
+  "D1_perlayer_zscore": {
+    "peak_layer": 28,
+    "peak_layer_of": 28,
+    "peak_zscore": 8.12,
+    "terminal_significant": true,
+    "terminal_layer_fraction": 1.0,
+    "n_significant_layers": 28,
+    "n_permutations": 100,
+    "caveat": "Qwen-specific (1/4 models in D6). Non-Qwen models show early-layer peaks."
+  },
+
+  "D2_correctness": {
+    "auroc": 0.787,
+    "auroc_std": 0.095,
+    "auroc_cv50_mean": 0.783,
+    "auroc_cv50_std": 0.054,
+    "auroc_95ci": [0.695, 0.889],
+    "cv_method": "10 seeds x 5-fold stratified CV",
+    "top_feature": "H0_persistence_entropy",
+    "top_feature_auroc": 0.824,
+    "top_features_ranked": [
+      ["H0_persistence_entropy", 0.824],
+      ["H1_max_lifetime", 0.803],
+      ["H0_total_persistence", 0.675],
+      ["H0_n_features", 0.514]
+    ],
+    "n_correct": 38,
+    "n_total": 433,
+    "class_balance": "8.8% correct",
+    "per_level_auroc": {"1": 0.757, "2": 0.691, "3": 0.742, "4": 0.667, "5": null},
+    "alignment_method": "pool-index matching via RNG reconstruction",
+    "note": "Topological features predict correctness well above chance. AUROC=0.787 after alignment fix (was 0.580 with mismatched data). H0 persistence entropy is most predictive."
+  },
+
+  "D3_spectral_vs_euclidean": {
+    "result": "Euclidean PH captures richer H1 structure than spectral PH across all layers",
+    "level_1": {
+      "euclidean_h1_features_mean": 28.9,
+      "spectral_h1_features_mean": 0.6,
+      "euclidean_h1_entropy_mean": 3.09,
+      "spectral_h1_entropy_mean": 0.13
+    },
+    "level_5": {
+      "euclidean_h1_features_mean": 36.2,
+      "spectral_h1_features_mean": 0.1,
+      "euclidean_h1_entropy_mean": 3.30,
+      "spectral_h1_entropy_mean": 0.0
+    },
+    "note": "Spectral PH near-zero at all non-embedding layers. Euclidean PH captures 25-47 H1 features per layer. Spectral Laplacian distances may smooth away loop structure in LLM hidden states."
+  },
+
+  "D5_crocker": {
+    "result": "Monotonic difficulty gradient visible in CROCKER L1 distances",
+    "l1_distance_L1_L5": 43.0,
+    "l1_distance_L1_L3": 57.0,
+    "max_l1_distance": 57.0,
+    "l1_distance_matrix": [
+      [0, 31, 57, 57, 43],
+      [31, 0, 54, 40, 50],
+      [57, 54, 0, 20, 26],
+      [57, 40, 20, 0, 32],
+      [43, 50, 26, 32, 0]
+    ],
+    "note": "Scale-dependent structure: difficulty gradient strongest at intermediate filtration scales. L3/L4 cluster together."
+  },
+
+  "D6_cross_model": {
+    "models": ["Qwen2.5-1.5B", "Phi-2 (2.7B)", "Pythia-1.4B", "StableLM-2-1.6B"],
+    "level1_minimum_universal": true,
+    "non_monotonic_universal": true,
+    "terminal_layer_universal": false,
+    "terminal_layer_models": ["Qwen2.5-1.5B"],
+    "h1_entropy": {
+      "qwen_aligned": [2.331, 3.186, 3.524, 3.824, 3.796],
+      "qwen_old": [2.925, 3.562, 3.403, 3.535, 3.447],
+      "phi2": [1.765, 2.401, 1.902, 2.459, 2.557],
+      "pythia": [1.433, 1.876, 2.315, 2.486, 2.261],
+      "stablelm": [0.0, 1.959, 1.747, 1.846, 2.225]
+    },
+    "qwen_aligned_spearman": {"r": 0.900, "p": 0.037},
+    "phi2_spearman": {"r": 0.900, "p": 0.037},
+    "pythia_spearman": {"r": 0.700, "p": 0.188},
+    "stablelm_spearman": {"r": 0.700, "p": 0.188},
+    "zscore_peaks": {
+      "qwen": {"layer": 28, "z": 8.0, "terminal": true},
+      "phi2": {"layer": 2, "z": 4.22, "terminal": false},
+      "pythia": {"layer": 2, "z": 2.23, "terminal": false},
+      "stablelm": {"layer": 9, "z": 2.89, "terminal": false}
+    },
+    "note": "Level 1 minimum is universal (4/4 models). Non-monotonicity universal (4/4). Terminal-layer effect Qwen-specific (1/4). Aligned Qwen shows near-monotonic increase (r=0.9). StableLM L1 entropy=0 (only 1 H1 feature)."
+  },
+
+  "D7_intrinsic_dim": {
+    "method": "TwoNN (Facco et al. 2017)",
+    "terminal_ids": {"1": 6.67, "2": 7.42, "3": 10.07, "4": 11.65, "5": 12.01},
+    "id_increases_with_difficulty": true,
+    "n_layers": 29,
+    "note": "Intrinsic dimensionality increases monotonically with difficulty at terminal layer (6.67 to 12.01). Computed from original Qwen data (D7 is internal-only, SAFE category)."
+  },
+
+  "D8_token_topology": {
+    "result": "Problem region carries strong difficulty-dependent topological signal; instruction regions do not",
+    "signal_strength": {
+      "problem_region": {"easy_mean": 2.155, "hard_mean": 2.970, "abs_diff": 0.815, "direction": "increase"},
+      "instruction_prefix": {"easy_mean": 1.486, "hard_mean": 1.519, "abs_diff": 0.033, "direction": "increase"},
+      "instruction_suffix": {"easy_mean": 1.042, "hard_mean": 1.044, "abs_diff": 0.002, "direction": "increase"}
+    },
+    "note": "H1 persistence entropy of problem-token point clouds increases with difficulty (delta=0.82). Instruction tokens show negligible signal (<0.04). Confirms topological signature is problem-content-specific."
+  },
+
+  "D9_compression": {
+    "result": "Compression pattern at terminal layer",
+    "pattern": "compression",
+    "terminal_layer_features": {"1": 0, "2": 0, "3": 0, "4": 0, "5": 0},
+    "note": "Terminal layer (28) shows zero H1/H2 topological features across all difficulty levels. Supports Fay et al. compression hypothesis over Datta et al. resistance."
+  },
+
+  "D10_binding": {
+    "per_level": {"1": 0.740, "2": 0.613, "3": 0.647, "4": 0.596, "5": 0.462},
+    "spearman_r": -0.900,
+    "spearman_p": 0.037,
+    "layers_averaged": [23, 24, 25, 26, 27],
+    "interpretation": "Population-level topological similarity between attention and hidden-state spaces decreases with difficulty",
+    "caveat": "Shuffle test shows trend is driven by level-level differences (population signal), not per-problem coupling. Per-problem matching adds additional signal (L1: 0.740 aligned vs 0.683 mismatched).",
+    "old_per_level_mismatched": {"1": 0.683, "2": 0.650, "3": 0.599, "4": 0.540, "5": 0.465},
+    "note": "Binding decreases with difficulty (r=-0.9, p=0.037). Non-monotonic at L2/L3 (L3>L2). Original perfect monotonic decrease (r=-1.0) was coincidental artifact of mismatched data."
+  }
+}

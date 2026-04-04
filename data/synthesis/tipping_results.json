@@ -1,0 +1,99 @@
+{
+  "branch": "experiment/tda-tipping",
+  "models": [
+    "saddle_node",
+    "hopf",
+    "double_well"
+  ],
+  "n_steps": 20000,
+  "config": {
+    "window_size": 500,
+    "step_size": 200,
+    "subsample": 200,
+    "ews_window": 500,
+    "cloud_size": 5000,
+    "seed": 42,
+    "embedding_delay": 4,
+    "embedding_dim": 5
+  },
+  "tipping_points": {
+    "saddle_node": {
+      "idx": 17698,
+      "r_crit": 0.3849001794597505
+    },
+    "hopf": {
+      "idx": 10000,
+      "mu_crit": 0.0
+    },
+    "double_well": {
+      "idx": 5891,
+      "r_at_crossing": 0.19221573498411884
+    }
+  },
+  "exp1_lead_times": {
+    "saddle_node": 2291,
+    "hopf": 416,
+    "double_well": 2357
+  },
+  "exp1_lead_time_unit": "timesteps",
+  "exp1_details": {
+    "saddle_node": {
+      "model": "saddle_node",
+      "lead_time_steps": 2291,
+      "n_changepoints": 3,
+      "tip_idx": 17698,
+      "mean_transition_score_pre": 837.5798138222042,
+      "mean_transition_score_post": 901.9050367293597
+    },
+    "hopf": {
+      "model": "hopf",
+      "lead_time_steps": 416,
+      "n_changepoints": 5,
+      "tip_idx": 10000,
+      "mean_transition_score_pre": 1053.6968470541713,
+      "mean_transition_score_post": 970.2859269593368
+    },
+    "double_well": {
+      "model": "double_well",
+      "lead_time_steps": 2357,
+      "n_changepoints": 6,
+      "tip_idx": 5891,
+      "mean_transition_score_pre": 370.80170117090796,
+      "mean_transition_score_post": 312.84711719234355
+    }
+  },
+  "exp2_lead_times": {
+    "saddle_node": {
+      "topology": 2291,
+      "variance": 6883,
+      "autocorr": 6738,
+      "skewness": 357
+    },
+    "hopf": {
+      "topology": 416,
+      "variance": 728,
+      "autocorr": 0,
+      "skewness": 0
+    },
+    "double_well": {
+      "topology": 2357,
+      "variance": 2357,
+      "autocorr": 652,
+      "skewness": 1711
+    }
+  },
+  "exp2_topology_earliest_count": 1,
+  "exp3_pre_post_wasserstein": 2.3172712671778672,
+  "exp3_pre_h1_count": 61,
+  "exp3_post_h1_count": 59,
+  "exp3_details": {
+    "pre_post_wasserstein": 2.3172712671778672,
+    "pre_h1_count": 61,
+    "post_h1_count": 59,
+    "pre_h0_entropy": 5.082525228040794,
+    "post_h0_entropy": 4.499104098479622,
+    "pre_h1_entropy": 3.672112524622277,
+    "post_h1_entropy": 3.7234013967242445,
+    "skipped": false
+  }
+}

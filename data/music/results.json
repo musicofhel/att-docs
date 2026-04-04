@@ -1,0 +1,59 @@
+{
+  "branch": "experiment/tda-music",
+  "data_type": "synthetic",
+  "n_genres": 5,
+  "genres": [
+    "jazz",
+    "classical",
+    "electronic",
+    "rock",
+    "ambient"
+  ],
+  "n_tracks_per_genre": 15,
+  "exp1_h1_entropy_per_genre": {
+    "jazz": 4.708273099405121,
+    "classical": 5.562376042813169,
+    "electronic": 4.276962921151602,
+    "rock": 4.49805605858616,
+    "ambient": 6.005309390371963
+  },
+  "exp1_h1_features_per_genre": {
+    "jazz": 191.73333333333332,
+    "classical": 361.2,
+    "electronic": 130.06666666666666,
+    "rock": 197.73333333333332,
+    "ambient": 552.6
+  },
+  "exp1_wasserstein_p": 0.0,
+  "exp1_wasserstein_z": 11.579808532252768,
+  "exp1_genre_ordering": "ambient(553) > classical(361) > rock(198) > jazz(192) > electronic(130)",
+  "exp2_transition_precision": 0.0,
+  "exp2_transition_recall": 0.0,
+  "exp2_transition_f1": 0.0,
+  "exp2_detected_boundaries": [
+    9.531791383219955,
+    22.69750566893424
+  ],
+  "exp2_true_boundaries": [
+    4,
+    12,
+    18
+  ],
+  "exp3_raw_h1_per_genre": {
+    "jazz": 419.06666666666666,
+    "classical": 234.33333333333334,
+    "electronic": 236.6,
+    "rock": 263.06666666666666,
+    "ambient": 277.2
+  },
+  "exp3_raw_entropy_per_genre": {
+    "jazz": 5.699864348322174,
+    "classical": 5.053631221609923,
+    "electronic": 5.034202511042938,
+    "rock": 5.19486111326157,
+    "ambient": 5.288066517242473
+  },
+  "exp3_genre_ordering": "jazz(419) > ambient(277) > rock(263) > electronic(237) > classical(234)",
+  "exp3_hypothesis_holds": false,
+  "runtime_seconds": 85.6
+}

@@ -1,0 +1,23 @@
+\begin{table}[htbp]
+\centering
+\caption{Cross-domain topological analysis summary. Strong +: significant permutation AND survives surrogates. Weak +: partial evidence. Negative: topology does not discriminate.}
+\label{tab:cross-domain}
+\small
+\begin{tabular}{lllrrclc}
+\toprule
+Domain & Data Type & Perm.~$p$ & Surr.~$z$ & Binding $p$ & Transition & AUROC & Verdict \\
+\midrule
+LLM (MATH) & hidden states & 0.005 & 8.11 & 0.037 & --- & 0.787 & \textbf{+} \\
+Hallucination & hidden states & 0.240 & 0.78 & --- & --- & 0.755 & $\pm$ \\
+Sleep EEG & EEG time series & 0.010 & 20.14 & 0.804 & \checkmark & --- & \textbf{+} \\
+Tipping Points & synthetic dynamical systems & --- & --- & --- & \checkmark & --- & \textbf{+} \\
+Cardiac ECG & ECG time series & 0.135 & 1.19 & --- & \checkmark & --- & $\pm$ \\
+Code Gen & hidden states & 0.811 & -0.89 & --- & --- & 0.772 & $\pm$ \\
+Multilingual & hidden states & 0.005 & 27.37 & 0.255 & --- & --- & \textbf{+} \\
+Music & synthetic audio features & 0.000 & 11.58 & --- & $\times$ & --- & \textbf{+} \\
+Finance & returns time series & 0.000 & 23.60 & --- & $\times$ & --- & \textbf{--} \\
+Climate & SST time series & 0.010 & 4.05 & 0.683 & \checkmark & --- & $\pm$ \\
+Multi-Agent & simulated agent trajectories & 1.000 & --- & 0.020 & --- & --- & $\pm$ \\
+\bottomrule
+\end{tabular}
+\end{table}

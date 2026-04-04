@@ -1,0 +1,93 @@
+{
+  "branch": "experiment/tda-sleep",
+  "n_subjects": 3,
+  "subjects": [
+    0,
+    1,
+    2
+  ],
+  "n_epochs_per_stage": {
+    "W": 5760,
+    "N1": 261,
+    "N2": 1357,
+    "N3": 420,
+    "REM": 458
+  },
+  "exp1_h0_entropy_per_stage": {
+    "W": 5.9554,
+    "N1": 5.939,
+    "N2": 6.043,
+    "N3": 6.0992,
+    "REM": 6.0053
+  },
+  "exp1_h1_entropy_per_stage": {
+    "W": 4.9905,
+    "N1": 5.213,
+    "N2": 5.203,
+    "N3": 5.0783,
+    "REM": 5.3508
+  },
+  "exp1_wasserstein_pairs": {
+    "W_vs_N1": 2231.8294,
+    "W_vs_N2": 1069.4744,
+    "W_vs_N3": 1405.0098,
+    "W_vs_REM": 2349.6989,
+    "N1_vs_N2": 1366.2878,
+    "N1_vs_N3": 3302.0965,
+    "N1_vs_REM": 287.135,
+    "N2_vs_N3": 2131.9918,
+    "N2_vs_REM": 1385.123,
+    "N3_vs_REM": 3462.8292
+  },
+  "exp1_wasserstein_z": 20.1378,
+  "exp1_wasserstein_p": 0.0099,
+  "exp1_n_perms": 100,
+  "exp2_mean_precision": 0.3111,
+  "exp2_mean_recall": 0.1639,
+  "exp2_mean_median_lag_seconds": -5.0,
+  "exp2_total_detected": 34,
+  "exp2_total_annotated": 54,
+  "exp2_per_subject": [
+    {
+      "subject_id": 0,
+      "n_detected": 9,
+      "n_annotated": 22,
+      "precision": 0.3333,
+      "recall": 0.1818,
+      "median_lag_seconds": -15.0
+    },
+    {
+      "subject_id": 1,
+      "n_detected": 15,
+      "n_annotated": 17,
+      "precision": 0.4,
+      "recall": 0.1765,
+      "median_lag_seconds": 0.0
+    },
+    {
+      "subject_id": 2,
+      "n_detected": 10,
+      "n_annotated": 15,
+      "precision": 0.2,
+      "recall": 0.1333,
+      "median_lag_seconds": 0.0
+    }
+  ],
+  "exp3_rem_binding": 16.4368,
+  "exp3_rem_p": 0.8039,
+  "exp3_rem_z": -0.6811,
+  "exp3_n3_binding": 7.689,
+  "exp3_n3_p": 0.4706,
+  "exp3_n3_z": -0.2479,
+  "exp3_skipped": false,
+  "exp3_reason": null,
+  "config": {
+    "seed": 42,
+    "n_perms": 100,
+    "n_surrogates": 50,
+    "subsample": 500,
+    "window_sec": 30.0,
+    "step_sec": 15.0,
+    "target_sfreq": 100.0
+  }
+}

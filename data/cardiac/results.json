@@ -1,0 +1,29 @@
+{
+  "branch": "experiment/tda-cardiac",
+  "data_source": "MIT-BIH",
+  "n_records": 5,
+  "n_normal_segments": 15,
+  "n_arrhythmia_segments": 15,
+  "exp1_normal_h1_features_mean": 140.13,
+  "exp1_arrhythmia_h1_features_mean": 128.4,
+  "exp1_normal_h1_entropy": 4.2541,
+  "exp1_arrhythmia_h1_entropy": 4.2014,
+  "exp1_wasserstein_observed": 0.012,
+  "exp1_wasserstein_p": 0.135,
+  "exp1_wasserstein_z": 1.19,
+  "exp2_n_transitions": 3,
+  "exp2_detection_lag_seconds": -9.46,
+  "exp2_precision": 0.2,
+  "exp2_recall": 0.6667,
+  "exp3_normal_rr_h1_features": 318,
+  "exp3_arrhythmia_rr_h1_features": 193,
+  "exp3_normal_rr_h1_entropy": 5.4146,
+  "exp3_arrhythmia_rr_h1_entropy": 4.6759,
+  "exp3_rr_wasserstein": 0.0033,
+  "embedding_params": {
+    "delay": 8,
+    "dimension": 10,
+    "method": "auto"
+  },
+  "runtime_seconds": 193.1
+}

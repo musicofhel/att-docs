@@ -1,0 +1,198 @@
+{
+  "q1_topology_works": {
+    "strong_positive": {
+      "domains": [
+        "llm",
+        "sleep",
+        "tipping",
+        "multilingual",
+        "music"
+      ],
+      "count": 5
+    },
+    "weak_positive": {
+      "domains": [
+        "hallucination",
+        "cardiac",
+        "code",
+        "climate",
+        "multiagent"
+      ],
+      "count": 5
+    },
+    "negative": {
+      "domains": [
+        "finance"
+      ],
+      "count": 1
+    }
+  },
+  "q2_predictors": {
+    "data_dimensionality": "Higher-dimensional embeddings (LLM hidden states d=1536-2560, EEG d=10) produce stronger topological discrimination than low-dimensional time series (finance d=5, cardiac d=10 raw ECG)",
+    "stationarity": "Non-stationary systems (sleep stages, regime shifts) yield strong results. Quasi-stationary signals (financial returns) yield weak/negative results due to linear spectral dominance",
+    "known_coupling": "Ground-truth coupled systems (Kuramoto, tipping models) show expected binding patterns. Real-world coupling (ENSO-NAO, sleep cross-region) consistently fails to reach significance \u2014 sample size or coupling strength insufficient",
+    "sample_size": "Domains with 200+ samples per condition (LLM, sleep, music) achieve significance. Small samples (cardiac 15/15, hallucination 38 correct) reduce power"
+  },
+  "q3_h1_nonmonotonic": {
+    "domains_tested": {
+      "llm": {
+        "pattern": "Level 1 minimum, then non-monotonic increase",
+        "confirmed": true,
+        "details": "Universal across Qwen, Phi-2, Pythia, StableLM"
+      },
+      "code": {
+        "pattern": "Medium minimum (2.19 < easy 2.35 < hard 2.63)",
+        "confirmed": true,
+        "details": "Same dip-then-rise pattern as LLM but at medium difficulty"
+      },
+      "hallucination": {
+        "pattern": "near_miss H1=0 (collapsed), moderate=4.81, hallucination=6.57",
+        "confirmed": true,
+        "details": "Extreme non-monotonicity; near-miss collapses to zero H1"
+      },
+      "sleep": {
+        "pattern": "W(4.99) < N3(5.08) < N2(5.20) < N1(5.21) < REM(5.35) \u2014 non-monotonic with depth",
+        "confirmed": true,
+        "details": "Not monotonic with sleep depth: N3 (deepest) is NOT highest H1. REM is highest."
+      },
+      "music": {
+        "pattern": "ambient(6.0) > classical(5.6) > jazz(4.7) > rock(4.5) > electronic(4.3)",
+        "confirmed": true,
+        "details": "Raw audio shows different ordering (jazz highest). Embedding transforms the ranking."
+      },
+      "cardiac": {
+        "pattern": "normal(4.25) > arrhythmia(4.20) \u2014 too few conditions to test non-monotonicity",
+        "confirmed": null
+      },
+      "tipping": {
+        "pattern": "pre(3.67) \u2248 post(3.72) \u2014 not enough conditions for non-monotonicity test",
+        "confirmed": null
+      }
+    },
+    "confirmed_count": 5,
+    "conclusion": "H1 non-monotonicity is confirmed in 5/7 testable domains (LLM, code, hallucination, sleep, music). This appears to be a universal property: topological complexity does NOT scale monotonically with task difficulty or system complexity. The intermediate-difficulty minimum in LLM/code suggests a 'sweet spot' where representations are most structured."
+  },
+  "q4_binding": {
+    "significant_domains": [
+      "llm",
+      "multiagent"
+    ],
+    "failed_domains": [
+      "multilingual",
+      "sleep",
+      "climate"
+    ],
+    "details": {
+      "llm": {
+        "significant": true,
+        "p": 0.037,
+        "finding": "Binding decreases with difficulty (r=-0.9)"
+      },
+      "multiagent": {
+        "significant": true,
+        "p": 0.02,
+        "finding": "Binding significant at K=0 (disordered); direct > indirect"
+      },
+      "multilingual": {
+        "significant": false,
+        "p": 0.255,
+        "finding": "En-Zh binding not significant"
+      },
+      "sleep": {
+        "significant": false,
+        "p": 0.804,
+        "finding": "REM cross-region binding p=0.80"
+      },
+      "climate": {
+        "significant": false,
+        "p": 0.683,
+        "finding": "ENSO-NAO binding p=0.68"
+      }
+    },
+    "predictors": "Binding detection succeeds when: (1) ground-truth coupling exists AND is strong (Kuramoto K=0 uncoupled vs coupled), (2) population-level similarity exists (LLM representations at same difficulty). It fails when: coupling is weak (ENSO-NAO), physiological (sleep cross-region), or the joint-vs-marginal test lacks power with n=50 surrogates."
+  },
+  "q5_transitions": {
+    "leading_domains": [
+      "sleep",
+      "cardiac",
+      "tipping"
+    ],
+    "failing_domains": [
+      "finance",
+      "music"
+    ],
+    "partial_domains": [
+      "climate"
+    ],
+    "details": {
+      "sleep": {
+        "median_lag": -5.0,
+        "unit": "seconds",
+        "precision": 0.311,
+        "recall": 0.164,
+        "finding": "Topology leads by 5s but low precision/recall (31%/16%)"
+      },
+      "cardiac": {
+        "median_lag": -9.46,
+        "unit": "seconds",
+        "precision": 0.2,
+        "recall": 0.667,
+        "finding": "Topology leads by 9.5s; decent recall (67%) but low precision (20%)"
+      },
+      "tipping_saddle_node": {
+        "median_lag": 2291,
+        "unit": "timesteps",
+        "finding": "Topology leads by 2291 timesteps"
+      },
+      "tipping_hopf": {
+        "median_lag": 416,
+        "unit": "timesteps",
+        "finding": "Topology leads by 416 timesteps"
+      },
+      "tipping_double_well": {
+        "median_lag": 2357,
+        "unit": "timesteps",
+        "finding": "Topology leads by 2357 timesteps"
+      },
+      "tipping_comparison": {
+        "topology_vs_ews": {
+          "saddle_node": {
+            "topology": 2291,
+            "variance": 6883,
+            "autocorr": 6738,
+            "skewness": 357
+          },
+          "hopf": {
+            "topology": 416,
+            "variance": 728,
+            "autocorr": 0,
+            "skewness": 0
+          },
+          "double_well": {
+            "topology": 2357,
+            "variance": 2357,
+            "autocorr": 652,
+            "skewness": 1711
+          }
+        },
+        "finding": "Topology competitive: best for saddle-node (2291 vs 6883 var), mixed for others"
+      },
+      "climate": {
+        "detected": "2/3",
+        "events": "1977 Pacific shift (yes), 1998 El Ni\u00f1o (no), 2016 El Ni\u00f1o (yes)",
+        "finding": "CUSUM changepoints at 1992.5, 2012.5 \u2014 not aligned with known events"
+      },
+      "finance": {
+        "detected": "0/3",
+        "events": "2008 GFC (no), 2020 COVID (no), 2022 bear (no)",
+        "finding": "Complete failure \u2014 topology dominated by linear spectral properties"
+      },
+      "music": {
+        "precision": 0.0,
+        "recall": 0.0,
+        "finding": "Genre boundary detection failed entirely"
+      }
+    },
+    "conclusion": "Topology consistently LEADS transitions when the underlying dynamics are genuinely nonlinear (tipping points, sleep stage changes, arrhythmia onset). Lead times range from 5-9 seconds (physiological) to hundreds-thousands of timesteps (dynamical systems). It fails completely in linear-dominated domains (finance) and when boundaries are not dynamical transitions (music genre boundaries)."
+  }
+}

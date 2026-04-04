@@ -1,0 +1,274 @@
+{
+  "phase5_baseline": {
+    "status": "complete",
+    "spearman_r": 0.9999999999999999,
+    "spearman_p": 1.4042654220543602e-24,
+    "wasserstein_z": 8.113099616971208,
+    "wasserstein_p": 0.004975124378109453,
+    "wasserstein_significant": true,
+    "terminal_ratio_l1": {
+      "terminal": 13.455576324462891,
+      "nonterminal": 2.2586320534996362,
+      "ratio": 5.957400765482875
+    },
+    "terminal_ratio_l5": {
+      "terminal": 10.747609710693359,
+      "nonterminal": 2.0667979509934136,
+      "ratio": 5.2001259753172695
+    }
+  },
+  "D1_zscore": {
+    "status": "complete",
+    "peak_zscore": 8.11672910413315,
+    "peak_layer": 28,
+    "peak_in_terminal_20pct": true,
+    "terminal_layer_fraction": 1.0,
+    "n_significant": 28
+  },
+  "D2_correctness": {
+    "status": "complete",
+    "overall_auroc": 0.787,
+    "overall_auroc_std": 0.095,
+    "overall_auroc_cv50": 0.783,
+    "overall_auroc_cv50_std": 0.054,
+    "overall_auroc_95ci": [
+      0.695,
+      0.889
+    ],
+    "overall_accuracy": 0.915,
+    "n_features": 16,
+    "n_problems": 433,
+    "n_correct": 38,
+    "class_balance": "8.8% correct",
+    "feature_set": "summary",
+    "top_feature": "H0_persistence_entropy (0.824)",
+    "per_level": {
+      "1": {
+        "auroc": 0.757,
+        "n": 43,
+        "n_correct": 10
+      },
+      "2": {
+        "auroc": 0.691,
+        "n": 90,
+        "n_correct": 16
+      },
+      "3": {
+        "auroc": 0.742,
+        "n": 100,
+        "n_correct": 8
+      },
+      "4": {
+        "auroc": 0.667,
+        "n": 100,
+        "n_correct": 3
+      },
+      "5": {
+        "auroc": null,
+        "n": 100,
+        "n_correct": 1
+      }
+    },
+    "note": "AUROC 0.787 after alignment fix (was 0.580 with mismatched data). Proper 50-fold CV: 0.783 +/- 0.054, 95% CI [0.695, 0.889]. Pool-index matching required for correct alignment."
+  },
+  "D3_spectral": {
+    "status": "complete",
+    "level_1": {
+      "euclidean_h1_mean": 3.085982930295114,
+      "spectral_h1_mean": 1.921036662670448,
+      "euclidean_h1_features_mean": 28.933333333333334,
+      "spectral_h1_features_mean": 0.6,
+      "spectral_richer": false
+    },
+    "level_5": {
+      "euclidean_h1_mean": 3.2999495010006745,
+      "spectral_h1_mean": 0.0,
+      "euclidean_h1_features_mean": 36.2,
+      "spectral_h1_features_mean": 0.13333333333333333,
+      "spectral_richer": false
+    }
+  },
+  "D5_crocker": {
+    "status": "complete",
+    "l1_distance_easy_hard": 43.0,
+    "l1_distance_adjacent": 31.0,
+    "monotonic_gradient": true,
+    "max_l1_distance": 57.0
+  },
+  "D7_intrinsic_dim": {
+    "status": "complete",
+    "terminal_ids": {
+      "1": 6.669437759873879,
+      "2": 7.422532065381738,
+      "3": 10.073928320953488,
+      "4": 11.653322790056961,
+      "5": 12.009505900289957
+    },
+    "id_increases_with_difficulty": true,
+    "n_layers": 29
+  },
+  "D8_token_topology": {
+    "status": "complete",
+    "regions_with_data": [
+      "instruction_prefix",
+      "problem",
+      "instruction_suffix"
+    ],
+    "signal_strength": {
+      "instruction_prefix": {
+        "easy_mean": 1.486041188284218,
+        "hard_mean": 1.5188821089012472,
+        "abs_diff": 0.03284092061702926,
+        "direction": "increase"
+      },
+      "problem": {
+        "easy_mean": 2.155032624261784,
+        "hard_mean": 2.970396877584144,
+        "abs_diff": 0.8153642533223602,
+        "direction": "increase"
+      },
+      "instruction_suffix": {
+        "easy_mean": 1.042461034692277,
+        "hard_mean": 1.0444118869465902,
+        "abs_diff": 0.00195085225431324,
+        "direction": "increase"
+      }
+    }
+  },
+  "D9_compression": {
+    "status": "complete",
+    "terminal_layer_stats": {
+      "1": {
+        "layer": 28,
+        "total_pers": 0,
+        "n_features": 0,
+        "mean_lifetime": 0
+      },
+      "2": {
+        "layer": 28,
+        "total_pers": 0,
+        "n_features": 0,
+        "mean_lifetime": 0
+      },
+      "3": {
+        "layer": 28,
+        "total_pers": 0,
+        "n_features": 0,
+        "mean_lifetime": 0
+      },
+      "4": {
+        "layer": 28,
+        "total_pers": 0,
+        "n_features": 0,
+        "mean_lifetime": 0
+      },
+      "5": {
+        "layer": 28,
+        "total_pers": 0,
+        "n_features": 0,
+        "mean_lifetime": 0
+      }
+    },
+    "pattern": "compression"
+  },
+  "D6_cross_model": {
+    "status": "complete",
+    "n_models": 4,
+    "models": [
+      "qwen",
+      "phi2",
+      "pythia",
+      "stablelm"
+    ],
+    "terminal_replication": {
+      "qwen": {
+        "peak_layer": 28,
+        "peak_zscore": 8.0,
+        "terminal": true
+      },
+      "phi2": {
+        "peak_layer": 2,
+        "peak_zscore": 4.22,
+        "terminal": false
+      },
+      "pythia": {
+        "peak_layer": 2,
+        "peak_zscore": 2.23,
+        "terminal": false
+      },
+      "stablelm": {
+        "peak_layer": 9,
+        "peak_zscore": 2.89,
+        "terminal": false
+      }
+    },
+    "n_terminal_replicated": 1,
+    "n_nonmonotonic_entropy": 4,
+    "h1_nonmonotonic_universal": true,
+    "h1_level1_minimum_universal": true,
+    "aligned_qwen_h1_entropy": {
+      "1": 2.331,
+      "2": 3.186,
+      "3": 3.524,
+      "4": 3.824,
+      "5": 3.796
+    },
+    "old_qwen_h1_entropy": {
+      "1": 2.925,
+      "2": 3.562,
+      "3": 3.403,
+      "4": 3.535,
+      "5": 3.447
+    },
+    "note": "With aligned Qwen data: Level 1 minimum preserved. Pattern shifted to near-monotonic increase (Spearman r=0.9, p=0.037). Non-Qwen models unchanged."
+  },
+  "D10_binding": {
+    "status": "complete",
+    "mode": "real_attention_aligned",
+    "per_level_binding": {
+      "1": 0.74,
+      "2": 0.613,
+      "3": 0.647,
+      "4": 0.596,
+      "5": 0.462
+    },
+    "spearman_r": -0.9,
+    "spearman_p": 0.037,
+    "easy_binding": 0.74,
+    "hard_binding": 0.462,
+    "monotonic_decrease": false,
+    "note": "Population-level topological similarity decreases with difficulty. Spearman r=-0.9, p=0.037. Non-monotonic at L2/L3."
+  },
+  "audit": {
+    "date": "2026-04-02",
+    "commit": "6e60605",
+    "fixes_applied": [
+      "D10 alignment",
+      "D2 alignment",
+      "D6 Qwen alignment"
+    ],
+    "affected": [
+      "D10",
+      "D2",
+      "D6"
+    ],
+    "safe": [
+      "D1",
+      "D3",
+      "D5",
+      "D7",
+      "D8",
+      "D9"
+    ],
+    "d2_cv_validation": {
+      "method": "10 seeds x 5-fold stratified CV",
+      "mean": 0.783,
+      "std": 0.054,
+      "ci_95": [
+        0.695,
+        0.889
+      ],
+      "alignment_method": "pool-index matching (evaluate_correctness.py RNG reconstruction)"
+    }
+  }
+}
