@@ -1,0 +1,97 @@
+{
+  "experiment_2_position_check": {
+    "experiment": "position_0_verification",
+    "position_0_token": "You",
+    "position_0_token_id": 2610,
+    "has_bos": false,
+    "chat_template_used": false,
+    "conclusion": "Position 0 is a plain word token, not a special/register token"
+  },
+  "experiment_1_swap_first_word": {
+    "template": "Please help me solve this math problem.\n\n{problem}\n\nPlease provide the final answer.",
+    "position_0_token": "Please",
+    "model": "Qwen/Qwen2.5-1.5B-Instruct",
+    "n_problems": 50,
+    "verdict": "positional",
+    "crystallized_regime": {
+      "n_observations": 350,
+      "top_texts": [
+        {
+          "text": "Please",
+          "count": 350
+        }
+      ],
+      "position_0_count": 350,
+      "position_0_fraction": 1.0,
+      "n_consistent": 50,
+      "n_problems": 50,
+      "unique_positions": [
+        0
+      ]
+    }
+  },
+  "experiment_3_base_model": {
+    "template": "{problem}\n\nPlease provide the final answer.",
+    "position_0_token": "varies_per_problem",
+    "model": "Qwen/Qwen2.5-1.5B",
+    "n_problems": 50,
+    "verdict": "architectural",
+    "crystallized_regime": {
+      "n_observations": 350,
+      "top_texts": [
+        {
+          "text": "If",
+          "count": 63
+        },
+        {
+          "text": "What",
+          "count": 49
+        },
+        {
+          "text": "The",
+          "count": 42
+        },
+        {
+          "text": "A",
+          "count": 28
+        },
+        {
+          "text": "S",
+          "count": 21
+        },
+        {
+          "text": "In",
+          "count": 21
+        },
+        {
+          "text": "Let",
+          "count": 21
+        },
+        {
+          "text": "D",
+          "count": 14
+        },
+        {
+          "text": "Evaluate",
+          "count": 14
+        },
+        {
+          "text": "Compute",
+          "count": 7
+        }
+      ],
+      "position_0_count": 350,
+      "position_0_fraction": 1.0,
+      "n_consistent": 50,
+      "n_problems": 50,
+      "unique_positions": [
+        0
+      ]
+    }
+  },
+  "comparison": {
+    "original_pos0_fraction": 1.0,
+    "exp1_pos0_fraction": 1.0,
+    "exp3_pos0_fraction": 1.0
+  }
+}
