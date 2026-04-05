@@ -1,0 +1,189 @@
+{
+  "n_problems": 500,
+  "total_bridge_occurrences": 6919,
+  "top_20_texts": [
+    {
+      "text": "answer",
+      "count": 651,
+      "fraction": 0.0941
+    },
+    {
+      "text": ".",
+      "count": 595,
+      "fraction": 0.086
+    },
+    {
+      "text": "the",
+      "count": 507,
+      "fraction": 0.0733
+    },
+    {
+      "text": "math",
+      "count": 467,
+      "fraction": 0.0675
+    },
+    {
+      "text": "final",
+      "count": 463,
+      "fraction": 0.0669
+    },
+    {
+      "text": "Provide",
+      "count": 460,
+      "fraction": 0.0665
+    },
+    {
+      "text": "assistant",
+      "count": 444,
+      "fraction": 0.0642
+    },
+    {
+      "text": "helpful",
+      "count": 442,
+      "fraction": 0.0639
+    },
+    {
+      "text": "",
+      "count": 349,
+      "fraction": 0.0504
+    },
+    {
+      "text": "You",
+      "count": 263,
+      "fraction": 0.038
+    },
+    {
+      "text": "+",
+      "count": 194,
+      "fraction": 0.028
+    },
+    {
+      "text": "=",
+      "count": 137,
+      "fraction": 0.0198
+    },
+    {
+      "text": ",",
+      "count": 127,
+      "fraction": 0.0184
+    },
+    {
+      "text": "$",
+      "count": 98,
+      "fraction": 0.0142
+    },
+    {
+      "text": "Please",
+      "count": 70,
+      "fraction": 0.0101
+    },
+    {
+      "text": "-",
+      "count": 63,
+      "fraction": 0.0091
+    },
+    {
+      "text": "]",
+      "count": 51,
+      "fraction": 0.0074
+    },
+    {
+      "text": "?",
+      "count": 51,
+      "fraction": 0.0074
+    },
+    {
+      "text": "0",
+      "count": 37,
+      "fraction": 0.0053
+    },
+    {
+      "text": ".$",
+      "count": 37,
+      "fraction": 0.0053
+    }
+  ],
+  "type_distribution": {
+    "word": 4989,
+    "punctuation": 797,
+    "math_operator": 563,
+    "empty/whitespace": 337,
+    "number": 204,
+    "latex_command": 17,
+    "newline": 12
+  },
+  "position_stats": {
+    "mean": 31.11,
+    "median": 10.0,
+    "mean_fraction": 0.3217,
+    "position_0_fraction": 0.0379
+  },
+  "n_singleton_problems": 0,
+  "singleton_top_texts": [],
+  "token_count_mismatches": 0,
+  "crystallized_regime": {
+    "n_observations": 350,
+    "top_10_texts": [
+      {
+        "text": "You",
+        "count": 350
+      }
+    ],
+    "mean_position": 0.0,
+    "position_0_fraction": 1.0,
+    "per_problem_consistent": {
+      "39": true,
+      "27": true,
+      "3": true,
+      "23": true,
+      "16": true,
+      "37": true,
+      "28": true,
+      "4": true,
+      "8": true,
+      "33": true,
+      "110": true,
+      "78": true,
+      "73": true,
+      "99": true,
+      "116": true,
+      "58": true,
+      "79": true,
+      "84": true,
+      "92": true,
+      "121": true,
+      "203": true,
+      "208": true,
+      "159": true,
+      "179": true,
+      "168": true,
+      "149": true,
+      "194": true,
+      "226": true,
+      "232": true,
+      "139": true,
+      "358": true,
+      "289": true,
+      "329": true,
+      "279": true,
+      "320": true,
+      "327": true,
+      "283": true,
+      "353": true,
+      "256": true,
+      "350": true,
+      "459": true,
+      "475": true,
+      "394": true,
+      "451": true,
+      "487": true,
+      "449": true,
+      "422": true,
+      "387": true,
+      "437": true,
+      "407": true
+    },
+    "n_consistent": 50,
+    "n_problems_with_data": 50
+  }
+}
