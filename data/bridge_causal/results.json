@@ -1,0 +1,22 @@
+{
+  "branch": "experiment/tda-bridge-causal",
+  "n_problems": 30,
+  "causal": {
+    "pos0_bridge_rate": 1.0,
+    "mean_silhouette": 0.979132068157196,
+    "mean_n_bridges": 1.0
+  },
+  "bidirectional": {
+    "pos0_bridge_rate": 0.13333333333333333,
+    "mean_silhouette": 0.5711862010260423,
+    "mean_n_bridges": 8.0
+  },
+  "dual_visible_5": {
+    "pos0_bridge_rate": 0.0,
+    "pos5_bridge_rate": 0.8,
+    "mean_silhouette": 0.8634753266970316,
+    "mean_n_bridges": 0.8333333333333334
+  },
+  "hook_verified": true,
+  "causal_mechanism_confirmed": true
+}
