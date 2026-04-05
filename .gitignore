@@ -41,6 +41,7 @@ data/precomputed/
 
 # Transformer hidden states (large, regenerable)
 data/transformer/*.npz
+data/bridge_topology/*.npz
 
 # Sphinx build output
 docs/_build/

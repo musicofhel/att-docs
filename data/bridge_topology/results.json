@@ -1,0 +1,79 @@
+{
+  "branch": "experiment/tda-bridge-topology",
+  "exp1_bridge_h1_by_level": {
+    "1": 0.377,
+    "2": 0.358,
+    "3": 0.354,
+    "4": 0.29,
+    "5": 0.29
+  },
+  "exp1_all_h1_by_level": {
+    "1": 2.138,
+    "2": 2.316,
+    "3": 2.383,
+    "4": 2.55,
+    "5": 2.738
+  },
+  "exp1_bridge_goldilocks_peak": 1,
+  "exp1_all_goldilocks_peak": 5,
+  "exp1_bridge_reproduces_goldilocks": false,
+  "exp2_bridge_mean_displacement": 51.3457,
+  "exp2_core_mean_displacement": 22.7064,
+  "exp2_ratio": 2.26,
+  "exp2_mannwhitney_p": 0.284654,
+  "exp2_bridge_computes_more": false,
+  "exp3_overall_jaccard": 0.821,
+  "exp3_bridge_identity": "stable",
+  "exp3_crystallization_confirmed": true,
+  "exp4_residual_pc1_difficulty_r": -0.001,
+  "exp4_residual_pc1_difficulty_p": 0.8953,
+  "exp4_third_structure_found": true,
+  "exp4_third_structure_interpretation": "Residual PC1 shows bimodal structure (sil=0.584), suggesting a third binary partition of token space independent of cluster and flow axes. All top-5 residual PCs show strong bimodality (sil 0.55-0.62) but negligible difficulty correlation, indicating these are content-driven geometric structures (e.g. token type, position) rather than computation-driven.",
+  "exp5_topology_breaks_at_sigma": 0.1,
+  "exp5_function_breaks_at_sigma": 0.1,
+  "exp5_topology_leads": false,
+  "exp5_dose_response_curve": [
+    {
+      "sigma": 0.0,
+      "kl": 0.0,
+      "h1": 0.323,
+      "sil": 0.235,
+      "frac_changed": 0.0
+    },
+    {
+      "sigma": 0.1,
+      "kl": 2.0571,
+      "h1": 0.063,
+      "sil": 0.269,
+      "frac_changed": 0.267
+    },
+    {
+      "sigma": 0.5,
+      "kl": 2.6627,
+      "h1": 1.12,
+      "sil": 0.277,
+      "frac_changed": 0.233
+    },
+    {
+      "sigma": 1.0,
+      "kl": 3.2769,
+      "h1": 1.18,
+      "sil": 0.292,
+      "frac_changed": 0.233
+    },
+    {
+      "sigma": 2.0,
+      "kl": 3.5991,
+      "h1": 1.213,
+      "sil": 0.3,
+      "frac_changed": 0.333
+    },
+    {
+      "sigma": 5.0,
+      "kl": 3.6615,
+      "h1": 1.222,
+      "sil": 0.31,
+      "frac_changed": 0.433
+    }
+  ]
+}
