@@ -1,0 +1,71 @@
+{
+  "branch": "experiment/tiered-sentinel-cardiac",
+  "record": 200,
+  "seed": 42,
+  "config": {
+    "fs": 128,
+    "window": 1280,
+    "stride": 640,
+    "subsample": 200,
+    "sigma_alarm": 2.0,
+    "cusum_k": 0.5,
+    "cusum_h": 5.0,
+    "entropy_gate_k": 2.0,
+    "baseline_seconds": 300,
+    "baseline_windows": 60,
+    "arrhythmia_threshold": 0.5
+  },
+  "n_windows": 360,
+  "n_arrhythmic_windows": 43,
+  "n_normal_windows": 317,
+  "layer_counts": {
+    "l1_var_alarms": 16,
+    "l1_acf_alarms": 14,
+    "l1_any_triggers": 29,
+    "l2_confirmed": 0,
+    "l3_alarms": 0
+  },
+  "arms": {
+    "A_topology_only": {
+      "tp": 0,
+      "fp": 2,
+      "fn": 43,
+      "tn": 315,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "n_alarms": 2
+    },
+    "B_variance_only": {
+      "tp": 9,
+      "fp": 20,
+      "fn": 34,
+      "tn": 297,
+      "precision": 0.3103448275862069,
+      "recall": 0.20930232558139536,
+      "f1": 0.25,
+      "n_alarms": 29
+    },
+    "C_tiered_sentinel": {
+      "tp": 0,
+      "fp": 0,
+      "fn": 43,
+      "tn": 317,
+      "precision": 0.0,
+      "recall": 0.0,
+      "f1": 0.0,
+      "n_alarms": 0
+    }
+  },
+  "f1_a": 0.0,
+  "f1_b": 0.25,
+  "f1_c": 0.0,
+  "precision_c": 0.0,
+  "target_precision": 0.4,
+  "verdict": "FAIL",
+  "verdict_failure_reasons": [
+    "precision(C)=0.000 < target 0.4",
+    "f1(C)=0.000 not > max(f1_A=0.000, f1_B=0.250)"
+  ],
+  "runtime_s": 103.75118112564087
+}
