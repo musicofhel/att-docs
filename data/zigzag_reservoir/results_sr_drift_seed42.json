@@ -1,0 +1,70 @@
+{
+  "branch": "experiment/zigzag-reservoir",
+  "mode": "sr_drift",
+  "seed": 42,
+  "config": {
+    "window": 2000,
+    "stride": 500,
+    "n_clouds": 27,
+    "subsample_per_window": 60,
+    "n_pca": 20,
+    "threshold_percentile": 70,
+    "vr_threshold": 5.366142374418965
+  },
+  "n_clouds": 27,
+  "onset_cloud": 10.0,
+  "barcode_h0_count": 1,
+  "barcode_h1_count": 9,
+  "h1_birth_region_split": {
+    "healthy": {
+      "n": 0,
+      "mean_lifetime": 0.0,
+      "median_lifetime": 0.0
+    },
+    "drift": {
+      "n": 9,
+      "mean_lifetime": 0.5,
+      "median_lifetime": 0.5
+    }
+  },
+  "n_long_post_onset": 0,
+  "earliest_long_birth": null,
+  "longest_post_onset_life": null,
+  "snapshot_baseline": {
+    "signal": [
+      0.37269599735736847,
+      0.379560649394989,
+      0.3291075974702835,
+      0.2905350774526596,
+      0.4972282648086548,
+      0.4386436343193054,
+      0.3002380281686783,
+      0.4475281536579132,
+      0.3623625934123993,
+      0.1988830789923668,
+      0.6409185975790024,
+      0.7147697433829308,
+      0.721808910369873,
+      2.4339723587036133,
+      2.368999660015106,
+      2.266439199447632,
+      3.8438618183135986,
+      4.9539103507995605,
+      4.962735414505005,
+      7.199782133102417,
+      7.357257127761841,
+      6.88859748840332,
+      8.342409133911133,
+      8.658060073852539,
+      7.2049572467803955,
+      7.567592620849609,
+      7.751182317733765
+    ],
+    "threshold_2sigma": 0.5272182593161193,
+    "first_alarm_cloud": 10,
+    "any_detect": true
+  },
+  "verdict": "FAIL",
+  "verdict_reason": "no long-lived post-onset H1 features in zigzag barcode",
+  "runtime_s": 14.446154356002808
+}
