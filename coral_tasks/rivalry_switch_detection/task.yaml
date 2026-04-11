@@ -1,0 +1,112 @@
+task:
+  name: "rivalry_switch_detection"
+  description: |
+    Detect perceptual switches during binocular rivalry from EEG using
+    topological transition detection. Score = mean F1 across 3 subjects
+    {3629, 3630, 3632} from the Nie/Katyal/Engel (2023) dataset.
+
+    Setup:
+      Each subject has a ~120s rivalry session at 360Hz across 34 EEG
+      channels (preprocessed: CSD reference, ICA, artifact rejection).
+      Behavioral data: button-press timestamps marking subjective
+      perceptual switches. Ground truth = switch times in seconds.
+
+      Existing baseline (`scripts/batch_eeg.py` on the tda-sleep branch,
+      mean across N=80 subjects, ±5s tolerance):
+        precision = 0.941
+        recall    = 0.406
+        F1        ≈ 0.57
+
+      Detector: Oz channel → theta-alpha bandpass (4-13 Hz) → Takens
+      embedding (auto delay + dim) → TransitionDetector (window=500,
+      step=200, ripser, subsample=300) → CUSUM changepoints → match to
+      switches at ±5s tolerance.
+
+      The recall gap is the headline problem. Precision is already
+      publication-grade; the detector misses most behavioral switches.
+
+    YOUR JOB:
+      Edit `initial_program.py` to maximize mean F1 across the 3 subjects.
+
+    Output format (LAST stdout line MUST be a single JSON object):
+      {
+        "score": 0.62,
+        "per_subject": [
+            {"subject": "3629", "f1": 0.71, "precision": 0.95, "recall": 0.57,
+             "n_changepoints": 12, "n_switches": 30},
+            {"subject": "3630", "f1": ..., ...},
+            {"subject": "3632", "f1": ..., ...}
+        ],
+        "strategy": "<your_strategy_name>",
+        "tolerance_s": 5.0
+      }
+
+    Targets (mean F1 across the 3 subjects, ±5s tolerance):
+      - 0.57 = published baseline (matched by current seed)
+      - 0.65 = improvement
+      - 0.70 = strong improvement (Branch C success)
+      - 0.80 = approaching the precision ceiling
+
+    Constraints:
+      - tolerance_s MUST equal 5.0 (grader enforces).
+      - Data lives at /home/musicofhel/att-docs/data/eeg/rivalry_ssvep/ —
+        path is hardcoded in the seed program. Don't move the data.
+  tips: |
+    Cost note: the seed program (3 subjects, default subsample=300) takes
+    ~25-27 min wallclock per attempt. The grader timeout is 3600s. To leave
+    yourself room for iteration, consider reducing TD_SUBSAMPLE from 300 to
+    150-200 during exploration — F1 stays in the same neighborhood and runs
+    drop to ~10-15 min. Restore subsample for your final attempt.
+
+    Strategies that have NOT been tried in the baseline:
+      * Bayesian online changepoint detection (BOCPD)
+      * Page-Hinkley test
+      * Adaptive per-subject CUSUM threshold
+      * Multi-channel input (Pz, P3, P4, O1, O2 in addition to Oz)
+      * Cross-channel binding (BindingDetector on Oz/Pz)
+      * Per-band PH (alpha-only, beta-only, theta-only)
+      * Hybrid: alpha power gate → PH on triggered windows
+      * Different window/step sizes — beat-scale doesn't apply but
+        switch-scale (~3-5s windows at 1s step) might
+      * Persistence landscape L1 instead of PI L2
+      * Wavelet PH instead of Takens
+
+    ATT API entry points:
+      from att.embedding.takens import TakensEmbedder
+      from att.neuro.embedding import embed_channel
+      from att.transitions import TransitionDetector
+      from att.binding import BindingDetector
+      from att.embedding.joint import JointEmbedder
+
+    The 34-channel EEG signal lives in `epochs` array, channel names in
+    `chanlocs`. Per-epoch shape is roughly (34, ~43200) — that's ~120s at
+    360Hz. There's exactly one epoch per session.
+
+    Reference: scripts/batch_eeg.py on experiment/tda-sleep — full
+    multi-subject batch implementation that produced the published baseline.
+
+grader:
+  timeout: 3600
+  direction: maximize
+  args:
+    program_file: "initial_program.py"
+
+agents:
+  count: 4
+  runtime: claude_code
+  model: claude-sonnet-4-6
+  max_turns: 80
+  research: false
+  stagger_seconds: 15
+
+workspace:
+  results_dir: "./results"
+  repo_path: "/home/musicofhel/att-docs/coral_tasks/rivalry_switch_detection/seed"
+  setup:
+    - "uv venv .venv"
+    - "VIRTUAL_ENV=$(pwd)/.venv uv pip install -e /home/musicofhel/att-docs ripser persim numpy scipy scikit-learn matplotlib"
+
+run:
+  verbose: false
+  ui: true
+  session: tmux
