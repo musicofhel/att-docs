@@ -1,0 +1,98 @@
+{
+  "branch": "experiment/vineyard-binding-reservoir",
+  "mode": "sr_drift",
+  "seed": 42,
+  "channels": [
+    0,
+    100
+  ],
+  "config": {
+    "window": 2000,
+    "stride": 50,
+    "subsample": 300,
+    "image_resolution": 30,
+    "image_sigma": 0.1,
+    "n_baseline_windows": 80,
+    "sigma_alarm": 2.0,
+    "savgol_window": 21,
+    "savgol_poly": 3,
+    "track_max_cost_mult": 2.0
+  },
+  "n_windows": 261,
+  "n_drift_windows": 161,
+  "n_healthy_windows": 100,
+  "onset_window": 100,
+  "embedding": {
+    "marg_x_delay": 3,
+    "marg_x_dim": 10,
+    "marg_y_delay": 2,
+    "marg_y_dim": 10,
+    "joint_delays": [
+      3,
+      2
+    ],
+    "joint_dims": [
+      10,
+      10
+    ]
+  },
+  "tracker_stats": {
+    "n_tracks": 3631,
+    "mean_track_len": 15.164692922060038,
+    "max_track_len": 109,
+    "n_long_tracks": 2151
+  },
+  "arms": {
+    "A_dense_raw": {
+      "tp": 143,
+      "fp": 4,
+      "fn": 18,
+      "tn": 96,
+      "precision": 0.9727891156462585,
+      "recall": 0.8881987577639752,
+      "f1": 0.9285714285714285,
+      "first_alarm_window": 76,
+      "lag_windows": -24,
+      "onset_window": 100,
+      "alarm_direction": "down"
+    },
+    "B_dense_smoothed": {
+      "tp": 161,
+      "fp": 12,
+      "fn": 0,
+      "tn": 88,
+      "precision": 0.930635838150289,
+      "recall": 1.0,
+      "f1": 0.9640718562874252,
+      "first_alarm_window": 88,
+      "lag_windows": -12,
+      "onset_window": 100,
+      "alarm_direction": "down"
+    },
+    "C_tracked_smoothed": {
+      "tp": 137,
+      "fp": 7,
+      "fn": 24,
+      "tn": 93,
+      "precision": 0.9513888888888888,
+      "recall": 0.8509316770186336,
+      "f1": 0.8983606557377048,
+      "first_alarm_window": 82,
+      "lag_windows": -18,
+      "onset_window": 100,
+      "alarm_direction": "down"
+    }
+  },
+  "f1_a": 0.9285714285714285,
+  "f1_b": 0.9640718562874252,
+  "f1_c": 0.8983606557377048,
+  "lift_c_over_a": -0.030210772833723643,
+  "baseline_f1": 0.06,
+  "target_f1": 0.2,
+  "verdict": "FAIL",
+  "verdict_failure_reasons": [
+    "f1_c - f1_a = -0.030 < 0.05",
+    "f1_c=0.898 not > f1_b=0.964"
+  ],
+  "runtime_s": 122.03466081619263
+}
