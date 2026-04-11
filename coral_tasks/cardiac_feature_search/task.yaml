@@ -1,0 +1,95 @@
+task:
+  name: "cardiac_feature_search"
+  description: |
+    Search for topological (or signal-level) features that discriminate
+    abnormal vs normal cardiac windows in MIT-BIH ECG data using a logistic
+    regression classifier under leave-one-record-out cross-validation.
+
+    The five MIT-BIH records (200, 201, 207, 210, 217) live in seed/data/mitdb/.
+    A previous tracer-bullet experiment showed that persistence entropy alone
+    at 10s windows is rhythm-class-invariant (z = -0.86, AUROC ~ 0.5). The
+    architecture is salvageable if a better feature exists.
+
+    Your job: edit `initial_program.py` to extract more / better per-window
+    features. Print a JSON payload as the LAST line of stdout in this format:
+
+      {
+        "features": [
+            {"record": "200", "window_idx": 0, "values": [f1, f2, ...]},
+            ...
+        ],
+        "feature_names": ["max_h1_lifetime", "persistence_entropy_h1", ...],
+        "feature_tags":  ["topo", "topo", ...],
+        "config": {"window_size": 3600, "step_size": 1800}
+      }
+
+    The grader will:
+      1. Compute window labels from the .atr beat annotations using YOUR
+         window_size and step_size (so they MUST match what you windowed with)
+      2. Train fixed-seed LR on 4 records, test on the 5th, repeat 5 times
+      3. Return mean AUROC
+
+    SCORE = mean AUROC across the 5 LOO folds. Higher is better.
+
+    Targets:
+      - 0.50 = random / persistence-entropy baseline
+      - 0.65 = architecture rescued
+      - 0.75 = publishable
+
+    Constraints:
+      - You may NOT read the .atr annotation files. Features must be computed
+        from the ECG signal alone.
+      - Tag every feature in `feature_tags` as "topo" (uses persistent
+        homology / Takens embedding) or "signal" (purely time/frequency
+        domain). The grader records the mix in its explanation.
+      - Window labels must match between your features and the grader, so
+        your `config.window_size` and `config.step_size` MUST equal the
+        actual window/step you used.
+  tips: |
+    Suggested feature directions:
+      * max H1 lifetime, total H1 persistence, H1 feature count
+      * Betti curve moments (mean, variance, max location)
+      * Persistence landscape L1/L2 norms
+      * Multi-scale: stack features from 360-sample (1s, beat-scale) and
+        3600-sample (10s, rhythm-scale) windows
+      * RR-interval-based topology: detect R-peaks via thresholding the signal
+        derivative, embed RR intervals, run PH on that
+      * Non-topological controls: variance, RMS, dominant FFT frequency,
+        sample entropy
+
+    Reference for ATT API:
+      from att.embedding.takens import TakensEmbedder
+      from att.topology.persistence import PersistenceAnalyzer
+      emb = TakensEmbedder(delay="auto", dimension="auto"); emb.fit(window)
+      cloud = emb.transform(window)
+      pa = PersistenceAnalyzer(max_dim=1, backend="ripser")
+      pa.fit_transform(cloud, subsample=200, seed=42)
+      dgm0, dgm1 = pa.diagrams_  # arrays of (birth, death) pairs
+
+    Per-record signal length is ~650000 samples at 360 Hz.
+
+grader:
+  timeout: 1800
+  direction: maximize
+  args:
+    program_file: "initial_program.py"
+
+agents:
+  count: 4
+  runtime: claude_code
+  model: claude-sonnet-4-6
+  max_turns: 80
+  research: false
+  stagger_seconds: 15
+
+workspace:
+  results_dir: "./results"
+  repo_path: "/home/musicofhel/att-docs/coral_tasks/cardiac_feature_search/seed"
+  setup:
+    - "uv venv .venv"
+    - "VIRTUAL_ENV=$(pwd)/.venv uv pip install -e /home/musicofhel/att-docs ripser persim numpy scipy scikit-learn matplotlib wfdb"
+
+run:
+  verbose: false
+  ui: true
+  session: tmux
