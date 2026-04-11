@@ -1,0 +1,138 @@
+task:
+  name: "reservoir_multimode"
+  description: |
+    Detect early-warning signals of weight degradation in an Echo State
+    Network across THREE failure modes — `sr_drift`, `noise`, and
+    `connection_death` — and THREE seeds {0, 1, 2}, for a total of 9 evaluations
+    per attempt. Score is the mean F1 across the 9 (mode, seed) pairs.
+
+    Background:
+      A previous tracer-bullet experiment showed Crocker stack image-CUSUM
+      achieves F1 = 0.988 on `sr_drift` alone (PASS), and dense binding
+      (joint vs marginal persistence) achieves F1 = 0.929 (also on
+      `sr_drift` alone). Neither was tested on `noise` or `connection_death`.
+      Multi-mode replication is the graduation criterion.
+
+    SURPRISE FINDING (seed result):
+      Running the Crocker image-CUSUM detector across all 9 (mode, seed) pairs
+      gives mean F1 = 0.986. Per-mode means: sr_drift=0.988, noise=0.988,
+      connection_death=0.984. The detector generalizes across modes with
+      essentially zero degradation. This is Branch B's main scientific
+      finding by itself: Crocker stack monitoring is a universal
+      reservoir-degradation early-warning, not a sr-drift-specific trick.
+
+      The simulator (`reservoir_degradation_monitor.py`, vendored under seed/)
+      runs an ESN for 15,000 steps. The first N_HEALTHY=5000 are healthy.
+      After step 5000, weights are gradually degraded according to the chosen
+      mode. Window-level ground truth: window with start_idx >= 5000 → drift.
+
+    YOUR JOB (the seed already crushes the F1 target — pivot to validation):
+      The graduation criterion (mean F1 ≥ 0.80) is already met by the seed.
+      Your job is no longer to grind F1 — it is to STRESS-TEST and
+      THEORETICALLY EXPLAIN the result. Higher-F1 attempts are still scored,
+      but the leaderboard's most valuable entries are the ones that:
+
+      (a) Run the SAME detector on additional seeds {3, 4, 5, 6, 7} and
+          confirm F1 stays high. (Add seeds via SEEDS list, recompute mean
+          across the original 9 pairs only — the grader requires those exact
+          pairs. Report the extra seeds in the explanation field of the
+          payload as "extra_seed_f1": [...].)
+
+      (b) Implement and test INVERTED BINDING (see Künneth note below).
+          A single mode achieving F1 ≥ 0.60 with inverted binding is a
+          theoretical confirmation of the Künneth interpretation —
+          MORE valuable than another 0.01 F1 improvement.
+
+      (c) Run a phase-randomized surrogate ablation: replace the simulator's
+          drift phase (steps 5000-15000) with a phase-randomized version of
+          the healthy phase. Detector should NOT alarm. If it does, the
+          Crocker detector is detecting non-stationarity, not topology.
+          Report `surrogate_f1: <value>` in the per_eval entries.
+
+      (d) Attempt to push mean F1 above 0.99 across the 9 required pairs.
+
+      The grader still requires all 9 (mode, seed) pairs to be present in
+      per_eval. Strategies that report extra information in the payload are
+      not penalized — extra fields are passed through to the explanation.
+
+    Output format (LAST stdout line MUST be a single JSON object):
+      {
+        "score": 0.62,
+        "per_eval": [
+            {"mode": "sr_drift", "seed": 0, "f1": 0.99,
+             "precision": 1.0, "recall": 0.98},
+            ... (9 entries required)
+        ],
+        "strategy": "<your_strategy_name>",
+        "uses_inverted_binding": false
+      }
+
+    Targets (mean F1 across the 9 required (mode, seed) pairs):
+      - 0.21 = pre-tracer baseline (per-window PH binding score)
+      - 0.80 = graduation
+      - 0.90 = publishable
+      - 0.986 = current seed (Crocker image-CUSUM)
+      - 0.99 = stretch goal
+
+    KÜNNETH PREDICTION (theoretical bonus):
+      Across the project, no experiment has tested whether the binding score
+      detects synchronization onset by DROPPING below baseline (rather than
+      spiking above it). The Künneth cross-term interpretation predicts this:
+      binding ≈ topological independence, so synchronization → low binding.
+
+      `sr_drift` is the textbook synchronization-onset signal. If you try
+      inverted binding (alarm on binding drops), set
+      `uses_inverted_binding: true` in your output and the leaderboard will
+      flag it. Even an F1 ≥ 0.60 on a single mode with this strategy would
+      be a significant theoretical confirmation.
+  tips: |
+    Strategies known to work or worth trying:
+      * Crocker stack H1 + image CUSUM (current seed, F1=0.988 on sr_drift only)
+      * Crocker stack H0 (component merging)
+      * Column L1 distance to baseline column-mean
+      * Dense per-window binding (joint vs marginal PH on PCA channels)
+      * Inverted binding (see Künneth note above)
+      * Two-stage: variance gate → topology on triggered windows only
+      * Per-mode specialized detector with a frontend mode classifier
+      * Tune SIGMA_ALARM, N_BASELINE_WINDOWS, SUBSAMPLE per mode
+
+    Cost note: each (mode, seed) eval takes ~30s with current SUBSAMPLE=250.
+    Full 9-eval run is ~5 min wallclock. Don't push subsample above 400 or
+    you'll blow the 1800s grader timeout.
+
+    ATT API entry points:
+      from att.embedding.takens import TakensEmbedder
+      from att.topology.persistence import PersistenceAnalyzer
+      from att.binding import BindingDetector
+      from att.embedding.joint import JointEmbedder
+
+    Vendored references (read-only, in seed/reference/):
+      run_crocker_reservoir.py — full Crocker tracer (3 arms)
+      run_vineyard_reservoir.py — full vineyard tracer (3 arms, including
+        the dense-binding control that leaked F1=0.929)
+
+grader:
+  timeout: 1800
+  direction: maximize
+  args:
+    program_file: "initial_program.py"
+
+agents:
+  count: 4
+  runtime: claude_code
+  model: claude-sonnet-4-6
+  max_turns: 80
+  research: true
+  stagger_seconds: 15
+
+workspace:
+  results_dir: "./results"
+  repo_path: "/home/musicofhel/att-docs/coral_tasks/reservoir_multimode/seed"
+  setup:
+    - "uv venv .venv"
+    - "VIRTUAL_ENV=$(pwd)/.venv uv pip install -e /home/musicofhel/att-docs ripser persim numpy scipy scikit-learn matplotlib"
+
+run:
+  verbose: false
+  ui: true
+  session: tmux
