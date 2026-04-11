@@ -1,0 +1,11 @@
+{
+  "target_level": 3,
+  "best_params": {
+    "a": 1.0,
+    "b": 0.475,
+    "c": 0.825
+  },
+  "best_distance": 52.0,
+  "n_tried": 125,
+  "n_failed": 45
+}
