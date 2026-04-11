@@ -1,0 +1,63 @@
+{
+  "branch": "experiment/crocker-stack-reservoir",
+  "mode": "sr_drift",
+  "seed": 42,
+  "config": {
+    "window": 2000,
+    "stride": 200,
+    "n_filtration_steps": 100,
+    "subsample": 300,
+    "max_dim": 1,
+    "n_baseline_windows": 25,
+    "sigma_alarm": 2.0
+  },
+  "n_windows": 66,
+  "n_drift_windows": 41,
+  "n_healthy_windows": 25,
+  "onset_window": 25,
+  "arms": {
+    "A_column_L1": {
+      "tp": 41,
+      "fp": 2,
+      "fn": 0,
+      "tn": 23,
+      "precision": 0.9534883720930233,
+      "recall": 1.0,
+      "f1": 0.9761904761904763,
+      "first_alarm_window": 23,
+      "onset_window": 25,
+      "lag_windows": -2
+    },
+    "B_image_CUSUM": {
+      "tp": 41,
+      "fp": 1,
+      "fn": 0,
+      "tn": 24,
+      "precision": 0.9761904761904762,
+      "recall": 1.0,
+      "f1": 0.9879518072289156,
+      "first_alarm_window": 24,
+      "onset_window": 25,
+      "lag_windows": -1
+    },
+    "C_total_betti": {
+      "tp": 34,
+      "fp": 0,
+      "fn": 7,
+      "tn": 25,
+      "precision": 1.0,
+      "recall": 0.8292682926829268,
+      "f1": 0.9066666666666667,
+      "first_alarm_window": 32,
+      "onset_window": 25,
+      "lag_windows": 7
+    }
+  },
+  "best_arm": "B_image_CUSUM",
+  "best_f1": 0.9879518072289156,
+  "baseline_f1": 0.06,
+  "target_f1": 0.2,
+  "verdict": "PASS",
+  "runtime_s": 30.762187004089355,
+  "per_window_avg_s": 0.37943458195888635
+}
