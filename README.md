@@ -18,7 +18,7 @@ pip install att-toolkit
 
 ATT extracts, compares, and visualizes the topological structure of chaotic attractors from multivariate time series. Its core construction -- **joint-vs-marginal persistent homology on Takens-embedded coupled systems** -- isolates emergent coupling topology by comparing persistence diagrams of joint delay embeddings against their marginal counterparts. The library provides clean infrastructure for attractor reconstruction, persistent homology, cross-system binding detection, surrogate-tested statistics, and head-to-head benchmarks against transfer entropy, phase-amplitude coupling, and cross-recurrence quantification.
 
-> **Domain of applicability**: The binding score is selectively sensitive to coupling between systems with *different intrinsic timescales* (e.g., Rossler-Lorenz). It has zero power for same-timescale coupling (e.g., Lorenz-Lorenz). Always use z-score calibration against surrogates rather than raw scores. See the [preprint](paper/preprint.tex), Experiment 9.
+> **Domain of applicability**: The binding score is selectively sensitive to coupling between systems with *different intrinsic timescales* (e.g., Rossler-Lorenz). It has zero power for same-timescale coupling (e.g., Lorenz-Lorenz). Always use z-score calibration against surrogates rather than raw scores. Validated on EEG (binocular rivalry) and ECG (MIT-BIH arrhythmia). See the [preprint](paper/preprint.tex), Experiments 9-12.
 
 ## Quick Start
 
@@ -122,6 +122,23 @@ ATT sits at the intersection of several existing research threads, none of which
 | Giusti, Curto et al. | PH on neural correlation matrices | PH on time-evolving attractor dynamics |
 | Sliding-window PH (Perea, Harer) | Topological time series analysis | Applied to bistable perception EEG (novel niche) |
 
+## Experimental Results
+
+ATT has been validated across synthetic, neural, and cardiac domains via 12 experiments (9 in the original preprint + 3 discovered by automated multi-agent search using [CORAL](https://github.com/Human-Agent-Society/CORAL)):
+
+| Experiment | Domain | Key Result | Preprint Section |
+|------------|--------|------------|------------------|
+| Künneth confirmation | Reservoir computing | Inverted binding detects synchronization drift (F1=0.985) | Experiment 11 |
+| Perceptual switch detection | Binocular rivalry EEG | Adaptive TDA + alpha power achieves F1=1.0 | Experiment 12 |
+| Cardiac arrhythmia | MIT-BIH ECG | Mixed TDA + signal features: AUROC=0.8014 | Experiment 10 |
+| Vineyard tracking rescue | Reservoir degradation | Greedy top-K + SavGol: F1=1.0 | [`coral_archive/`](coral_archive/) |
+
+**Key finding (Künneth confirmation)**: When coupled systems synchronize, the binding score *drops* (not rises) because the joint attractor collapses toward a product of marginals. This inverted behavior -- the Künneth cross-term prediction -- enables alarm-on-decrease detection of spectral radius drift. First direct experimental test of this theoretical interpretation.
+
+**Recall gap closed**: The original preprint reported 94.1% precision but only 40.6% recall on binocular rivalry perceptual switches. An adaptive per-subject strategy (alpha power for dense-switching subjects, windowed TDA for sparse cases) achieves F1=1.0.
+
+Full CORAL experiment artifacts (108 scored attempts, 53 agent notes): [`coral_archive/`](coral_archive/)
+
 ## Documentation
 
 Full API reference and quickstart tutorial: **[musicofhel.github.io/att-docs](https://musicofhel.github.io/att-docs/)**
@@ -142,7 +159,7 @@ If you use ATT in your research, please cite:
 }
 ```
 
-Preprint available at [`paper/preprint.pdf`](paper/preprint.pdf).
+Preprint (12 experiments spanning synthetic systems, binocular rivalry EEG, cardiac ECG, and reservoir computing): [`paper/preprint.pdf`](paper/preprint.pdf).
 
 ## License
 
