@@ -1,0 +1,16 @@
+[project]
+name = "vineyard-rescue-seed"
+version = "0.0.0"
+requires-python = ">=3.10"
+dependencies = [
+    "att-toolkit",
+    "ripser",
+    "persim",
+    "numpy",
+    "scipy",
+    "scikit-learn",
+    "matplotlib",
+]
+
+[tool.uv.sources]
+att-toolkit = { path = "/home/musicofhel/att-docs", editable = true }

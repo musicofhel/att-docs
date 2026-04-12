@@ -1,0 +1,144 @@
+task:
+  name: "vineyard_rescue"
+  description: |
+    Can a better matching algorithm rescue vineyard-tracked binding for
+    reservoir degradation detection?
+
+    Background:
+      The Branch 2 tracer bullet tested three binding detection arms on
+      sr_drift (spectral radius 0.95 -> 1.4):
+        - Arm A (dense raw binding):      F1 = 0.929  <- baseline to beat
+        - Arm B (dense + SavGol smooth):  F1 = 0.964
+        - Arm C (Hungarian-tracked + smooth): F1 = 0.898  <- WORSE than raw
+
+      The Hungarian L-inf tracker HURT detection. The tracer was killed because
+      F1(C) < F1(A). But the question remains: is the problem the matching
+      algorithm specifically, or is tracking fundamentally harmful for binding
+      score stability?
+
+      Dense binding (arm A, F1=0.929) works because it's simple: compute
+      joint vs marginal PH per window, take the residual. No cross-window
+      coherence needed. The Hungarian tracker adds complexity (augmented cost
+      matrix, max-cost thresholds, track lifecycle) that may introduce
+      artifacts — birth/death jumps at track boundaries, phantom tracks from
+      noise features, smoothing artifacts from short tracks.
+
+    YOUR JOB:
+      Beat F1 = 0.929 (arm A dense raw) on the same sr_drift detection task,
+      using a TRACKING-based approach. The score is F1 on a 261-window dataset
+      (WINDOW=2000, STRIDE=50, N_TOTAL=15000, N_HEALTHY=5000).
+
+      If tracking cannot beat dense raw, that's an informative negative result
+      — but you should exhaust reasonable alternatives before concluding that.
+
+    Approaches to try:
+      1. ONLINE GREEDY MATCHING (Union-Find): Instead of batch Hungarian,
+         greedily match each new feature to its nearest active track in O(n*k)
+         time. Union-Find structure for track merging. Inspiration: QEC
+         syndrome decoding uses greedy nearest-neighbor matching of error
+         pairs rather than global minimum-weight matching — faster AND more
+         robust for streaming data. The key insight: you don't need globally
+         optimal matching when the features are already similar window-to-window.
+
+      2. PERSISTENCE VINEYARD APPROXIMATION: Track persistence pairs by
+         birth-death continuity (the actual vineyard definition). Pairs that
+         are close in both birth AND death time to a pair in the previous
+         window are the same topological feature evolving. This is the
+         mathematical formulation — the Hungarian approach was an approximation.
+
+      3. MODIFIED HUNGARIAN: Fix the augmented cost matrix issues:
+         - Lower max_cost_mult from 2.0 to 1.0 (stricter matching)
+         - Use persistence-weighted L2 instead of L-inf
+         - Penalize track creation/destruction more heavily
+         - Use a sliding baseline instead of the diagonal dummy assignment
+
+      4. HYBRID: Track only the TOP-K most persistent features (ignore noise
+         features entirely), then smooth only those tracks. The hypothesis:
+         noise features are what hurt the Hungarian tracker because they
+         create spurious matches.
+
+      5. ENSEMBLE: Combine tracked binding with dense binding (OR gate, max,
+         weighted average). If tracking captures different drift signatures
+         than dense, the combination could beat both.
+
+    Output format (LAST stdout line MUST be a single JSON object):
+      {
+        "score": 0.94,
+        "f1": 0.94,
+        "precision": 0.96,
+        "recall": 0.92,
+        "strategy": "union_find_greedy",
+        "uses_tracking": true,
+        "n_windows": 261,
+        "onset_window": 100,
+        "first_alarm_window": 101,
+        "arm_a_f1": 0.929,
+        "tracking_lift": 0.011
+      }
+
+    Scoring:
+      score = F1 on the 261-window sr_drift detection task (seed=42).
+      Ground truth: window with start_idx >= N_HEALTHY (5000) -> drift.
+      Must strictly beat 0.929 to PASS.
+
+    Constraints:
+      - Don't modify reservoir_degradation_monitor.simulate_degradation
+      - Must use some form of cross-window feature tracking (not just dense
+        per-window binding). Set uses_tracking: true.
+      - Report arm_a_f1 (dense raw baseline) for comparison
+      - Single mode (sr_drift), single seed (42) — this is a focused
+        algorithm comparison, not a multi-mode sweep
+
+  tips: |
+    The dense binding baseline (arm A, F1=0.929) uses:
+      - BindingDetector with persistence_image method
+      - IMAGE_RES=30, IMAGE_SIGMA=0.1, SUBSAMPLE=300
+      - Window=2000, stride=50 -> 261 windows
+      - N_BASELINE_WINDOWS=80, SIGMA_ALARM=2.0
+      - Channels: neurons 0 and 100 from the ESN
+      - Auto-embedding parameters cached from window 0
+
+    The Hungarian tracker (arm C, F1=0.898) fails because:
+      - L-inf matching with 2x median-persistence cap is too loose
+      - Augmented cost matrix creates phantom tracks
+      - Savitzky-Golay smoothing on short tracks introduces artifacts
+      - Many noise features create O(n^2) matching overhead
+
+    ATT API entry points:
+      from att.embedding.takens import TakensEmbedder
+      from att.topology.persistence import PersistenceAnalyzer
+      from att.binding import BindingDetector
+      from att.embedding.joint import JointEmbedder
+
+    Vendored references (read-only, in reference/):
+      run_vineyard_reservoir.py — Full Branch 2 tracer (3 arms, FeatureTracker)
+      run_crocker_reservoir.py — Full Branch 3 tracer (Crocker stack)
+
+    Cost note: 261 windows × BindingDetector.fit() at SUBSAMPLE=300 takes
+    ~3-5 min. Greedy matching should be much faster than Hungarian.
+
+grader:
+  timeout: 1800
+  direction: maximize
+  args:
+    program_file: "initial_program.py"
+
+agents:
+  count: 4
+  runtime: claude_code
+  model: claude-sonnet-4-6
+  max_turns: 80
+  research: false
+  stagger_seconds: 15
+
+workspace:
+  results_dir: "./results"
+  repo_path: "/home/musicofhel/att-docs/coral_tasks/vineyard_rescue/seed"
+  setup:
+    - "test -d .venv || uv venv .venv"
+    - "VIRTUAL_ENV=$(pwd)/.venv uv pip install -e /home/musicofhel/att-docs ripser persim numpy scipy scikit-learn matplotlib"
+
+run:
+  verbose: false
+  ui: true
+  session: local
