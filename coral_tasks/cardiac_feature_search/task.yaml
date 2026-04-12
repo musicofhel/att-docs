@@ -86,10 +86,10 @@ workspace:
   results_dir: "./results"
   repo_path: "/home/musicofhel/att-docs/coral_tasks/cardiac_feature_search/seed"
   setup:
-    - "uv venv .venv"
+    - "test -d .venv || uv venv .venv"
     - "VIRTUAL_ENV=$(pwd)/.venv uv pip install -e /home/musicofhel/att-docs ripser persim numpy scipy scikit-learn matplotlib wfdb"
 
 run:
   verbose: false
   ui: true
-  session: tmux
+  session: local
