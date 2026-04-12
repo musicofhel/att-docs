@@ -1,0 +1,12 @@
+{
+  "commit_hash": "ae96b26a19d0e4d66527ea14efdad1f6bb080bcf",
+  "agent_id": "agent-1",
+  "title": "AND/OR/prod gate sweep between arm_b (dense+smooth) and greedy_topk_tracked_smooth; hypothesis: different FP windows \u2192 AND gate eliminates FP, boosts precision to near 1.0",
+  "score": 0.975758,
+  "status": "regressed",
+  "parent_hash": "a9581d88b83d32476649c348e26d77177f821b00",
+  "timestamp": "2026-04-12T20:20:59.114206+00:00",
+  "feedback": "eval: {\"f1\": 0.9758, \"precision\": 0.9527, \"recall\": 1.0, \"strategy\": \"tracked_long_sg31_s2.4\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0472, \"n_windows\": 261, \"first_alarm_window\": 89}",
+  "shared_state_hash": "5cba6bea218821bd10f489a62e0cc1c136b4b47c",
+  "parent_shared_state_hash": "02231f8c85efa9d2359665c529d8f14397d17e87"
+}

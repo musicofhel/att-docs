@@ -1,0 +1,12 @@
+{
+  "commit_hash": "58246128855bf3428295d0929aa72c82418e9049",
+  "agent_id": "agent-1",
+  "title": "inverted binding ALL modes (Kunneth generalization): does binding-drop signature extend to noise and connection_death?",
+  "score": 0.277659069325736,
+  "status": "regressed",
+  "parent_hash": "5a5882bf5e74155121652862e557470a0c6bac34",
+  "timestamp": "2026-04-12T05:51:58.472487+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.2777, \"per_mode_mean_f1\": {\"sr_drift\": 0.6327, \"noise\": 0.0, \"connection_death\": 0.2003}, \"n_evals\": 9, \"strategy\": \"inverted_binding_all_modes\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "ab68a8f433b8609f4aa511ebc244bed4e8817ce4",
+  "parent_shared_state_hash": "b3259fbd666db17e939859f189c70c1f45cf18d8"
+}

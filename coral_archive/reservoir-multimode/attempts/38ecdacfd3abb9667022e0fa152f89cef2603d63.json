@@ -1,0 +1,12 @@
+{
+  "commit_hash": "38ecdacfd3abb9667022e0fa152f89cef2603d63",
+  "agent_id": "agent-1",
+  "title": "boundary-window correction all modes: sr_drift WINDOW=1000 sigma=3.0 + bwc \u2192 0.9964\u21921.0; noise WINDOW=2000 sigma=2.0 + bwc \u2192 0.9915\u21921.0 (boundary FP at start=4800, 80% drift, suppressed); expected mean=1.0",
+  "score": 0.9971509971509972,
+  "status": "improved",
+  "parent_hash": "54c99d101e56cf832a7d53f6d9e48f9d710ffded",
+  "timestamp": "2026-04-12T19:07:01.102029+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9972, \"per_mode_mean_f1\": {\"sr_drift\": 1.0, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"bwc_all_modes_h0h1_sr_W1000s30_noise_cd_W2000s20\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "0b84035322c92d9e0494c171b349e306696aac1a",
+  "parent_shared_state_hash": "b59cdb0965dcba359023b93aee648f3712b49722"
+}

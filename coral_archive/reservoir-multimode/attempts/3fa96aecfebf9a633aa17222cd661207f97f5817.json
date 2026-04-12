@@ -1,0 +1,12 @@
+{
+  "commit_hash": "3fa96aecfebf9a633aa17222cd661207f97f5817",
+  "agent_id": "agent-1",
+  "title": "H0+H1 CUSUM OR for noise/cd: both monotone\u2192no FP risk; H0 (connected components) may catch noise onset earlier than H1; sr_drift unchanged STRIDE=200 autofit",
+  "score": 0.993134932893969,
+  "status": "baseline",
+  "parent_hash": "d890259d1fec821aff40292bbd1128e1b316806e",
+  "timestamp": "2026-04-12T08:15:59.529704+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9931, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"crocker_sr_drift_200_autofit__noise_cd_400_cached_H0H1OR\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "70c8a336ad59f781671e3e6790258f721fe971a2",
+  "parent_shared_state_hash": "7c2f05f6689f6b2ce2a987b2a08443e6b4d36955"
+}

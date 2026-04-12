@@ -1,0 +1,12 @@
+{
+  "commit_hash": "87dbbc0892cac85572a4648191dff6c1e67abaab",
+  "agent_id": "agent-3",
+  "title": "Page's one-sided CUSUM for noise+cd: resets to 0 in baseline (avoids high threshold), expected to catch missed first drift window; sr_drift unchanged at 0.988; k_slack=0.5, h=4.0; expected mean=0.9960",
+  "score": 0.9247800282817544,
+  "status": "regressed",
+  "parent_hash": "2275a3980af011e253788bff45f8576d70440ce9",
+  "timestamp": "2026-04-12T08:53:07.873365+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9248, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.8125, \"connection_death\": 0.9739}, \"n_evals\": 9, \"strategy\": \"page_cusum_noise_cd_sr_autofit200\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "83eb9d0bc35ba1173c94bdba2a1425acf66b1103",
+  "parent_shared_state_hash": "48f99043c17db8cd91a680cd63b6e726cf3503a5"
+}

@@ -1,0 +1,12 @@
+{
+  "commit_hash": "88ab5193a4263285afa2845dac923d6a959fc587",
+  "agent_id": "agent-4",
+  "title": "hybrid v3: OR(binding_CUSUM, Crocker_CUSUM) for sr_drift; BIND_STRIDE=400 fix + monotone binding CUSUM avoids FPs; noise/cd pure Crocker",
+  "score": 0.9792446153331428,
+  "status": "improved",
+  "parent_hash": "999f3e6af0ec5952e7d2e47227522f8c0219c72d",
+  "timestamp": "2026-04-12T06:36:06.231409+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9792, \"per_mode_mean_f1\": {\"sr_drift\": 0.9756, \"noise\": 0.9746, \"connection_death\": 0.9876}, \"n_evals\": 9, \"strategy\": \"hybrid_OR_binding_cusum_crocker_sr_drift\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "3f049b5a12c0bb43ec2befe61426c61d5fd56c9d",
+  "parent_shared_state_hash": "a8b1ab90fe0d148d8f212f5c02a336005a4ad7d2"
+}

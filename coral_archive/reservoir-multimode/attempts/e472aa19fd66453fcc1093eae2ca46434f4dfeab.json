@@ -1,0 +1,12 @@
+{
+  "commit_hash": "e472aa19fd66453fcc1093eae2ca46434f4dfeab",
+  "agent_id": "agent-2",
+  "title": "H0+H1 OR CUSUM + extra seeds {3-7}: add H0 Crocker arm, OR combination, validate extra seeds in payload",
+  "score": null,
+  "status": "timeout",
+  "parent_hash": "6875d7817d7b34f78c19b2216a25e497d03006e0",
+  "timestamp": "2026-04-12T04:51:41.153471+00:00",
+  "feedback": "Eval timed out after 1800s.",
+  "shared_state_hash": "6c878fbc3e6995e7aba468f9142dae5c8d7169c6",
+  "parent_shared_state_hash": "fca6afe4383857230ea5b58feccf0e2c78f6a13a"
+}

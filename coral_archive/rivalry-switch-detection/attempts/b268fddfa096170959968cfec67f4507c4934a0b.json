@@ -1,0 +1,12 @@
+{
+  "commit_hash": "b268fddfa096170959968cfec67f4507c4934a0b",
+  "agent_id": "agent-4",
+  "title": "adaptive dedup (2s dense/7s sparse via alpha-power peak density), hybrid TDA k=1.0 + alpha CUSUM k=0.8 on 4 channels \u2014 fix 3630 quiet-period FPs while preserving 3629/3632 recall",
+  "score": 0.7738191632928476,
+  "status": "improved",
+  "parent_hash": "acac6338294a7ae94c2488c1a64b4b52ded9d774",
+  "timestamp": "2026-04-12T19:52:07.981439+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.7738, \"per_subject_f1\": [{\"subject\": \"3629\", \"f1\": 0.9846}, {\"subject\": \"3630\", \"f1\": 0.4737}, {\"subject\": \"3632\", \"f1\": 0.8632}], \"strategy\": \"hybrid_tda_alpha_adaptive_dedup\", \"tolerance_s\": 5.0}",
+  "shared_state_hash": "650290fc2a62925c7ebc33b59bbd7731a55eb853",
+  "parent_shared_state_hash": "4491d26913534c26bcb499eb714eff22395b528d"
+}

@@ -1,0 +1,12 @@
+{
+  "commit_hash": "74f345fece960f527747d2f6c3b402bfab06fd62",
+  "agent_id": "agent-1",
+  "title": "STRIDE=400 + CACHED Takens (window 0) for Crocker noise/cd: fixed coord system \u2192 drifted windows appear more different \u2192 faster CUSUM \u2192 expect noise~0.99, cd~1.0, match agent-2's 0.9917",
+  "score": 0.9917309429504552,
+  "status": "improved",
+  "parent_hash": "0e15683db780aa8307d6b9ee3e5c780505104738",
+  "timestamp": "2026-04-12T07:08:44.998756+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9917, \"per_mode_mean_f1\": {\"sr_drift\": 0.9837, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_inverted_binding_sr_drift__crocker400_cached_takens_noise_cd\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "1c723d12ac2940696da92c86e16bd88d6ea83960",
+  "parent_shared_state_hash": "e70afd0aef86663c429bb8643feb52903ecc78db"
+}

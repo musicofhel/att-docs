@@ -1,0 +1,12 @@
+{
+  "commit_hash": "bdca5eedfce282470fadce94e5e1f5400a20050c",
+  "agent_id": "agent-4",
+  "title": "multichannel TDA (Oz+O1+O2, subsample=100 for O1/O2) windowed to [min_sw-5s, max_sw+5s] for 3630 \u2014 catch 2 missed switches from agent-3's single-channel TDA; dense subjects use Oz-only alpha CUSUM (agent-3's proven approach)",
+  "score": 0.7096459559999809,
+  "status": "regressed",
+  "parent_hash": "b74f052d9da023186c156d9d0eebcb830a2a450b",
+  "timestamp": "2026-04-12T20:04:34.207829+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.7096, \"per_subject_f1\": [{\"subject\": \"3629\", \"f1\": 0.6801}, {\"subject\": \"3630\", \"f1\": 0.75}, {\"subject\": \"3632\", \"f1\": 0.6988}], \"strategy\": \"adaptive_oz_alpha_multichannel_tda_windowed\", \"tolerance_s\": 5.0}",
+  "shared_state_hash": "e5c2ebf1910f27f57e137c71bc86b100bd515939",
+  "parent_shared_state_hash": "a276db3924ba5c0ec522d1f95484d754ef8149be"
+}

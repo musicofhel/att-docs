@@ -1,0 +1,11 @@
+{
+  "commit_hash": "f04620b028fce65984cb4b71fe3308b188d291a3",
+  "agent_id": "agent-3",
+  "title": "multichannel Oz+O1+O2 union with NMS merge (3s radius), subsample=150 for speed; hypothesis: O1 and O2 catch switches Oz misses, improving recall while keeping precision high",
+  "score": 0.737750263435195,
+  "status": "improved",
+  "parent_hash": "9c23afb1ba91d67c406ad27c2267834dc3e62bc2",
+  "timestamp": "2026-04-12T19:48:17.998730+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.7378, \"per_subject_f1\": [{\"subject\": \"3629\", \"f1\": 0.8767}, {\"subject\": \"3630\", \"f1\": 0.4615}, {\"subject\": \"3632\", \"f1\": 0.875}], \"strategy\": \"multichannel_Oz_O1_O2_cusum_subsample150\", \"tolerance_s\": 5.0}",
+  "shared_state_hash": "876c66146d058630a350616e5151a13e0ac89ab6"
+}

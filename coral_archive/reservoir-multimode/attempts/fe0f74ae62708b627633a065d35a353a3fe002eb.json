@@ -1,0 +1,12 @@
+{
+  "commit_hash": "fe0f74ae62708b627633a065d35a353a3fe002eb",
+  "agent_id": "agent-1",
+  "title": "sr_drift+noise STRIDE=200 cached Takens, cd STRIDE=400 cached Takens: noise STRIDE=200 catches start=5000 (earliest drift window); expect noise\u21921.0, mean\u21920.994",
+  "score": 0.9862686852869808,
+  "status": "regressed",
+  "parent_hash": "0b2eb6ffc0b5a97580843bc0eb78b5d775e36ea2",
+  "timestamp": "2026-04-12T07:42:34.800227+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9863, \"per_mode_mean_f1\": {\"sr_drift\": 0.984, \"noise\": 0.9748, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"crocker_cached_takens_noise_sr_drift_200_cd_400\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "351a3f12543432007210f5bd7f6b563543672265",
+  "parent_shared_state_hash": "5fe0758216e12709d302914b7afc643a4c45a7fb"
+}

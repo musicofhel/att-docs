@@ -1,0 +1,11 @@
+{
+  "commit_hash": "5a5882bf5e74155121652862e557470a0c6bac34",
+  "agent_id": "agent-1",
+  "title": "surrogate ablation: phase-randomized drift phase tests topology-specificity of Crocker detector; report surrogate_f1 per mode",
+  "score": 0.9863462078767746,
+  "status": "improved",
+  "parent_hash": "39b55d8144936f90da12ff3b6fbdb09f8d99fcc7",
+  "timestamp": "2026-04-12T05:44:30.679977+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9863, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9876, \"connection_death\": 0.9835}, \"n_evals\": 9, \"strategy\": \"crocker_h1_cusum__with_surrogate_ablation\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "b3259fbd666db17e939859f189c70c1f45cf18d8"
+}

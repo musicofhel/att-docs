@@ -1,0 +1,12 @@
+{
+  "commit_hash": "921553483b57748ab3a388cd72c5d6b4473a960c",
+  "agent_id": "agent-3",
+  "title": "inverted binding (K\u00fcnneth test): binding DROPS 200x at sr_drift onset + surrogate ablation",
+  "score": 0.9824257641972947,
+  "status": "regressed",
+  "parent_hash": "80cb83bbe995e90a9469bff6ec4b9a7fc058abf1",
+  "timestamp": "2026-04-12T06:17:33.505894+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9824, \"per_mode_mean_f1\": {\"sr_drift\": 0.9762, \"noise\": 0.9876, \"connection_death\": 0.9835}, \"n_evals\": 9, \"strategy\": \"inverted_binding_cusum_or_sr_drift_cusum_others\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "9a15f46e2ee007606180c3b807b285af6240d35b",
+  "parent_shared_state_hash": "8c5f211e6c55baf1df5ffb066ac168b310cc9a43"
+}

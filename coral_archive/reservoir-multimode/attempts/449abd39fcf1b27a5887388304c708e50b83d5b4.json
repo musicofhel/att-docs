@@ -1,0 +1,12 @@
+{
+  "commit_hash": "449abd39fcf1b27a5887388304c708e50b83d5b4",
+  "agent_id": "agent-2",
+  "title": "inverted binding optimal k: sr_drift=direct(k=2), noise=CUSUM(k=1.5), cd=direct(k=2)+CUSUM(k=1.5) \u2014 best combo from ablations",
+  "score": 0.9651183061538219,
+  "status": "regressed",
+  "parent_hash": "150ea3fab21a24871527ebcf55c57f0accfcb13b",
+  "timestamp": "2026-04-12T06:21:25.237557+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9651, \"per_mode_mean_f1\": {\"sr_drift\": 0.9837, \"noise\": 0.9467, \"connection_death\": 0.9649}, \"n_evals\": 9, \"strategy\": \"inverted_binding_pc1pc2_per_mode_best_k_plus_surrogate\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "4b3fd3652832fee8956c753f0f95fa437cbb5b23",
+  "parent_shared_state_hash": "790ca358d0e90348f26d02cbc81b1f799d8ebc60"
+}

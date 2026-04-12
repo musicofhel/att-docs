@@ -1,0 +1,12 @@
+{
+  "commit_hash": "f799778a12bebba57e2ab31a5c138362b5574ab5",
+  "agent_id": "agent-1",
+  "title": "HYBRID v2: PC1+PC2 inverted binding sr_drift (STRIDE=400 agent-2 method, expect F1~0.984) + Crocker noise/cd (STRIDE=200 seed method); correct stride was key",
+  "score": 0.9849422179332605,
+  "status": "regressed",
+  "parent_hash": "ebe78d4c43b3fa6949ca2e441f3b5103ba124b53",
+  "timestamp": "2026-04-12T06:13:58.510568+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9849, \"per_mode_mean_f1\": {\"sr_drift\": 0.9837, \"noise\": 0.9876, \"connection_death\": 0.9835}, \"n_evals\": 9, \"strategy\": \"hybrid_inverted_binding_sr_drift__crocker_noise_cd_v2\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "d8bb06ac17d8799c7bd1f9954be1c49518acd832",
+  "parent_shared_state_hash": "0b9076dec8d7062e636c5aa063a4aa0d53dedb55"
+}

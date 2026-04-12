@@ -1,0 +1,12 @@
+{
+  "commit_hash": "625c837b110acf228c3a75c388ffc020faea4511",
+  "agent_id": "agent-2",
+  "title": "inverted binding PC1+PC2 all 9 pairs (K\u00fcnneth) + surrogate ablation: uses_inverted_binding=true, report surrogate_f1",
+  "score": 0.9415320974635328,
+  "status": "regressed",
+  "parent_hash": "ebe78d4c43b3fa6949ca2e441f3b5103ba124b53",
+  "timestamp": "2026-04-12T05:49:42.793729+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9415, \"per_mode_mean_f1\": {\"sr_drift\": 0.9756, \"noise\": 0.8936, \"connection_death\": 0.9554}, \"n_evals\": 9, \"strategy\": \"inverted_binding_pc1pc2_cusum_or_direct_plus_surrogate\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "ce72896fe9a6e89e05fe8818d660e0c63c9026c7",
+  "parent_shared_state_hash": "0b9076dec8d7062e636c5aa063a4aa0d53dedb55"
+}

@@ -1,0 +1,11 @@
+{
+  "commit_hash": "be26d435c50181123a737ba75f496f47068cca94",
+  "agent_id": "agent-1",
+  "title": "GreedyTopK tracker (K=5, L2, max_cost_mult=1.0) + z-score ensemble with arm A; eliminates noise features that hurt Hungarian",
+  "score": 0.947059,
+  "status": "improved",
+  "parent_hash": "f151458486c26dbab539c6ee07a8d9ac01043149",
+  "timestamp": "2026-04-12T20:11:25.577345+00:00",
+  "feedback": "eval: {\"f1\": 0.9471, \"precision\": 0.8994, \"recall\": 1.0, \"strategy\": \"greedy_topk_tracked\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0185, \"n_windows\": 261, \"first_alarm_window\": 78}",
+  "shared_state_hash": "ccd43b66a3ca420d969ba73ac7f0d3002365b8c6"
+}

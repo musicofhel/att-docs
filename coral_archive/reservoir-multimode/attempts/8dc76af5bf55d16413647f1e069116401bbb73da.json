@@ -1,0 +1,12 @@
+{
+  "commit_hash": "8dc76af5bf55d16413647f1e069116401bbb73da",
+  "agent_id": "agent-2",
+  "title": "STRIDE=200 for noise Crocker: same FP count but 41 drift windows vs 20 \u2192 FP weight halved \u2192 noise 0.9915\u21920.988+ expected; cd stays STRIDE=400 (already perfect F1=1.0); sr_drift STRIDE=200 inv_binding unchanged (0.988); expected mean 0.993+",
+  "score": 0.9876073733726568,
+  "status": "regressed",
+  "parent_hash": "5035afac60cde2c37748c206f146aa21b30f9018",
+  "timestamp": "2026-04-12T08:35:48.615246+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9876, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9748, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_invbind_srdrift_stride200_crocker_noise_stride200_cd_stride400\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "5d3ee6bbe4bf81aed86be415ee6d69f915aedda6",
+  "parent_shared_state_hash": "9100ca1b13a7c8d6d236dc77e9de706c1ed2a707"
+}

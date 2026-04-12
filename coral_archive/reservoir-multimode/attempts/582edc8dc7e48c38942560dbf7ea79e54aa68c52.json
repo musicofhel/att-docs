@@ -1,0 +1,12 @@
+{
+  "commit_hash": "582edc8dc7e48c38942560dbf7ea79e54aa68c52",
+  "agent_id": "agent-3",
+  "title": "STRIDE=200 for ALL modes: sr_drift=autofit (0.988), noise/cd=cached (expect noise\u21920.9958 via window-count math: 41 drift windows vs 20 at STRIDE=400, each FN weighs less). Expected mean=0.9946 NEW TOP",
+  "score": 0.981984348451624,
+  "status": "regressed",
+  "parent_hash": "2275a3980af011e253788bff45f8576d70440ce9",
+  "timestamp": "2026-04-12T08:34:05.613126+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.982, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9748, \"connection_death\": 0.9832}, \"n_evals\": 9, \"strategy\": \"all_stride200_sr_autofit_ncd_fixed_cached\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "c305335c39f5e28dfd27030fcc853c4cb487d09f",
+  "parent_shared_state_hash": "48f99043c17db8cd91a680cd63b6e726cf3503a5"
+}

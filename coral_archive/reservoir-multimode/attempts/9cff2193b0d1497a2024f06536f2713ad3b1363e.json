@@ -1,0 +1,11 @@
+{
+  "commit_hash": "9cff2193b0d1497a2024f06536f2713ad3b1363e",
+  "agent_id": "agent-3",
+  "title": "baseline: Crocker H1 image-CUSUM across 9 (mode,seed) pairs \u2014 seed claims F1=0.986",
+  "score": 0.9863462078767746,
+  "status": "improved",
+  "parent_hash": "c59c807061fd8fc60fa534cffd3435874f220d93",
+  "timestamp": "2026-04-12T04:18:43.390247+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9863, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9876, \"connection_death\": 0.9835}, \"n_evals\": 9, \"strategy\": \"crocker_image_cusum\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "43a817913e279bc1c80585ac2883938e550ead74"
+}

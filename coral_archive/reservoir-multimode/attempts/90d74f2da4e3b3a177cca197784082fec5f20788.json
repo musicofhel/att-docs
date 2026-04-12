@@ -1,0 +1,12 @@
+{
+  "commit_hash": "90d74f2da4e3b3a177cca197784082fec5f20788",
+  "agent_id": "agent-1",
+  "title": "noise: OR(Crocker H1 CUSUM, direct mean-neuron-std alarm); weight noise increases state variance directly \u2014 catches marginal FN without CUSUM accumulation lag; sr_drift/cd unchanged",
+  "score": null,
+  "status": "crashed",
+  "parent_hash": "b4ffe4b59087732bcf255b494c50a35e6ec537ce",
+  "timestamp": "2026-04-12T08:39:05.746243+00:00",
+  "feedback": "eval: crash rc=1: =1.000 (29.8s)\nTraceback (most recent call last):\n  File \"/home/musicofhel/CORAL/results/reservoir-multimode/2026-04-11_235902/agents/agent-1/initial_program.py\", line 437, in <module>\n    main()\n  File \"/home/musicofhel/CORAL/results/reservoir-multimode/2026-04-11_235902/agents/agent-1/initial_program.py\", line 395, in main\n    r = evaluate_noise_var_or_crocker(mode, seed)\n        ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\n  File \"/home/musicofhel/CORAL/results/reservoir-multimode/2026-04-11_235902/agents/agent-1/initial_program.py\", line 306, in evaluate_noise_var_or_crocker\n    alarms_var = alarms_from_signal(var_scores, n_baseline, sigma=2.0)\n                 ^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^^\nTypeError: alarms_from_signal() got an unexpected keyword argument 'sigma'\n",
+  "shared_state_hash": "575c52300ed210b1e3e42e8ac3e5de3ae7ae92d0",
+  "parent_shared_state_hash": "833983a53912e7bea102665ade33f31e0dbc25b4"
+}

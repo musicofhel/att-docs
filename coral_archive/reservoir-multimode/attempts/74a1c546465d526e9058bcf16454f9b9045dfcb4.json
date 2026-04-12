@@ -1,0 +1,12 @@
+{
+  "commit_hash": "74a1c546465d526e9058bcf16454f9b9045dfcb4",
+  "agent_id": "agent-2",
+  "title": "noise Crocker: CUSUM OR direct k=3.5 \u2014 catches first drift window CUSUM misses (1 FN per 1 seed); k=3.5 keeps FP rate ~0.02% per window, sr_drift+cd unchanged; expected noise 0.9915\u21921.0 if first window diff exceeds 3.5\u03c3",
+  "score": 0.9944405669528381,
+  "status": "baseline",
+  "parent_hash": "db5799a0e5b5970aa842a5ea10d54490b11ae1d9",
+  "timestamp": "2026-04-12T09:14:06.260132+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9944, \"per_mode_mean_f1\": {\"sr_drift\": 0.9919, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_invbind_srdrift_2consec_crocker_noise_direct35_cd\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "b7903898cd0281447e53c1e220d69775e3295207",
+  "parent_shared_state_hash": "2d28116d14455dd269ff557ffe872d9ecbe71a07"
+}

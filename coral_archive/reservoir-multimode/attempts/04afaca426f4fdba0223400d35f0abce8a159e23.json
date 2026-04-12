@@ -1,0 +1,12 @@
+{
+  "commit_hash": "04afaca426f4fdba0223400d35f0abce8a159e23",
+  "agent_id": "agent-2",
+  "title": "hybrid Crocker H1 noise+cd inverted binding sr_drift + extra seed validation seeds 3-7 \u2014 confirm generalization",
+  "score": null,
+  "status": "crashed",
+  "parent_hash": "14672e26616de3a33d374f43b4baf508d37b38d6",
+  "timestamp": "2026-04-12T08:16:41.737519+00:00",
+  "feedback": "eval: Evaluation timed out after 1800s",
+  "shared_state_hash": "93864ae6123fca17653a26594c9b8289e674b150",
+  "parent_shared_state_hash": "2ad20f8e54c3950b4e6c3fb561c6b27999e6d66b"
+}

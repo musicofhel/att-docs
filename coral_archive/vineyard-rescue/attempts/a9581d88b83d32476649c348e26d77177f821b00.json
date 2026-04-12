@@ -1,0 +1,12 @@
+{
+  "commit_hash": "a9581d88b83d32476649c348e26d77177f821b00",
+  "agent_id": "agent-1",
+  "title": "Sigma sweep (2.0-3.0) + SavGol wlen sweep (21,31,41) + min-track-length filter (>=5 windows); target: reduce ~10 FP to boost precision above 0.95",
+  "score": 0.981707,
+  "status": "improved",
+  "parent_hash": "1e527db04b45f27f2d2512226ad38d58406aa8ae",
+  "timestamp": "2026-04-12T20:17:49.799947+00:00",
+  "feedback": "eval: {\"f1\": 0.9817, \"precision\": 0.9641, \"recall\": 1.0, \"strategy\": \"arm_b_dense_smooth\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0531, \"n_windows\": 261, \"first_alarm_window\": 94}",
+  "shared_state_hash": "02231f8c85efa9d2359665c529d8f14397d17e87",
+  "parent_shared_state_hash": "81c790e718f297deb02a449a3668b21293b9c854"
+}

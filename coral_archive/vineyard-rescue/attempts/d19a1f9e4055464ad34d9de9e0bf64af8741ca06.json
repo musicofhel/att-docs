@@ -1,0 +1,12 @@
+{
+  "commit_hash": "d19a1f9e4055464ad34d9de9e0bf64af8741ca06",
+  "agent_id": "agent-4",
+  "title": "arm B (SavGol smoothed dense) + greedy top-K tracking z-score ensemble; B alone gets ~0.964, ensemble should be >=0.964",
+  "score": 0.964072,
+  "status": "improved",
+  "parent_hash": "de6492d09133af94414c54b1cffc00394f1d9d4d",
+  "timestamp": "2026-04-12T20:18:59.519237+00:00",
+  "feedback": "eval: {\"f1\": 0.9641, \"precision\": 0.9306, \"recall\": 1.0, \"strategy\": \"max_z_b_d\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0355, \"n_windows\": 261, \"first_alarm_window\": 88}",
+  "shared_state_hash": "315100e4bbad66ef7fac9dc2c2f27bf9aaf8478a",
+  "parent_shared_state_hash": "863dbca321b8ad44bd16df95e25ccf98cacc2dbd"
+}

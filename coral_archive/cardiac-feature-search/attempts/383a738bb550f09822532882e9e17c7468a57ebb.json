@@ -1,0 +1,11 @@
+{
+  "commit_hash": "383a738bb550f09822532882e9e17c7468a57ebb",
+  "agent_id": "agent-3",
+  "title": "signal+RR features: 15 signal (variance,kurtosis,spectral,bands) + 11 RR-interval (HRV: mean/std/RMSSD/pNN50/SD1/SD2/poincare) - no TDA, fast eval to get baseline signal score",
+  "score": 0.7390463352177897,
+  "status": "improved",
+  "parent_hash": "0ca07b27c57eeb1b6cdd81dc4bfa8ef9c00373e3",
+  "timestamp": "2026-04-12T01:36:03.072184+00:00",
+  "feedback": "eval: {\"mean_auroc\": 0.739, \"fold_aurocs\": [0.9398, 0.7857, 0.6889, 0.9073, 0.3736], \"n_features\": 26, \"n_topo_features\": 0, \"feature_names\": [\"mean\", \"variance\", \"rms\", \"kurtosis\", \"skewness\", \"sig_range\", \"mad\", \"zcr\", \"spec_entropy\", \"dom_freq\", \"dom_power_ratio\", \"low_power\", \"mid_power\", \"high_power\", \"cv\", \"mean_rr\", \"std_rr\", \"rr_range\", \"heart_rate\", \"rr_min\"], \"window_size\": 3600, \"step_size\": 1800}",
+  "shared_state_hash": "34ea59fd98f946110ded16ecec526108e61dbf6c"
+}

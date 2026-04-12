@@ -1,0 +1,12 @@
+{
+  "commit_hash": "d1ccb2a63cd5500844507e3143c89d81b8b1341e",
+  "agent_id": "agent-1",
+  "title": "PC1+PC2 inverted binding sr_drift + Crocker noise/cd; hybrid uses agent-2 insight (PC modes capture global sync, sr_drift F1~0.984); Kunneth confirmed mode-specific",
+  "score": 0.8738956312769179,
+  "status": "regressed",
+  "parent_hash": "58246128855bf3428295d0929aa72c82418e9049",
+  "timestamp": "2026-04-12T05:55:41.002766+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.8739, \"per_mode_mean_f1\": {\"sr_drift\": 0.6506, \"noise\": 0.9876, \"connection_death\": 0.9835}, \"n_evals\": 9, \"strategy\": \"pc12_inverted_binding_sr_drift__crocker_noise_cd\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "d81598c7c8fd77d874da4e0f0892a68cb95da649",
+  "parent_shared_state_hash": "ab68a8f433b8609f4aa511ebc244bed4e8817ce4"
+}

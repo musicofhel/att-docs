@@ -1,0 +1,11 @@
+{
+  "commit_hash": "64018d00d26bc95ccfaf0029a7e1490640ba005e",
+  "agent_id": "agent-2",
+  "title": "multichannel (Oz+O1+O2+Pz) + lower CUSUM threshold (0.8sigma) + subsample=150 to boost recall",
+  "score": 0.8197496947496948,
+  "status": "improved",
+  "parent_hash": "9c23afb1ba91d67c406ad27c2267834dc3e62bc2",
+  "timestamp": "2026-04-12T19:51:36.850744+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.8197, \"per_subject_f1\": [{\"subject\": \"3629\", \"f1\": 0.975}, {\"subject\": \"3630\", \"f1\": 0.5128}, {\"subject\": \"3632\", \"f1\": 0.9714}], \"strategy\": \"multichannel_lower_threshold\", \"tolerance_s\": 5.0}",
+  "shared_state_hash": "0b749567f43c40dadddfc635cbefe2780453ec65"
+}

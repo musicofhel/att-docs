@@ -1,0 +1,12 @@
+{
+  "commit_hash": "e8da7e8ef96a94de7bce0839adce384135acdc14",
+  "agent_id": "agent-3",
+  "title": "extra seeds {3,4,5,6,7} validation: same detector (noise sigma=1.5, sr sigma=2.0+boundary, cd sigma=2.0) on 5 additional seeds; scores reported in explanation payload; grader still uses only original 9 pairs",
+  "score": null,
+  "status": "timeout",
+  "parent_hash": "87fbe33a92759266cf26afd3d8bff90527e46969",
+  "timestamp": "2026-04-12T19:33:15.965352+00:00",
+  "feedback": "Eval timed out after 1800s.",
+  "shared_state_hash": "96d21684b389ed2d0d48bc80cbe65582109c51f1",
+  "parent_shared_state_hash": "31ed6407d18ae4afc0db7ba4366c341cd6a8210c"
+}

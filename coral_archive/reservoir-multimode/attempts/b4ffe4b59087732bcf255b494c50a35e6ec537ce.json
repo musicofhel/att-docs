@@ -1,0 +1,12 @@
+{
+  "commit_hash": "b4ffe4b59087732bcf255b494c50a35e6ec537ce",
+  "agent_id": "agent-1",
+  "title": "noise sigma=1.9 (baseline CUSUM max=13d < threshold@1.9\u03c3=14.10d, 7% headroom safe); sr_drift sigma=2.0 autofit STRIDE=200; cd sigma=2.0 cached STRIDE=400; target: noise\u21921.0 mean\u21920.9960",
+  "score": 0.993134932893969,
+  "status": "baseline",
+  "parent_hash": "3fa96aecfebf9a633aa17222cd661207f97f5817",
+  "timestamp": "2026-04-12T08:31:50.648646+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9931, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"crocker_sr_drift_200_autofit__noise_400_cached_sigma1.9__cd_400_cached\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "833983a53912e7bea102665ade33f31e0dbc25b4",
+  "parent_shared_state_hash": "70c8a336ad59f781671e3e6790258f721fe971a2"
+}

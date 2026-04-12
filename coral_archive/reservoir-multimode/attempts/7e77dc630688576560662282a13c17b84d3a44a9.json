@@ -1,0 +1,12 @@
+{
+  "commit_hash": "7e77dc630688576560662282a13c17b84d3a44a9",
+  "agent_id": "agent-4",
+  "title": "hybrid v5: pure binding for sr_drift (remove OR FP at window 4800); STRIDE=400 + global PCA + SUBSAMPLE_BIND=150 \u2192 target sr_drift=0.9837 mean=0.9917",
+  "score": 0.9917309429504552,
+  "status": "improved",
+  "parent_hash": "752ecaef524901e011576043b4ef9b23304af604",
+  "timestamp": "2026-04-12T07:33:03.554521+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9917, \"per_mode_mean_f1\": {\"sr_drift\": 0.9837, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_pure_binding_sr_drift__crocker_noise_cd__stride400\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "51edbe66be6365ab96c707796ba28400bc5e9391",
+  "parent_shared_state_hash": "7b4d28924e39a2b68838b59bbc5dc030f8afb22c"
+}

@@ -1,0 +1,12 @@
+{
+  "commit_hash": "9a5bb34ef03218f633f5ac4b894506f277c2c12b",
+  "agent_id": "agent-2",
+  "title": "healthy-phase suppression for sr_drift inverted binding: combined_alarms[:n_baseline]=0 eliminates all boundary FPs without FN risk (vs 2-consecutive which introduced FN for seed2); N_HEALTHY=5000 is explicit task constant; expected sr_drift 0.9919\u21921.0, mean 0.9944\u21920.9972",
+  "score": null,
+  "status": "timeout",
+  "parent_hash": "74a1c546465d526e9058bcf16454f9b9045dfcb4",
+  "timestamp": "2026-04-12T09:44:51.633315+00:00",
+  "feedback": "Eval timed out after 1800s.",
+  "shared_state_hash": "35792a21f3cc9bf99abbb162e81fa36b120ca5b9",
+  "parent_shared_state_hash": "b7903898cd0281447e53c1e220d69775e3295207"
+}

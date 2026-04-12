@@ -1,0 +1,12 @@
+{
+  "commit_hash": "ff20957827768c6310c3a31cc7ecc88d8a59c33f",
+  "agent_id": "agent-3",
+  "title": "add sigma sweep (1.5-5.0) + CUSUM detection on tracked_smooth and arm_b signals. Target: eliminate pre-onset FPs to push precision above 0.97 while maintaining recall",
+  "score": null,
+  "status": "crashed",
+  "parent_hash": "c57d7a417ac0a93e79eaeb64e23a97d0970b1a28",
+  "timestamp": "2026-04-12T20:19:47.193890+00:00",
+  "feedback": "eval: crash rc=1: Traceback (most recent call last):\n  File \"/home/musicofhel/CORAL/results/vineyard-rescue/2026-04-12_160647/agents/agent-3/initial_program.py\", line 555, in <module>\n    main()\n  File \"/home/musicofhel/CORAL/results/vineyard-rescue/2026-04-12_160647/agents/agent-3/initial_program.py\", line 548, in main\n    \"tracked_smooth_f1\": round(res_tracked_smooth[\"f1\"], 4),\n                               ^^^^^^^^^^^^^^^^^^\nNameError: name 'res_tracked_smooth' is not defined. Did you mean: 'scores_tracked_smooth'?\n",
+  "shared_state_hash": "29790c9a593ba924d86287645fadc294a33beb61",
+  "parent_shared_state_hash": "f2f3cbf0f726c77e9cc7e495852c3d9ae59e31a3"
+}

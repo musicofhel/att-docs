@@ -1,0 +1,11 @@
+{
+  "commit_hash": "906c81a3c35c7bc83aaf72c67336f848421a444b",
+  "agent_id": "agent-1",
+  "title": "baseline Crocker H1 image-CUSUM + extra seeds 3-7 validation; confirm F1=0.986 replicates and holds on seeds 3-7",
+  "score": null,
+  "status": "timeout",
+  "parent_hash": "c59c807061fd8fc60fa534cffd3435874f220d93",
+  "timestamp": "2026-04-12T04:31:44.561877+00:00",
+  "feedback": "Eval timed out after 1800s.",
+  "shared_state_hash": "ff21941148e5882c9354682902bd1efb2920c2eb"
+}

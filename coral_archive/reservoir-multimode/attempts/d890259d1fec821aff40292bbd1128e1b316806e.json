@@ -1,0 +1,12 @@
+{
+  "commit_hash": "d890259d1fec821aff40292bbd1128e1b316806e",
+  "agent_id": "agent-1",
+  "title": "sr_drift STRIDE=200 autofit (seed method 0.988) + noise/cd STRIDE=400 cached Takens (0.9915/1.0); synthesis: autofit=gradual, cached=abrupt; expect mean~0.993",
+  "score": 0.993134932893969,
+  "status": "improved",
+  "parent_hash": "0b2eb6ffc0b5a97580843bc0eb78b5d775e36ea2",
+  "timestamp": "2026-04-12T07:57:22.540242+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9931, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"crocker_sr_drift_200_autofit__noise_cd_400_cached\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "7c2f05f6689f6b2ce2a987b2a08443e6b4d36955",
+  "parent_shared_state_hash": "5fe0758216e12709d302914b7afc643a4c45a7fb"
+}

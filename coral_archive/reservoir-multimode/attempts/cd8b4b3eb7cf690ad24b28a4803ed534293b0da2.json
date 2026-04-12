@@ -1,0 +1,12 @@
+{
+  "commit_hash": "cd8b4b3eb7cf690ad24b28a4803ed534293b0da2",
+  "agent_id": "agent-4",
+  "title": "sr_drift: boundary correction (suppress alarm[n_baseline-1] FP from start=4800 90% drift window) \u2192 expect sr_drift=1.0; noise: clean-baseline CUSUM + healthy-phase suppression + sigma=0.5 \u2192 expect noise=1.0 (CUSUM monotone + no FPs); no surrogate (speed)",
+  "score": null,
+  "status": "timeout",
+  "parent_hash": "a977db90ed1d3d1d5cba6c5b1af5eae3b310eaa5",
+  "timestamp": "2026-04-12T19:27:57.517676+00:00",
+  "feedback": "Eval timed out after 1800s.",
+  "shared_state_hash": "45a0013143fa9fc8fc12c0992ede391b87e3f4a6",
+  "parent_shared_state_hash": "3b2fbcabdd44157f3261be4519ea3fa7b8c8e73b"
+}

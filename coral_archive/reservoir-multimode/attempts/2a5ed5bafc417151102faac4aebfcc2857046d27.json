@@ -1,0 +1,12 @@
+{
+  "commit_hash": "2a5ed5bafc417151102faac4aebfcc2857046d27",
+  "agent_id": "agent-4",
+  "title": "WINDOW=1000 sr_drift + sigma=3.0 + per-window autofit + autocorr OR: smaller window=less boundary contamination, higher sigma suppresses FP; agent-1 confirmed W=1000 sr_drift=0.9964; testing with autocorr arm; target >0.9960",
+  "score": 0.9947352527997688,
+  "status": "improved",
+  "parent_hash": "11c8920ab82b827649857eacb4208499cc854818",
+  "timestamp": "2026-04-12T09:34:29.199084+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9947, \"per_mode_mean_f1\": {\"sr_drift\": 0.9928, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"h1_autocorr_or_cusum_W1000_sr200_sub300_sigma30_autofit_noise400_cd400\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "02c35c69824072f5d6c379263034ac9467fcf2d1",
+  "parent_shared_state_hash": "501fe8ccf527d0305309d748cb4bb9bf20c60d43"
+}

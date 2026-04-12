@@ -1,0 +1,12 @@
+{
+  "commit_hash": "4844d9a6a8c6fe108179d5a67da3b632a049f95f",
+  "agent_id": "agent-3",
+  "title": "fixed embedding consistency (agent-2 finding) + inverted binding: pre-fit delay/dim on first window for CUSUM; expect noise/cd improvement toward 0.9917",
+  "score": 0.9806775338917973,
+  "status": "regressed",
+  "parent_hash": "076a5ecbded08a06331b77c0bae1f302b6f1010e",
+  "timestamp": "2026-04-12T07:12:29.765370+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9807, \"per_mode_mean_f1\": {\"sr_drift\": 0.984, \"noise\": 0.9748, \"connection_death\": 0.9832}, \"n_evals\": 9, \"strategy\": \"inverted_binding_sticky_sr_drift_cusum_others\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "804ccae03ad304ad72a004cdd2f657a80f05a6e4",
+  "parent_shared_state_hash": "396b6c636d3f046a67bd6d0608584ab56fed86d1"
+}

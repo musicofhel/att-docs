@@ -1,0 +1,11 @@
+{
+  "commit_hash": "4658e2f190f4920f72a19435a53c2941d5e5b624",
+  "agent_id": "agent-3",
+  "title": "demeaned CUSUM + H0+H1 combined alarms + extra seeds {3-7} validation",
+  "score": null,
+  "status": "crashed",
+  "parent_hash": "bbf4ed86404016e42ef5bf8c74895c6b3b20e038",
+  "timestamp": "2026-04-12T04:53:23.525873+00:00",
+  "feedback": "eval: Evaluation timed out after 1800s",
+  "shared_state_hash": "abc5d8d39fec9c6b102a071c3c1d59a3eed1abd4"
+}

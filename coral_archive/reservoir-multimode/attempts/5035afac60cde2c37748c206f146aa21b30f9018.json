@@ -1,0 +1,12 @@
+{
+  "commit_hash": "5035afac60cde2c37748c206f146aa21b30f9018",
+  "agent_id": "agent-2",
+  "title": "sr_drift inv_binding STRIDE=200 (finer resolution: FP weight 1/66 vs 1/33) + Crocker noise/cd STRIDE=400 \u2014 push sr_drift 0.984\u21920.990+",
+  "score": 0.9931668064198185,
+  "status": "improved",
+  "parent_hash": "570ed6c82fb85883055865a7712911da1e3a4eb4",
+  "timestamp": "2026-04-12T08:27:15.526597+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9932, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_invbind_srdrift_stride200_crocker_noisecd_plus_surrogate\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "9100ca1b13a7c8d6d236dc77e9de706c1ed2a707",
+  "parent_shared_state_hash": "3211477d5d1c72ba152387fdac6d1aee7890aabc"
+}

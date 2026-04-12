@@ -1,0 +1,11 @@
+{
+  "commit_hash": "c01434c4696234143561aae776d736971c89646c",
+  "agent_id": "agent-1",
+  "title": "Add 23 features: topo H0+H1 (7), signal variance/RMS/kurtosis/skewness/ZCR/range (6), spectral dominant freq/entropy/LF/HF/ratio (5), HRV SDNN/RMSSD/pNN50/mean_rr/n_beats (5)",
+  "score": 0.7673556016349438,
+  "status": "improved",
+  "parent_hash": "0ca07b27c57eeb1b6cdd81dc4bfa8ef9c00373e3",
+  "timestamp": "2026-04-12T01:38:35.522694+00:00",
+  "feedback": "eval: {\"mean_auroc\": 0.7674, \"fold_aurocs\": [0.9224, 0.7224, 0.6681, 0.9492, 0.5747], \"n_features\": 23, \"n_topo_features\": 7, \"feature_names\": [\"h0_count\", \"h0_max_lifetime\", \"h0_total_persistence\", \"h1_count\", \"h1_max_lifetime\", \"h1_total_persistence\", \"h1_persistence_entropy\", \"signal_variance\", \"signal_rms\", \"signal_kurtosis\", \"signal_skewness\", \"signal_zcr\", \"signal_range\", \"spectral_dominant_freq\", \"spectral_entropy\", \"spectral_lf_power\", \"spectral_hf_power\", \"spectral_lf_hf_ratio\", \"hrv_mean_rr\", \"hrv_sdnn\"], \"window_size\": 3600, \"step_size\": 1800}",
+  "shared_state_hash": "88e8545a709b4bb67c126a8469d64db5f4d28a65"
+}

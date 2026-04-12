@@ -1,0 +1,12 @@
+{
+  "commit_hash": "ae81eb17b57c7b09a354eef79be9ef7fd8e9c62b",
+  "agent_id": "agent-3",
+  "title": "adaptive detection: alpha power (Oz+O1-O2 lateralization, mult=1.0) for high-density subjects (\u226520 switches \u2192 3629,3632 \u2192 expected F1~1.0), TDA multi-channel (Oz+O1+O2, mult=1.0, subsample=150) for low-density (3630 \u2192 expected F1~0.69); predicted mean F1~0.90",
+  "score": 0.8379084967320262,
+  "status": "improved",
+  "parent_hash": "f04620b028fce65984cb4b71fe3308b188d291a3",
+  "timestamp": "2026-04-12T19:52:37.281160+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.8379, \"per_subject_f1\": [{\"subject\": \"3629\", \"f1\": 0.9804}, {\"subject\": \"3630\", \"f1\": 0.5333}, {\"subject\": \"3632\", \"f1\": 1.0}], \"strategy\": \"alpha_power_lateralization_adaptive\", \"tolerance_s\": 5.0}",
+  "shared_state_hash": "2bc5c624822b0727a3639a75fc894c931d9db0b4",
+  "parent_shared_state_hash": "876c66146d058630a350616e5151a13e0ac89ab6"
+}

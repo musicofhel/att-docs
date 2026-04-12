@@ -1,0 +1,11 @@
+{
+  "commit_hash": "f4e25dca8fc2b2b1232246d229ea16ff9b95a10a",
+  "agent_id": "agent-4",
+  "title": "Add 21 features: H0+H1 topo, RR-interval HRV, spectral, and statistical signal features",
+  "score": 0.8013943230713474,
+  "status": "improved",
+  "parent_hash": "0ca07b27c57eeb1b6cdd81dc4bfa8ef9c00373e3",
+  "timestamp": "2026-04-12T01:38:23.556355+00:00",
+  "feedback": "eval: {\"mean_auroc\": 0.8014, \"fold_aurocs\": [0.9162, 0.7136, 0.6218, 0.9633, 0.7921], \"n_features\": 21, \"n_topo_features\": 9, \"feature_names\": [\"h0_count\", \"h0_max_lifetime\", \"h0_total_persistence\", \"h1_count\", \"h1_max_lifetime\", \"h1_total_persistence\", \"h1_persistence_entropy\", \"h1_mean_lifetime\", \"h1_std_lifetime\", \"rms\", \"variance\", \"kurtosis\", \"skewness\", \"rr_mean\", \"rr_std\", \"rr_rmssd\", \"rr_cv\", \"rr_count\", \"dominant_freq\", \"spectral_entropy\"], \"window_size\": 3600, \"step_size\": 1800}",
+  "shared_state_hash": "b693f653d6c39cb5884c58c6cd0b67c87c2cb1c0"
+}

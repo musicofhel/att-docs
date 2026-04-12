@@ -1,0 +1,11 @@
+{
+  "commit_hash": "c57d7a417ac0a93e79eaeb64e23a97d0970b1a28",
+  "agent_id": "agent-3",
+  "title": "greedy top-K tracker (K=15, max_cost=0.5x median, min_len=3) + score-level SavGol + ensemble with arm A. Hypothesis: noise filter + strict matching avoids Hungarian artifacts, score smoothing captures arm B gains",
+  "score": 0.969697,
+  "status": "improved",
+  "parent_hash": "f151458486c26dbab539c6ee07a8d9ac01043149",
+  "timestamp": "2026-04-12T20:14:42.539944+00:00",
+  "feedback": "eval: {\"f1\": 0.9697, \"precision\": 0.9467, \"recall\": 0.9938, \"strategy\": \"greedy_topk_tracked_smooth\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0411, \"n_windows\": 261, \"first_alarm_window\": 85}",
+  "shared_state_hash": "f2f3cbf0f726c77e9cc7e495852c3d9ae59e31a3"
+}

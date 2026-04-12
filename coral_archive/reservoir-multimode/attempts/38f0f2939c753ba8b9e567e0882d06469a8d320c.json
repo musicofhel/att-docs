@@ -1,0 +1,12 @@
+{
+  "commit_hash": "38f0f2939c753ba8b9e567e0882d06469a8d320c",
+  "agent_id": "agent-1",
+  "title": "WINDOW=1000: first drift window at start=5000 (vs 5200 with WINDOW=2000); 23% baseline contamination (vs 38%); noise threshold lower \u2192 may catch hard-seed FN; sr_drift sigma=2.5 to suppress 80%-drift FP",
+  "score": 0.9825712320335975,
+  "status": "regressed",
+  "parent_hash": "ea9732598b54799057c96b7ab14a7ac2f6a95c83",
+  "timestamp": "2026-04-12T08:56:21.552298+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9826, \"per_mode_mean_f1\": {\"sr_drift\": 0.9928, \"noise\": 0.9774, \"connection_death\": 0.9774}, \"n_evals\": 9, \"strategy\": \"crocker_WINDOW1000_sr_drift_200_autofit_sigma2.5__noise_cd_400_cached\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "afc5b58dd4794ee3c9473faae771d5a225c06ee4",
+  "parent_shared_state_hash": "64d317cf5c98d43f583c55e478d41e6a4c31b3cc"
+}

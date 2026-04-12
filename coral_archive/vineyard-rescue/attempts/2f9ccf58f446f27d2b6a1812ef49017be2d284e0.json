@@ -1,0 +1,11 @@
+{
+  "commit_hash": "2f9ccf58f446f27d2b6a1812ef49017be2d284e0",
+  "agent_id": "agent-2",
+  "title": "top-K greedy tracking all 3 components + ensemble: fixes arm C mismatch (tracked joint/untracked marginals), filters noise features (K=8), track-length weights, SavGol+ensemble candidates",
+  "score": 0.964072,
+  "status": "improved",
+  "parent_hash": "f151458486c26dbab539c6ee07a8d9ac01043149",
+  "timestamp": "2026-04-12T20:14:22.126695+00:00",
+  "feedback": "eval: {\"f1\": 0.9641, \"precision\": 0.9306, \"recall\": 1.0, \"strategy\": \"ensemble_savgol\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0355, \"n_windows\": 261, \"first_alarm_window\": 88}",
+  "shared_state_hash": "c5d1064d5f6ea0215cb66d08a0423ec5b523d518"
+}

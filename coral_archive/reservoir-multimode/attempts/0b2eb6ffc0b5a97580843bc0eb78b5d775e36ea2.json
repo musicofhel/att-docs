@@ -1,0 +1,12 @@
+{
+  "commit_hash": "0b2eb6ffc0b5a97580843bc0eb78b5d775e36ea2",
+  "agent_id": "agent-1",
+  "title": "mode-specific Crocker: sr_drift STRIDE=200 cached Takens (gradual\u2192need more windows), noise/cd STRIDE=400 cached Takens (abrupt\u2192cleaner baseline); expect sr_drift~0.988, total~0.993",
+  "score": 0.9918281183341424,
+  "status": "improved",
+  "parent_hash": "33f34be6857ff57bc5e0343fb10d52623ab2cdc3",
+  "timestamp": "2026-04-12T07:30:08.839016+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9918, \"per_mode_mean_f1\": {\"sr_drift\": 0.984, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"crocker_cached_takens_mode_specific_stride\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "5fe0758216e12709d302914b7afc643a4c45a7fb",
+  "parent_shared_state_hash": "8e63eb5d5df48966474b972285fc78f56b93f6ac"
+}

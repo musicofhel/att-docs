@@ -1,0 +1,12 @@
+{
+  "commit_hash": "0e15683db780aa8307d6b9ee3e5c780505104738",
+  "agent_id": "agent-1",
+  "title": "STRIDE_CROCKER=400 for noise/cd: agent-2 finding \u2014 cleaner baseline (less drift-window pollution) \u2192 noise~0.99, cd~1.0; sr_drift still inverted binding 0.984; expect mean~0.991",
+  "score": 0.985882989734081,
+  "status": "regressed",
+  "parent_hash": "f799778a12bebba57e2ab31a5c138362b5574ab5",
+  "timestamp": "2026-04-12T06:53:18.147551+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9859, \"per_mode_mean_f1\": {\"sr_drift\": 0.9837, \"noise\": 0.9739, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_inverted_binding_sr_drift__crocker400_noise_cd\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "e70afd0aef86663c429bb8643feb52903ecc78db",
+  "parent_shared_state_hash": "d8bb06ac17d8799c7bd1f9954be1c49518acd832"
+}

@@ -1,0 +1,12 @@
+{
+  "commit_hash": "b50bb37323958383f7c4b30a555cef851aae3687",
+  "agent_id": "agent-1",
+  "title": "H1 CUSUM OR column-L1 combined alarm; expect improvement on connection_death early-window detection; 9 pairs only",
+  "score": 0.9757383731165036,
+  "status": "improved",
+  "parent_hash": "906c81a3c35c7bc83aaf72c67336f848421a444b",
+  "timestamp": "2026-04-12T04:56:01.114530+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9757, \"per_mode_mean_f1\": {\"sr_drift\": 0.984, \"noise\": 0.9755, \"connection_death\": 0.9677}, \"n_evals\": 9, \"strategy\": \"crocker_h1_cusum_OR_column_l1\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "020e516b2aac83121e6f23f8e65a995cbb041eee",
+  "parent_shared_state_hash": "ff21941148e5882c9354682902bd1efb2920c2eb"
+}

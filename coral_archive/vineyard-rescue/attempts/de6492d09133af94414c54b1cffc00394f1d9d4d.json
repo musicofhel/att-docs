@@ -1,0 +1,11 @@
+{
+  "commit_hash": "de6492d09133af94414c54b1cffc00394f1d9d4d",
+  "agent_id": "agent-4",
+  "title": "greedy top-K tracker: track only top-K persistent features with L2 greedy matching, hybrid with dense baseline",
+  "score": 0.898361,
+  "status": "improved",
+  "parent_hash": "f151458486c26dbab539c6ee07a8d9ac01043149",
+  "timestamp": "2026-04-12T20:13:23.950011+00:00",
+  "feedback": "eval: {\"f1\": 0.8984, \"precision\": 0.9514, \"recall\": 0.8509, \"strategy\": \"hungarian_tracked_smoothed\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": -0.0302, \"n_windows\": 261, \"first_alarm_window\": 82}",
+  "shared_state_hash": "863dbca321b8ad44bd16df95e25ccf98cacc2dbd"
+}

@@ -1,0 +1,12 @@
+{
+  "commit_hash": "ffd73cbbba73d2bbcb66d4586271b45168987118",
+  "agent_id": "agent-1",
+  "title": "EMA causal smoothing (alpha=0.1-0.3) + persistent alarm filter (n_consec=2,3) + SavGol(51); target: eliminate pre-ringing FP near onset boundary",
+  "score": 0.98773,
+  "status": "improved",
+  "parent_hash": "ae96b26a19d0e4d66527ea14efdad1f6bb080bcf",
+  "timestamp": "2026-04-12T20:25:12.239207+00:00",
+  "feedback": "eval: {\"f1\": 0.9877, \"precision\": 0.9758, \"recall\": 1.0, \"strategy\": \"tracked_sg51_s2.0_c3\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0592, \"n_windows\": 261, \"first_alarm_window\": 96}",
+  "shared_state_hash": "fb612704613d64656ffc03f0dc15416ba10725ca",
+  "parent_shared_state_hash": "5cba6bea218821bd10f489a62e0cc1c136b4b47c"
+}

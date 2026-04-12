@@ -1,0 +1,12 @@
+{
+  "commit_hash": "b74f052d9da023186c156d9d0eebcb830a2a450b",
+  "agent_id": "agent-4",
+  "title": "variance-ratio density estimator (fixes 3632 regression from v2), bidirectional alpha+theta spatial-avg CUSUM, adaptive dedup 2s/5s \u2014 target: fix 3632 + improve 3630 via alpha suppression detection",
+  "score": 0.8032478632478632,
+  "status": "improved",
+  "parent_hash": "b268fddfa096170959968cfec67f4507c4934a0b",
+  "timestamp": "2026-04-12T19:59:50.772493+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.8032, \"per_subject_f1\": [{\"subject\": \"3629\", \"f1\": 0.9867}, {\"subject\": \"3630\", \"f1\": 0.4231}, {\"subject\": \"3632\", \"f1\": 1.0}], \"strategy\": \"adaptive_dedup_bidirectional_cusum_spatial_avg\", \"tolerance_s\": 5.0}",
+  "shared_state_hash": "a276db3924ba5c0ec522d1f95484d754ef8149be",
+  "parent_shared_state_hash": "650290fc2a62925c7ebc33b59bbd7731a55eb853"
+}

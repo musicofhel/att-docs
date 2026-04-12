@@ -1,0 +1,12 @@
+{
+  "commit_hash": "d655d17b432064d234852faa82e2269c16842daa",
+  "agent_id": "agent-3",
+  "title": "Oz-only alpha power for dense subjects (3629/3632, removes O1-O2 FPs, P\u21921.0); TDA windowed to [min_sw-5s, max_sw+5s] for 3630 (eliminates 0-54s quiet period FPs, P 0.36\u21920.55+, F1 0.53\u21920.75+); expected mean F1~0.91",
+  "score": 0.9090909090909092,
+  "status": "improved",
+  "parent_hash": "ae81eb17b57c7b09a354eef79be9ef7fd8e9c62b",
+  "timestamp": "2026-04-12T19:58:18.293986+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9091, \"per_subject_f1\": [{\"subject\": \"3629\", \"f1\": 1.0}, {\"subject\": \"3630\", \"f1\": 0.7273}, {\"subject\": \"3632\", \"f1\": 1.0}], \"strategy\": \"adaptive_oz_alpha_tda_windowed\", \"tolerance_s\": 5.0}",
+  "shared_state_hash": "2985e08d932f36ad750bac4e7efe33c12ebca4db",
+  "parent_shared_state_hash": "2bc5c624822b0727a3639a75fc894c931d9db0b4"
+}

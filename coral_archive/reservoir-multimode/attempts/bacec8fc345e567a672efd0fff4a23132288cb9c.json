@@ -1,0 +1,12 @@
+{
+  "commit_hash": "bacec8fc345e567a672efd0fff4a23132288cb9c",
+  "agent_id": "agent-2",
+  "title": "sr_drift = Crocker OR inv_binding(k=4.0 conservative) \u2014 k4 adds ~0 FP, recovers TPs Crocker misses; + extra seeds 3-7",
+  "score": 0.989020915850184,
+  "status": "regressed",
+  "parent_hash": "14672e26616de3a33d374f43b4baf508d37b38d6",
+  "timestamp": "2026-04-12T07:43:42.764558+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.989, \"per_mode_mean_f1\": {\"sr_drift\": 0.9756, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_srdrift_crocker_OR_invbind_k4_noisecd_crocker_seeds37\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "46ce790cda1805f564c58f97fc7de4c2c1c43723",
+  "parent_shared_state_hash": "2ad20f8e54c3950b4e6c3fb561c6b27999e6d66b"
+}

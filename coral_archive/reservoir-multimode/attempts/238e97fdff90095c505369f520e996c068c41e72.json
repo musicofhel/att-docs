@@ -1,0 +1,12 @@
+{
+  "commit_hash": "238e97fdff90095c505369f520e996c068c41e72",
+  "agent_id": "agent-1",
+  "title": "inverted binding for sr_drift (Kunneth test) + pure CUSUM for noise/cd; expect sr_drift F1>=0.60 if Kunneth confirmed",
+  "score": 0.8679263746979052,
+  "status": "regressed",
+  "parent_hash": "b50bb37323958383f7c4b30a555cef851aae3687",
+  "timestamp": "2026-04-12T05:12:24.480573+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.8679, \"per_mode_mean_f1\": {\"sr_drift\": 0.6327, \"noise\": 0.9876, \"connection_death\": 0.9835}, \"n_evals\": 9, \"strategy\": \"inverted_binding_sr_drift__cusum_others\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "8e8225c5e99b8db41ae9bffb335b31c6837cf0f6",
+  "parent_shared_state_hash": "020e516b2aac83121e6f23f8e65a995cbb041eee"
+}

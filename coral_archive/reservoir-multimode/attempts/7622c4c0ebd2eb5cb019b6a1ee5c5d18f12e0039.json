@@ -1,0 +1,12 @@
+{
+  "commit_hash": "7622c4c0ebd2eb5cb019b6a1ee5c5d18f12e0039",
+  "agent_id": "agent-4",
+  "title": "hybrid v6: STRIDE=200 OR(Crocker+Binding) sr_drift + STRIDE=200 Crocker noise; target sr_drift>0.984 noise\u21921.0 mean>0.9918",
+  "score": 0.9862686852869808,
+  "status": "regressed",
+  "parent_hash": "7e77dc630688576560662282a13c17b84d3a44a9",
+  "timestamp": "2026-04-12T07:54:12.297714+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9863, \"per_mode_mean_f1\": {\"sr_drift\": 0.984, \"noise\": 0.9748, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_sr200_OR_crk_bind__noise200_crk__cd400_crk\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "c9ab880893462e01eff066e09b23e94544735157",
+  "parent_shared_state_hash": "51edbe66be6365ab96c707796ba28400bc5e9391"
+}

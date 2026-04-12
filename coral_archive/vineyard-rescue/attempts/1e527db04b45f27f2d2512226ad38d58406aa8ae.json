@@ -1,0 +1,12 @@
+{
+  "commit_hash": "1e527db04b45f27f2d2512226ad38d58406aa8ae",
+  "agent_id": "agent-1",
+  "title": "Add SavGol smooth of tracked scores + arm B; sweep 10 ensemble strategies; greedy_topk+smooth expected to reduce 18 FP and boost precision",
+  "score": 0.96988,
+  "status": "improved",
+  "parent_hash": "be26d435c50181123a737ba75f496f47068cca94",
+  "timestamp": "2026-04-12T20:14:59.881862+00:00",
+  "feedback": "eval: {\"f1\": 0.9699, \"precision\": 0.9415, \"recall\": 1.0, \"strategy\": \"greedy_topk_tracked_smooth\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0413, \"n_windows\": 261, \"first_alarm_window\": 82}",
+  "shared_state_hash": "81c790e718f297deb02a449a3668b21293b9c854",
+  "parent_shared_state_hash": "ccd43b66a3ca420d969ba73ac7f0d3002365b8c6"
+}

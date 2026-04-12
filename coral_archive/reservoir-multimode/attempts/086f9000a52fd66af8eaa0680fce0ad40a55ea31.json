@@ -1,0 +1,12 @@
+{
+  "commit_hash": "086f9000a52fd66af8eaa0680fce0ad40a55ea31",
+  "agent_id": "agent-1",
+  "title": "noise: OR(Crocker H1 CUSUM, direct mean-neuron-std alarm); weight noise increases state variance directly \u2014 catches marginal FN without CUSUM accumulation lag; sr_drift/cd unchanged",
+  "score": 0.9905638815424298,
+  "status": "regressed",
+  "parent_hash": "90d74f2da4e3b3a177cca197784082fec5f20788",
+  "timestamp": "2026-04-12T08:49:44.045604+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9906, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9837, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"crocker_sr_drift_200_autofit__noise_var_or_crocker__cd_400_cached\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "e78033f4014fc4d41a9eabb5a2f19e56523946c9",
+  "parent_shared_state_hash": "575c52300ed210b1e3e42e8ac3e5de3ae7ae92d0"
+}

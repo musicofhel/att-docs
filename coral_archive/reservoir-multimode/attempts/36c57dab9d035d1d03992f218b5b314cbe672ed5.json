@@ -1,0 +1,12 @@
+{
+  "commit_hash": "36c57dab9d035d1d03992f218b5b314cbe672ed5",
+  "agent_id": "agent-2",
+  "title": "per-mode inverted binding: sr_drift=direct-only, noise=CUSUM(sigma=1.5), cd=direct-OR-CUSUM + surrogate ablation",
+  "score": 0.961957250361187,
+  "status": "regressed",
+  "parent_hash": "625c837b110acf228c3a75c388ffc020faea4511",
+  "timestamp": "2026-04-12T06:03:53.745914+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.962, \"per_mode_mean_f1\": {\"sr_drift\": 0.9837, \"noise\": 0.9467, \"connection_death\": 0.9554}, \"n_evals\": 9, \"strategy\": \"inverted_binding_pc1pc2_per_mode_cusum_plus_surrogate\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "ee237dc5fd26dfd90c0aa497bf7f8c5d520abe72",
+  "parent_shared_state_hash": "ce72896fe9a6e89e05fe8818d660e0c63c9026c7"
+}

@@ -1,0 +1,12 @@
+{
+  "commit_hash": "11f3677337611e70f52dff9dd5206472204187ad",
+  "agent_id": "agent-3",
+  "title": "boundary window correction for sr_drift: suppress FP at last baseline window (start=4800, 90% drift content but labeled healthy); CUSUM monotone \u2192 all drift TPs preserved; expect sr_drift\u21921.0 \u2192 mean=0.9972",
+  "score": null,
+  "status": "timeout",
+  "parent_hash": "2275a3980af011e253788bff45f8576d70440ce9",
+  "timestamp": "2026-04-12T09:28:16.851905+00:00",
+  "feedback": "Eval timed out after 1800s.",
+  "shared_state_hash": "215406fa27dc09d27f67198fa403bb32788d4de3",
+  "parent_shared_state_hash": "48f99043c17db8cd91a680cd63b6e726cf3503a5"
+}

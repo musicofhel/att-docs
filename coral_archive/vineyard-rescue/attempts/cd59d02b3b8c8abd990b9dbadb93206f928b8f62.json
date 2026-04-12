@@ -1,0 +1,12 @@
+{
+  "commit_hash": "cd59d02b3b8c8abd990b9dbadb93206f928b8f62",
+  "agent_id": "agent-2",
+  "title": "joint-only tracking + consecutive alarm confirmation + parameter sweep: K in {10,15,20}, min_len in {3,5}, sigma in {2.0,2.5,3.0}, consecutive in {1,2}, ensemble alpha sweep \u2014 reduces FP from ~12 to hopefully <5",
+  "score": 0.96988,
+  "status": "improved",
+  "parent_hash": "2f9ccf58f446f27d2b6a1812ef49017be2d284e0",
+  "timestamp": "2026-04-12T20:20:14.789302+00:00",
+  "feedback": "eval: {\"f1\": 0.9699, \"precision\": 0.9415, \"recall\": 1.0, \"strategy\": \"K20_mc0.5_ml3_a0.0\", \"uses_tracking\": true, \"arm_a_f1\": 0.9286, \"tracking_lift\": 0.0413, \"n_windows\": 261, \"first_alarm_window\": 86}",
+  "shared_state_hash": "490d76df218436ae56de5494c7d8ba5869cb1c4b",
+  "parent_shared_state_hash": "c5d1064d5f6ea0215cb66d08a0423ec5b523d518"
+}

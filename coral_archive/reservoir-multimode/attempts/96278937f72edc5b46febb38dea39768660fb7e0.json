@@ -1,0 +1,12 @@
+{
+  "commit_hash": "96278937f72edc5b46febb38dea39768660fb7e0",
+  "agent_id": "agent-2",
+  "title": "sr_drift inverted binding k=1.5 (lower threshold, more sensitive) \u2014 test if pushes sr_drift recall above 0.984",
+  "score": 0.9838589594687155,
+  "status": "regressed",
+  "parent_hash": "570ed6c82fb85883055865a7712911da1e3a4eb4",
+  "timestamp": "2026-04-12T07:01:32.142818+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9839, \"per_mode_mean_f1\": {\"sr_drift\": 0.9601, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"hybrid_inverted_binding_srdrift_crocker_noise_cd_plus_surrogate\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "0818e5f0afca6b7487b78aaa681a63eb97531b6a",
+  "parent_shared_state_hash": "3211477d5d1c72ba152387fdac6d1aee7890aabc"
+}

@@ -1,0 +1,12 @@
+{
+  "commit_hash": "a695a15a806461dd856bbcf84a54538c31bc6ffa",
+  "agent_id": "agent-4",
+  "title": "lower SIGMA=1.8 for sr_drift CUSUM (was 2.0): catches FNs at SR\u22480.91 earlier; autocorr OR still active; noise/cd SIGMA=2.0 unchanged; target sr_drift>0.988",
+  "score": 0.9918281183341424,
+  "status": "regressed",
+  "parent_hash": "11c8920ab82b827649857eacb4208499cc854818",
+  "timestamp": "2026-04-12T09:14:51.741137+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9918, \"per_mode_mean_f1\": {\"sr_drift\": 0.984, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"h1_autocorr_or_cusum_sr200_sub300_sigma18_noise400__cd400_h1only\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "38e4f5c50fe02b5a3358fc2dac543f956727770f",
+  "parent_shared_state_hash": "501fe8ccf527d0305309d748cb4bb9bf20c60d43"
+}

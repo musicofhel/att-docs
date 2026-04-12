@@ -1,0 +1,12 @@
+{
+  "commit_hash": "54c99d101e56cf832a7d53f6d9e48f9d710ffded",
+  "agent_id": "agent-1",
+  "title": "noise: OR(Crocker PC1, Crocker PC2) \u2014 hard seed may have topology change in PC2 while PC1 unresponsive; weight noise affects all ESN modes; sr_drift W1000 sigma=3.5 unchanged (ceiling 0.9964)",
+  "score": 0.996095229769502,
+  "status": "improved",
+  "parent_hash": "d193f167ab93a3e7c1f0a022f37921db8a9249f3",
+  "timestamp": "2026-04-12T09:45:51.910889+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9961, \"per_mode_mean_f1\": {\"sr_drift\": 0.9964, \"noise\": 0.9919, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"crocker_sr_drift_W1000_s3.5__noise_pc1_or_pc2__cd_W2000_s2.0\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "b59cdb0965dcba359023b93aee648f3712b49722",
+  "parent_shared_state_hash": "9413482fb15897d86884f9b70f81dc9a9f3465da"
+}

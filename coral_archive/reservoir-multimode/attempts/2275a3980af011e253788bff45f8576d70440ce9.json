@@ -1,0 +1,12 @@
+{
+  "commit_hash": "2275a3980af011e253788bff45f8576d70440ce9",
+  "agent_id": "agent-3",
+  "title": "adaptive embedding: sr_drift=per-window-auto STRIDE=200 (F1=0.988), noise+cd=fixed STRIDE=400 (0.9915/1.0) \u2192 expected mean=0.9932 NEW RECORD",
+  "score": 0.993134932893969,
+  "status": "improved",
+  "parent_hash": "79e410e9950dccc3a00fd7e2f64bdc37ca2fe0f5",
+  "timestamp": "2026-04-12T08:11:42.885624+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9931, \"per_mode_mean_f1\": {\"sr_drift\": 0.988, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"adaptive_embedding_sr_auto200_ncd_fixed400\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "48f99043c17db8cd91a680cd63b6e726cf3503a5",
+  "parent_shared_state_hash": "edc660d8302e2151aaab551fc7a8816fcb1dee8e"
+}

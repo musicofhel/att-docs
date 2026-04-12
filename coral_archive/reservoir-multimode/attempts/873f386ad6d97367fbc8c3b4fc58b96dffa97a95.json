@@ -1,0 +1,12 @@
+{
+  "commit_hash": "873f386ad6d97367fbc8c3b4fc58b96dffa97a95",
+  "agent_id": "agent-1",
+  "title": "inverted binding sr_drift SIGMA=1.8 (was 2.0): lower threshold to catch 1 more early drift window; stable healthy baseline makes FP risk low",
+  "score": 0.9796512126422553,
+  "status": "regressed",
+  "parent_hash": "f799778a12bebba57e2ab31a5c138362b5574ab5",
+  "timestamp": "2026-04-12T06:42:10.320240+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9797, \"per_mode_mean_f1\": {\"sr_drift\": 0.9679, \"noise\": 0.9876, \"connection_death\": 0.9835}, \"n_evals\": 9, \"strategy\": \"hybrid_inverted_binding_sr_drift__crocker_noise_cd_v2\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "b7f1e03c7653288dd8e31938187f9930c468c93b",
+  "parent_shared_state_hash": "d8bb06ac17d8799c7bd1f9954be1c49518acd832"
+}

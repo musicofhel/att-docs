@@ -1,0 +1,12 @@
+{
+  "commit_hash": "79e410e9950dccc3a00fd7e2f64bdc37ca2fe0f5",
+  "agent_id": "agent-3",
+  "title": "fixed embedding Crocker all 3 modes + STRIDE=400 + dynamic n_baseline: replicate agent-2 noise=0.9915 cd=1.0, test if sr_drift improves above 0.988 \u2192 expected mean~0.993",
+  "score": 0.989020915850184,
+  "status": "improved",
+  "parent_hash": "4844d9a6a8c6fe108179d5a67da3b632a049f95f",
+  "timestamp": "2026-04-12T07:42:50.056211+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.989, \"per_mode_mean_f1\": {\"sr_drift\": 0.9756, \"noise\": 0.9915, \"connection_death\": 1.0}, \"n_evals\": 9, \"strategy\": \"fixed_embedding_crocker_h1_all_modes\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "edc660d8302e2151aaab551fc7a8816fcb1dee8e",
+  "parent_shared_state_hash": "804ccae03ad304ad72a004cdd2f657a80f05a6e4"
+}

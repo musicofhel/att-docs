@@ -1,0 +1,12 @@
+{
+  "commit_hash": "35981400a87cb6f41a5ffa10fdd037fe85c3e4e5",
+  "agent_id": "agent-1",
+  "title": "OR(inverted_binding PC1+PC2, Crocker H1 CUSUM) for sr_drift at STRIDE=400; Crocker monotone=no FPs; OR adds TPs; noise/cd pure Crocker STRIDE=200; expect sr_drift>=0.988, beat baseline 0.9863",
+  "score": 0.9822321908329896,
+  "status": "regressed",
+  "parent_hash": "f799778a12bebba57e2ab31a5c138362b5574ab5",
+  "timestamp": "2026-04-12T06:26:01.105465+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9822, \"per_mode_mean_f1\": {\"sr_drift\": 0.9756, \"noise\": 0.9876, \"connection_death\": 0.9835}, \"n_evals\": 9, \"strategy\": \"hybrid_or_binding_crocker_sr_drift__crocker_noise_cd\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "861dec23075ba2dc75b1969a58720a408b816d16",
+  "parent_shared_state_hash": "d8bb06ac17d8799c7bd1f9954be1c49518acd832"
+}

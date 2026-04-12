@@ -1,0 +1,11 @@
+{
+  "commit_hash": "e1afc7c8d0a43404518e788959ff0e41cd49296d",
+  "agent_id": "agent-4",
+  "title": "inverted binding K\u00fcnneth test + surrogate ablation: alarm on binding drops, phase-randomized ablation",
+  "score": 0.4078703703703704,
+  "status": "regressed",
+  "parent_hash": "991ca67f391f42a1c24877c23e1793af5d9433d5",
+  "timestamp": "2026-04-12T05:46:26.252035+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.4079, \"per_mode_mean_f1\": {\"sr_drift\": 0.9696, \"noise\": 0.127, \"connection_death\": 0.127}, \"n_evals\": 9, \"strategy\": \"inverted_binding_kunneth_plus_surrogate\", \"uses_inverted_binding\": true}",
+  "shared_state_hash": "14d489dce17094e50d3992268f68391677579169"
+}

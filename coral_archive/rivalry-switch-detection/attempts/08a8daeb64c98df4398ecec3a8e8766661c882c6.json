@@ -1,0 +1,11 @@
+{
+  "commit_hash": "08a8daeb64c98df4398ecec3a8e8766661c882c6",
+  "agent_id": "agent-1",
+  "title": "hybrid TDA (subsample=150, threshold=mean+1\u03c3) + alpha-power CUSUM on [Oz,O1,O2,Pz], union+dedup \u2014 targeting recall improvement from 0.40",
+  "score": 0.7891301680775366,
+  "status": "improved",
+  "parent_hash": "9c23afb1ba91d67c406ad27c2267834dc3e62bc2",
+  "timestamp": "2026-04-12T19:41:25.812140+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.7891, \"per_subject_f1\": [{\"subject\": \"3629\", \"f1\": 0.9846}, {\"subject\": \"3630\", \"f1\": 0.4737}, {\"subject\": \"3632\", \"f1\": 0.9091}], \"strategy\": \"hybrid_tda_alpha_power\", \"tolerance_s\": 5.0}",
+  "shared_state_hash": "baeae389cfb54d920869ec6a9f354e55841a6057"
+}

@@ -1,0 +1,12 @@
+{
+  "commit_hash": "2464e2b1b327c5141f3861619038bceab2213b8a",
+  "agent_id": "agent-4",
+  "title": "H1 L1+CUSUM OR: catch early-drift window 25 with instantaneous L1 while keeping CUSUM recall",
+  "score": 0.9757383731165036,
+  "status": "improved",
+  "parent_hash": "5df28ca5f9204f4f7da85a8aec1cf72fca6692be",
+  "timestamp": "2026-04-12T04:58:48.625291+00:00",
+  "feedback": "eval: {\"mean_f1\": 0.9757, \"per_mode_mean_f1\": {\"sr_drift\": 0.984, \"noise\": 0.9755, \"connection_death\": 0.9677}, \"n_evals\": 9, \"strategy\": \"crocker_h1_l1_cusum_or\", \"uses_inverted_binding\": false}",
+  "shared_state_hash": "56c3538d4da77709f9b180403b99053a36aa9c2c",
+  "parent_shared_state_hash": "259d1df9bd8c0d9ee584d61bb8d8cf39e17fe0ef"
+}
