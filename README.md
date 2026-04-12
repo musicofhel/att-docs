@@ -124,7 +124,7 @@ ATT sits at the intersection of several existing research threads, none of which
 
 ## Experimental Results
 
-ATT has been validated across synthetic, neural, and cardiac domains via 12 experiments (9 in the original preprint + 3 discovered by automated multi-agent search using [CORAL](https://github.com/Human-Agent-Society/CORAL)):
+ATT has been validated across synthetic, neural, and cardiac domains via 12 experiments (9 in the original preprint + 3 discovered by automated multi-agent search using [CORAL](https://github.com/Human-Agent-Society/CORAL)). CORAL is the experiment runner; ATT is the subject under test -- each CORAL agent writes scripts that call ATT's API (`BindingDetector`, `TransitionDetector`, `PersistenceAnalyzer`, `TakensEmbedder`) and independently discovers strategies that validate ATT's theoretical claims:
 
 | Experiment | Domain | Key Result | Preprint Section |
 |------------|--------|------------|------------------|

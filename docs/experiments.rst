@@ -136,12 +136,12 @@ state.
      - 0.984
      - --
 
-**Key finding**: The Künneth formula predicts that when coupled systems synchronize,
-the joint topology approaches a product of marginals, and the binding residual
-vanishes. Experiment 11 confirms this: spectral radius drift drives synchronization,
-binding score *decreases*, and an inverted alarm (alarm on decrease) detects the
-onset with F1 = 0.984. This is the **first direct experimental test** of the
-Künneth cross-term interpretation.
+**Key finding**: The Künneth cross-term prediction states that when coupled systems
+synchronize, the joint topology approaches a product of marginals, and the binding
+residual vanishes. Experiment 11 confirms this via inverted binding detection:
+spectral radius drift drives synchronization, the binding score *decreases*, and an
+inverted alarm (trigger on decrease) detects the onset with F1 = 0.984. This is the
+**first direct experimental test** of the Künneth cross-term prediction.
 
 The surrogate ablation (F1 = 0.986 on phase-randomized surrogates) confirms that
 the detector responds to genuine topological change, not mere non-stationarity.
@@ -183,6 +183,65 @@ Experiment 12: Perfect Perceptual Switch Detection
 with a clean spectral signature. Alpha power on Oz captures perceptual switches
 directly for dense-switching subjects. TDA is still needed for sparse/ambiguous
 cases. Topological and spectral methods are complementary.
+
+
+Practical Lessons
+-----------------
+
+Key methodological takeaways from Experiments 10--12 (see individual
+``coral_archive/*/SUMMARY.md`` for full details):
+
+1. **Pure TDA is not always enough.** Cardiac arrhythmia detection achieves only
+   AUROC ~ 0.60 with topological features alone -- persistence entropy at 10s
+   window scale is rhythm-class-invariant. Combining TDA with classical signal/HRV
+   features lifts performance to 0.80. Always consider hybrid feature sets for
+   real-world classification.
+
+2. **Adaptive beats uniform.** Per-subject strategy selection (dense-switching
+   subjects use spectral power; sparse subjects use windowed TDA) closes the
+   rivalry recall gap from 40.6% to 100%. Uniform pipelines leave performance
+   on the table when subjects differ in signal characteristics.
+
+3. **Binding can decrease.** The Künneth cross-term prediction: when coupled
+   systems synchronize, the joint attractor collapses toward a product of
+   marginals and the binding residual vanishes. Detection requires an *inverted*
+   alarm (trigger on binding score drop, not rise). Experiment 11 is the first
+   direct experimental test.
+
+4. **Always validate with surrogates.** Phase-randomized surrogate ablation
+   distinguishes genuine topological coupling from mere non-stationarity. All
+   CORAL experiments used this, and it should be standard practice for any
+   real-world binding claim.
+
+5. **Implementation matters.** The vineyard tracking concept (persistence
+   diagram matching over time) went from F1 = 0.898 (Hungarian matching) to
+   F1 = 1.0 (greedy top-K) with parameter tuning alone. Sound theory with
+   poor implementation underperforms.
+
+
+How These Experiments Were Run
+------------------------------
+
+Experiments 10--12 were discovered by `CORAL <https://github.com/Human-Agent-Society/CORAL>`_,
+a multi-agent competitive experiment runner. CORAL is the **orchestrator**; ATT is
+the **subject under test**.
+
+Each CORAL run launches 4 autonomous AI agents (Claude Code instances) in isolated
+git worktrees. The agents write experiment scripts that call ATT's Python API
+directly:
+
+- ``att.embedding.TakensEmbedder`` -- delay embedding with auto AMI/FNN estimation
+- ``att.topology.PersistenceAnalyzer`` -- persistent homology via Ripser/GUDHI
+- ``att.binding.BindingDetector`` -- joint-vs-marginal persistence image subtraction
+- ``att.transitions.TransitionDetector`` -- sliding-window PH with CUSUM changepoint detection
+- ``att.surrogates`` -- phase-randomized surrogate generation for significance testing
+
+Agents independently explore strategies (feature combinations, detection thresholds,
+per-subject adaptation), and CORAL scores each attempt against a target metric. The
+winning strategies validate ATT's theoretical claims -- the Künneth cross-term
+prediction (Experiment 11), binding score sensitivity to heterogeneous timescales
+(Experiment 10), and complementarity of topological and spectral methods
+(Experiment 12).
 
 
 CORAL Archive

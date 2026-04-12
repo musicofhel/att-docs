@@ -16,13 +16,32 @@ Each branch ran 4 competing AI agents (Claude Code) in isolated git worktrees wi
 
 ## Key Findings
 
-1. **Künneth cross-term confirmed** (reservoir-multimode): Inverted binding (alarm on binding score *decrease*) detects spectral radius drift at F1=0.984. First direct experimental test of the Künneth interpretation — binding measures topological independence, not coupling strength.
+1. **Künneth cross-term prediction confirmed** (reservoir-multimode): Inverted binding detection (alarm on binding score *decrease*) detects spectral radius drift at F1=0.984. First direct experimental test — binding measures topological independence, not coupling strength.
 
 2. **Perfect rivalry detection** (rivalry-switch-detection): Adaptive per-subject strategy achieves F1=1.0. Dense-switching subjects use Oz alpha power (8-13 Hz); sparse subjects use windowed TDA with behavioral fallback. Closes the recall gap from 40.6% to 100%.
 
 3. **Cardiac cross-domain validation** (cardiac-feature-search): Mixed TDA + signal features (9 topological + 12 HRV) achieve AUROC=0.8014 on MIT-BIH arrhythmia detection. Pure TDA alone underperforms at 10s window scale.
 
 4. **Tracking works when tuned** (vineyard-rescue): Greedy top-K tracker with SavGol smoothing achieves F1=1.0. The original Hungarian matching failure was implementation, not concept.
+
+## Relationship to ATT
+
+CORAL is the **experiment runner**; ATT is the **subject under test**. Each CORAL
+agent is an autonomous Claude Code instance that writes experiment scripts calling
+ATT's Python API directly:
+
+- `att.embedding.TakensEmbedder` — delay embedding with auto AMI/FNN estimation
+- `att.topology.PersistenceAnalyzer` — persistent homology via Ripser/GUDHI
+- `att.binding.BindingDetector` — joint-vs-marginal persistence image subtraction
+- `att.transitions.TransitionDetector` — sliding-window PH with CUSUM changepoint detection
+- `att.surrogates` — phase-randomized surrogate generation for significance testing
+
+The agents independently discovered strategies (feature combinations, detection
+thresholds, per-subject adaptation) that validate ATT's theoretical claims — the
+Künneth cross-term prediction, the binding score's sensitivity to heterogeneous
+timescales, and the complementarity of topological and spectral methods. The results
+are **ATT results**: they extend its empirical record across cardiac, reservoir
+computing, and improved EEG domains.
 
 ## Archive Contents
 

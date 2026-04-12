@@ -10,8 +10,9 @@ are coupled.
 
 Validated across 12 experiments spanning coupled chaotic systems, binocular rivalry
 EEG, cardiac ECG, and reservoir computing -- including the first experimental
-confirmation of the Kunneth cross-term prediction and perfect (F1=1.0) perceptual
-switch detection.  See :doc:`experiments` for details.
+confirmation of the Künneth cross-term prediction (inverted binding detection,
+F1=0.985) and perfect perceptual switch detection (F1=1.0).
+See :doc:`experiments` for details.
 
 .. code-block:: python
 

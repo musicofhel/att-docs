@@ -13,5 +13,6 @@ API Reference
    benchmarks
    transitions
    neuro
+   cone
    viz
    cli

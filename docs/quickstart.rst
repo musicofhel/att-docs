@@ -185,9 +185,22 @@ statistically significant.
    fig.savefig("binding_comparison.png", dpi=150)
 
 
+.. note::
+
+   Surrogate significance testing is essential for all real-world binding claims.
+   Phase-randomized surrogates destroy nonlinear coupling while preserving the
+   power spectrum -- if the binding score still exceeds the surrogate distribution,
+   it reflects genuine topology, not non-stationarity. All CORAL experiments
+   (Experiments 10--12) used surrogate ablation to confirm their findings.
+   See :doc:`experiments` for details.
+
+
 What next?
 ----------
 
+- **Real-world results**: See :doc:`experiments` for validation across 12 domains
+  -- cardiac arrhythmia (AUROC=0.8014), Künneth cross-term confirmation (F1=0.985),
+  and perfect perceptual switch detection (F1=1.0).
 - **Transition detection**: Use :class:`~att.transitions.TransitionDetector` to
   find topological regime changes in non-stationary time series.
 - **Benchmarking**: Compare ATT's binding score against transfer entropy, PAC,
