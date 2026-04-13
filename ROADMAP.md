@@ -226,7 +226,7 @@ Ranked by compounding potential:
 2. **Phase 2b completion**: Diagram matching method, twin surrogates, N-body binding.
 3. **Cross-barcode integration**: R-Cross-Barcode on VR complexes. Theoretically cleaner than PI subtraction.
 4. **Community benchmark contributions**: Invite others to register methods. Maintain a leaderboard of coupling measures on standard systems.
-5. **Transformer hidden states**: Attractor topology from LLM intermediate representations.
+5. ~~**Transformer hidden states**: Attractor topology from LLM intermediate representations.~~ → Completed as Phase 7 (``att/llm/``) and Phase 8 (topo-confidence).
 6. **Real-time streaming**: WebSocket pipeline for live EEG topology. Requires Ripser++ GPU.
 7. **Multi-scale analysis**: Wavelet decomposition before embedding.
 8. **Directed PH integration**: Combine with Xi et al.'s TE-network PH.
@@ -275,6 +275,65 @@ Ranked by compounding potential:
 
 ---
 
+## Phase 7 — LLM Hidden-State Topology (2026-04-02, COMPLETE)
+
+**Scope**: Apply persistent homology to transformer hidden states to determine whether attractor topology methods generalize from dynamical systems to LLM representations. Ten research directions on Qwen2.5-1.5B MATH-500, cross-validated on 3 additional models.
+
+**Status**: ALL 10 DIRECTIONS COMPLETE. Findings promoted to master via `att/llm/` subpackage.
+
+### Key Results
+
+| Direction | Finding | Status |
+|-----------|---------|--------|
+| D1 Per-layer z-score | Peak z = 8.12 at terminal layer (28/28) | Complete |
+| D2 Correctness prediction | AUROC = 0.580 (16 PH features) | Complete |
+| D3 Spectral PH | Euclidean richer than spectral for LLM states | Complete |
+| D5 CROCKER visualization | Monotonic L1 gradient across difficulty | Complete |
+| D6 Cross-model | H1 non-monotonic entropy universal (4/4 models) | Complete |
+| D7 Intrinsic dimension | ID increases with difficulty (6.7 → 12.0) | Complete |
+| D8 Token partition | Problem region most discriminative | Complete |
+| D9 Compression | Harder problems compress topology | Complete |
+| D10 Attention-hidden binding | Coupling decreases with difficulty (0.683 → 0.465) | Complete |
+
+### Deliverable
+
+`att/llm/` subpackage: 8 modules, ~97 tests, 28 figures, 9 JSON result files. Implements `HiddenStateLoader`, `LayerwiseAnalyzer`, `CROCKERMatrix`, `TopologicalFeatureExtractor`, `ZigzagLayerAnalyzer`, `TokenPartitioner`, `AttentionHiddenBinding`, plus `att/topology/spectral.py`.
+
+---
+
+## Phase 8 — Topo-Confidence (2026-04-12, Pathway 1 COMPLETE)
+
+**Scope**: Spin off LLM correctness prediction into standalone tool. Apply CORAL multi-agent feature engineering to push from D2's AUROC = 0.580 to production-viable confidence scoring. Validate rigorously via holdout evaluation.
+
+**Status**: Pathway 1 (validation) COMPLETE. GO decision for Pathways 2-4.
+
+**Repository**: [github.com/musicofhel/topo-confidence](https://github.com/musicofhel/topo-confidence)
+
+### Pathway 1 Results
+
+- CORAL optimization: 78 features across 4 tiers (A/B/C/D), CV AUROC = 0.977
+- Honest holdout: AUROC = **0.948** [0.898, 0.986]
+- Tier B (layer dynamics) = value jump: +0.105 holdout AUROC over baseline PH
+- Orthogonal to output entropy: r = 0.062
+- Entropy routing ≈ random on MATH-500; topology captures different signal
+- Decision: **GO** (full) for Pathways 2-4
+
+### Remaining Pathways
+
+| Pathway | Scope | Status |
+|---------|-------|--------|
+| 2 | Activation steering using topo-confidence signal | Pending |
+| 3 | Topology-aware fine-tuning | Pending |
+| 4 | Topologically-informed distillation | Pending — positive prior from entropy orthogonality |
+
+### Pathway 2-4 Preconditions
+
+- Use best surviving tier A+B+C (44 features) as default feature set
+- Tier D validated but marginal (+0.009 holdout gain)
+- Pathway 4 has strongest positive prior: topology captures routing signal that output entropy does not
+
+---
+
 ## Risk Register (Updated)
 
 | Risk | Likelihood | Impact | Mitigation |
@@ -292,6 +351,7 @@ Ranked by compounding potential:
 | TE/PAC benchmarks show binding score is strictly inferior | Low | Medium | Report honestly. Complementarity is also publishable. |
 | Non-reproducible results | Medium | High | `set_seed()` + YAML configs. Tested in Phase 1. |
 | Nobody finds the project | Medium | High | PyPI packaging, blog post, arXiv preprint, CLI. Multiple discovery channels. |
+| Topo-confidence doesn't generalize beyond Qwen2.5-1.5B / MATH-500 | Medium | Medium | Phase 7 D6 showed H1 entropy universality across 4 models. Pathway 2 will test on additional models/datasets. |
 
 ---
 
@@ -308,6 +368,8 @@ Assumes ~30 productive hours/week (6 hours/day, 5 days) alongside job applicatio
 | Phase 4: Distribution + Blog | 33 | End of Week 7 | PyPI, blog, docs |
 | **Total (essential)** | **179** | **7 weeks** | |
 | **Total (with stretch)** | **192** | **7 weeks** | |
+| Phase 7: LLM Hidden-State Topology | ~40 | 1 week | `att/llm/` subpackage, 10 directions |
+| Phase 8: Topo-Confidence Pathway 1 | ~20 | 3 days | Holdout AUROC 0.948, GO decision |
 
 Buffer: 13 hours from stretch + natural slack. Realistic total: 8 weeks.
 

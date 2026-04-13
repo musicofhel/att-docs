@@ -347,6 +347,66 @@ In multi-agent systems with shared state, ATT's binding detection could identify
 
 ---
 
+## 8. Transformer Hidden-State Topology
+
+### The Question
+
+Does persistent homology reveal meaningful structure in LLM hidden states? Transformer representations are not time series in the classical sense — they are sequences of high-dimensional vectors produced by a single forward pass — but they share key properties with dynamical trajectories: sequential ordering, smooth evolution through layers, and emergent geometric structure that reflects computation.
+
+### Hidden-State Geometry
+
+Transformer token representations universally organize into two clusters: instruction/prompt tokens and reasoning/output tokens. This has been observed across Qwen2.5-1.5B, Phi-2, Pythia-1.4B, and StableLM-2-1.6B on MATH-500. Position-0 (BOS/system token) serves as a **computational bridge** between these clusters — it is not a member of either but sits at a geometric intermediate position. The bridge token's silhouette score in k=2 clustering (bridge_silhouette) is a weak individual predictor of correctness (AUROC = 0.618) but powerful in combination with other topological features.
+
+### Layer-Wise Topological Evolution
+
+Persistent homology features evolve across transformer layers in a structured way:
+
+- **Terminal-layer concentration**: The topological signal discriminating correct from incorrect answers concentrates overwhelmingly in the final layer. For Qwen2.5-1.5B (29 layers), the z-score peaks at 8.12 at layer 28/28. All 28 internal layers are individually significant (z > 2), but the terminal layer dominates. This parallels the BLOOD framework's finding that OOD detection is most effective at the final layer.
+- **H1 non-monotonic entropy**: H1 persistence entropy (measuring loop complexity) shows a universal pattern across all four tested models: a sharp jump from Level 1 (easiest) to Level 2, then a plateau through Levels 3–5. The terminal-layer amplification of this pattern is Qwen-specific (1/4 models replicate it).
+- **Intrinsic dimension gradient**: Intrinsic dimension of hidden-state point clouds increases with problem difficulty (6.7 at Level 1 → 12.0 at Level 5 via TwoNN estimation). Harder problems require higher-dimensional representations.
+- **Topology compression**: Harder problems compress topological features (fewer persistent homology features with shorter lifetimes), suggesting the model's representation is less structured when it is struggling.
+
+### Attention-Hidden Coupling
+
+ATT's binding framework, originally designed for dynamical systems, adapts directly to transformer internals. The attention-hidden binding analysis (Direction 10) measures coupling between multi-head attention pattern topology and hidden-state point cloud topology using persistence image subtraction:
+
+- Binding score between attention patterns and hidden states **decreases monotonically** with problem difficulty: 0.683 (Level 1, easiest) → 0.465 (Level 5, hardest).
+- Interpretation: when the model is solving easy problems, attention and hidden-state geometry are tightly coupled. Under difficulty, they **decouple** — attention explores while hidden-state geometry fragments.
+- This validates ATT's binding construction in a fundamentally different domain (transformer internals rather than coupled oscillators).
+
+### Feature Engineering: From D2 to Topo-Confidence
+
+Raw topological features from a single layer achieve modest correctness prediction (D2: AUROC = 0.580 with 16 PH summary features). The breakthrough comes from systematic feature engineering:
+
+- **CORAL multi-agent search** discovered 78 features across 4 tiers, achieving CV AUROC = 0.977.
+- **The key insight**: layer-to-layer dynamics (cosine similarities between layer representations, curvature, velocity, SVD spectrum ratios) carry far more discriminative power than single-layer PH summaries. Tier B (30 layer dynamics features) adds +0.105 holdout AUROC over baseline PH alone.
+- **Honest validation**: holdout AUROC = 0.948 [0.898, 0.986] with train-only PCA, proper rank-binning, and bootstrap confidence intervals. The holdout estimate exceeds the train CV estimate — no overfitting detected.
+
+### Orthogonality to Output Uncertainty
+
+A critical finding: topo-confidence and output entropy are statistically independent (Pearson r = 0.062). This means:
+
+- **Topology captures internal processing quality**, not forward-pass confidence. A model can be entropically confident (low output entropy) while topologically indicating failure, or vice versa.
+- **Entropy-based routing is nearly useless on MATH-500**: entropy routing approaches random baseline accuracy at all coverage levels. In contrast, topo-confidence routing provides 2.5–4.5× lift over the 11.4% base rate.
+- **Practical implication**: topo-confidence cannot be replaced by a cheaper output-entropy proxy. The topological signal is genuinely novel information about the model's internal state.
+
+### Open Questions
+
+1. **Generalization**: Does the topo-confidence signal generalize beyond Qwen2.5-1.5B? Beyond MATH-500? D6 showed H1 entropy universality across 4 models, but full CORAL validation on other models/datasets is pending (Pathway 2).
+2. **Causality**: Is the topological structure *causal* for correctness, or merely correlated? Pathway 2 (activation steering) will test whether modifying hidden-state geometry in the direction of "correct topology" improves model accuracy.
+3. **Distillation**: Can the topological signal serve as privileged information for knowledge distillation? The orthogonality to output entropy (Pathway 4 positive prior) suggests it could add genuine value beyond standard distillation objectives.
+4. **Scaling**: How does the signal behave in larger models (7B, 70B)? The terminal-layer concentration finding predicts it should persist, but the feature engineering may need adaptation.
+
+### Key References
+
+- Varley, T.F. et al. (2025). "H2 cavities and synergistic information." Correlation ρ = -0.55 to -0.65 between H2 features and synergy measures.
+- BLOOD framework (Jelenic et al., 2024). "Detecting Out-of-Distribution via Layerwise Outputs." Terminal-layer concentration of OOD signal.
+- SEAL (Yang et al., 2025). "Self-Evolving Alignment via Layer-Specific Activation Steering." Validates feasibility of layer-specific hidden-state modification.
+- Bias-Only Adaptation (Deng et al., 2025). Low-rank activation steering with bias vectors.
+- ASM (Yu et al., 2025). "Activation Space Manipulation for Alignment." Multi-layer activation editing.
+
+---
+
 ## Recommended Reading Order
 
 For someone building this project:
@@ -362,3 +422,5 @@ For someone building this project:
 9. R-Cross-Barcode literature — closest theoretical neighbor for "excess features"
 10. Kelso (2012) — metastability, the conceptual frame for binding
 11. Stam (2005) — EEG nonlinear analysis, practical parameter guidance
+12. topo-confidence README — LLM correctness prediction via hidden-state topology (https://github.com/musicofhel/topo-confidence)
+13. BLOOD framework (Jelenic et al., 2024) — terminal-layer OOD detection, context for D1 findings

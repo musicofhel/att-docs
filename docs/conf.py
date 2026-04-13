@@ -77,4 +77,5 @@ autodoc_mock_imports = [
     "pyinform",
     "ripser",
     "persim",
+    "dionysus",
 ]

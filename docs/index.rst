@@ -8,10 +8,11 @@ homology of a joint delay embedding against the marginals, ATT detects
 **topological binding** -- emergent structure that exists only when two systems
 are coupled.
 
-Validated across 12 experiments spanning coupled chaotic systems, binocular rivalry
-EEG, cardiac ECG, and reservoir computing -- including the first experimental
-confirmation of the Künneth cross-term prediction (inverted binding detection,
-F1=0.985) and perfect perceptual switch detection (F1=1.0).
+Validated across 14 experiments spanning coupled chaotic systems, binocular rivalry
+EEG, cardiac ECG, reservoir computing, and LLM hidden-state analysis -- including
+the first experimental confirmation of the Künneth cross-term prediction (inverted
+binding detection, F1=0.985), perfect perceptual switch detection (F1=1.0), and
+LLM correctness prediction from hidden-state topology (holdout AUROC=0.948).
 See :doc:`experiments` for details.
 
 .. code-block:: python
@@ -36,6 +37,7 @@ Key Features
 - **Transition detection** -- sliding-window PH with CUSUM changepoint detection
 - **Benchmark framework** -- compare binding score against transfer entropy, PAC, CRQA
 - **EEG support** -- MNE-Python loader with auto-estimation and literature fallback params
+- **LLM hidden-state analysis** -- layer-wise PH, CROCKER matrices, intrinsic dimension, attention-hidden binding
 - **Publication-quality plots** -- diagrams, barcodes, binding images, transition timelines
 
 .. toctree::

@@ -1,10 +1,12 @@
 Experimental Results
 ====================
 
-ATT has been validated across synthetic, neural, and cardiac domains through 12
+ATT has been validated across synthetic, neural, cardiac, and LLM domains through 14
 experiments. The first 9 appear in the original preprint; Experiments 10--12 were
 discovered via automated multi-agent search using
 `CORAL <https://github.com/Human-Agent-Society/CORAL>`_.
+Experiments 13--14 extend ATT to transformer hidden-state analysis and LLM
+correctness prediction.
 
 .. contents:: On this page
    :local:
@@ -69,6 +71,14 @@ Summary
      - **Perfect rivalry detection**
      - **F1 = 1.0** (adaptive per-subject strategy)
      - Binocular rivalry SSVEP
+   * - 13
+     - **LLM hidden-state topology**
+     - **z = 8.12** terminal-layer significance; correctness AUROC = 0.580
+     - Qwen2.5-1.5B on MATH-500
+   * - 14
+     - **Topo-confidence validation**
+     - **Holdout AUROC = 0.948** [0.898, 0.986]; orthogonal to entropy (r = 0.062)
+     - Qwen2.5-1.5B on MATH-500
 
 
 Experiment 10: Cardiac Arrhythmia Detection
@@ -185,10 +195,168 @@ directly for dense-switching subjects. TDA is still needed for sparse/ambiguous
 cases. Topological and spectral methods are complementary.
 
 
+Experiment 13: LLM Hidden-State Topology (Directions 1--10)
+-----------------------------------------------------------
+
+**Domain**: Qwen2.5-1.5B-Instruct on MATH-500 (5 difficulty levels, 100 problems
+each), cross-validated on Phi-2, Pythia-1.4B, and StableLM-2-1.6B.
+
+**Motivation**: Phase 5 extension item #5 asked whether attractor topology applies to
+transformer hidden states. Ten research directions systematically answered this.
+
+**Method**: Extract hidden states at all 29 layers for 500 math problems. Compute
+persistent homology (H0, H1, H2) on per-layer point clouds, intrinsic dimension
+profiles, CROCKER matrices, zigzag persistence, and attention-hidden coupling.
+
+**Key Results**:
+
+.. list-table::
+   :header-rows: 1
+   :widths: 10 35 30 25
+
+   * - Dir.
+     - Question
+     - Key Metric
+     - Finding
+   * - D1
+     - Where does topological discrimination live?
+     - Peak z-score = 8.12
+     - Terminal layer (28/28)
+   * - D2
+     - Can topology predict correctness?
+     - AUROC = 0.580 (16 features)
+     - Above chance; H0_total_persistence best
+   * - D5
+     - CROCKER visualization of difficulty
+     - L1 distance = 43.0 (easy vs hard)
+     - Monotonic gradient confirmed
+   * - D6
+     - Cross-model universality
+     - H1 non-monotonic entropy
+     - Universal across 4/4 models
+   * - D7
+     - Intrinsic dimension profiles
+     - Terminal ID: 6.7 → 12.0 (L1 → L5)
+     - ID increases with difficulty
+   * - D9
+     - Compression vs resistance
+     - Pattern: compression
+     - Harder problems compress topology
+   * - D10
+     - Attention-hidden coupling
+     - Binding: 0.683 → 0.465 (L1 → L5)
+     - Monotonic decrease with difficulty
+
+**Key insights**:
+
+1. **Terminal-layer concentration.** The topological signal is overwhelmingly
+   concentrated in the final transformer layer (z = 8.12 at layer 28; all 28 layers
+   significant). This parallels BLOOD-framework findings on OOD detection.
+
+2. **H1 non-monotonic entropy is universal.** All four tested models show a jump in
+   H1 persistence entropy from Level 1 to Level 2, then a plateau through Levels 3--5.
+   The terminal-layer effect is Qwen-specific (1/4 replicate).
+
+3. **Attention-hidden decoupling under difficulty.** The binding score between attention
+   patterns and hidden-state topology monotonically decreases as problem difficulty
+   increases (0.683 → 0.465). This is a novel application of ATT's binding framework
+   to transformer internals.
+
+**Implementation**: ``att/llm/`` subpackage (8 modules). See API reference for
+``HiddenStateLoader``, ``LayerwiseAnalyzer``, ``TopologicalFeatureExtractor``,
+``CROCKERMatrix``, ``ZigzagLayerAnalyzer``, ``TokenPartitioner``,
+``AttentionHiddenBinding``.
+
+
+Experiment 14: Topo-Confidence Validation (Pathway 1)
+-----------------------------------------------------
+
+**Domain**: Qwen2.5-1.5B-Instruct on MATH-500 (same dataset as Experiment 13).
+
+**Background**: Experiment 13 Direction 2 achieved AUROC = 0.580 with 16 topological
+features. The `topo-confidence <https://github.com/musicofhel/topo-confidence>`_
+project applied CORAL multi-agent feature engineering to push this substantially
+higher: 78 features across 4 tiers (A/B/C/D), reaching CV AUROC = 0.977 in the
+CORAL optimization loop. Pathway 1 answers: how much of this survives honest holdout
+evaluation?
+
+**Method**: Stratified 400/100 train/holdout split. Train-only PCA to eliminate
+statefulness leakage (31/78 features flagged). Tier ablation (cumulative
+A → A+B → A+B+C → A+B+C+D) locked before consulting holdout. Bootstrap 95% CI.
+
+**Result**: Holdout AUROC = **0.948** [0.898, 0.986].
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 10 20 25
+
+   * - Evaluation
+     - N
+     - AUROC
+     - Note
+   * - CV-500 (CORAL)
+     - 500
+     - 0.977
+     - PCA leakage inflated
+   * - CV-train-400
+     - 400
+     - 0.932
+     - Honest train CV
+   * - **Holdout-100**
+     - 100
+     - **0.948** [0.898, 0.986]
+     - Holdout exceeds train CV
+
+.. list-table::
+   :header-rows: 1
+   :widths: 20 15 20 20
+
+   * - Tier
+     - N features
+     - CV-train-400
+     - Holdout
+   * - A (baseline PH)
+     - 9
+     - 0.789
+     - 0.827
+   * - A+B (+ layer dynamics)
+     - 39
+     - 0.908
+     - 0.932
+   * - A+B+C
+     - 44
+     - 0.922
+     - 0.941
+   * - A+B+C+D (full)
+     - 78
+     - 0.927
+     - 0.950
+
+**Key findings**:
+
+1. **Tier B is the value jump.** Adding layer cosine similarities and dynamics features
+   (Tier B, 30 features) increases holdout AUROC by +0.105 over baseline PH alone.
+   Tiers C and D contribute marginal additional signal (+0.009 each on holdout).
+
+2. **Orthogonal to output entropy.** Correlation between topo-confidence and output
+   entropy: r = 0.062. Entropy-based routing approaches random baseline accuracy on
+   MATH-500; topology captures genuinely different signal.
+
+3. **Routing works.** At 10% coverage, topo-confidence achieves 50% trusted accuracy
+   vs 0% for entropy routing. At 39% coverage: 28.2% vs 10.3%. Topology dominates
+   entropy at every meaningful operating point.
+
+**Decision**: GO for Pathways 2--4 (activation steering, topology-aware fine-tuning,
+topologically-informed distillation).
+
+Full validation protocol and artifacts:
+`topo-confidence/pathway1/ <https://github.com/musicofhel/topo-confidence/tree/main/pathway1>`_.
+
+
 Practical Lessons
 -----------------
 
-Key methodological takeaways from Experiments 10--12 (see individual
+Key methodological takeaways from Experiments 10--14 (see individual
 ``coral_archive/*/SUMMARY.md`` for full details):
 
 1. **Pure TDA is not always enough.** Cardiac arrhythmia detection achieves only
@@ -218,6 +386,14 @@ Key methodological takeaways from Experiments 10--12 (see individual
    F1 = 1.0 (greedy top-K) with parameter tuning alone. Sound theory with
    poor implementation underperforms.
 
+6. **Feature engineering compounds.** The jump from AUROC 0.580 (Experiment 13,
+   D2, raw PH features) to 0.948 (Experiment 14, CORAL-engineered features)
+   demonstrates that topology provides the *right signal* but extracting it
+   requires systematic feature search. The key insight: layer-to-layer dynamics
+   (cosine similarities, curvature, SVD spectrum) carry more discriminative power
+   than single-layer PH summaries. CORAL's competitive multi-agent approach found
+   this in hours.
+
 
 How These Experiments Were Run
 ------------------------------
@@ -242,6 +418,15 @@ winning strategies validate ATT's theoretical claims -- the Künneth cross-term
 prediction (Experiment 11), binding score sensitivity to heterogeneous timescales
 (Experiment 10), and complementarity of topological and spectral methods
 (Experiment 12).
+
+Experiments 13--14 extend ATT's scope from dynamical systems to transformer hidden
+states. Experiment 13 was conducted via a 10-direction research roadmap, each
+direction building on ATT infrastructure (``PersistenceAnalyzer``, ``BindingDetector``)
+adapted for point clouds extracted from LLM layers. Experiment 14 was conducted in a
+standalone repository
+(`topo-confidence <https://github.com/musicofhel/topo-confidence>`_) using CORAL
+for feature engineering, followed by a rigorous 4-phase validation protocol
+(reproduction, holdout evaluation, tier ablation, seed sensitivity, routing prototype).
 
 
 CORAL Archive

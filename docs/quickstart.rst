@@ -198,7 +198,7 @@ statistically significant.
 What next?
 ----------
 
-- **Real-world results**: See :doc:`experiments` for validation across 12 domains
+- **Real-world results**: See :doc:`experiments` for validation across 14 experiments
   -- cardiac arrhythmia (AUROC=0.8014), Künneth cross-term confirmation (F1=0.985),
   and perfect perceptual switch detection (F1=1.0).
 - **Transition detection**: Use :class:`~att.transitions.TransitionDetector` to

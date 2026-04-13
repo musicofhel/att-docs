@@ -18,8 +18,10 @@ Python library for topological coupling detection in dynamical systems via joint
 | `att.cone` | `ConeDetector` | Directed cross-layer projection geometry (availability profiles) |
 | `att.viz` | `plot_persistence_diagram()` | Publication-quality diagrams, barcodes, Betti curves, binding images |
 | `att.cli` | `att benchmark run` | Command-line interface for benchmark sweeps |
+| `att.llm` | `HiddenStateLoader`, `LayerwiseAnalyzer`, `TopologicalFeatureExtractor` | LLM hidden-state topology: layer-wise PH, CROCKER, zigzag, intrinsic dimension, attention-hidden binding |
+| `att.topology.spectral` | `knn_graph_laplacian()`, `spectral_distance_matrix()` | kNN Laplacian spectral distances for high-dimensional PH |
 
-## Experimental Results (12 experiments)
+## Experimental Results (14 experiments)
 
 | # | Experiment | Domain | Key Metric |
 |---|-----------|--------|------------|
@@ -35,8 +37,12 @@ Python library for topological coupling detection in dynamical systems via joint
 | 10 | Cardiac arrhythmia | MIT-BIH ECG | **AUROC = 0.8014** (mixed TDA + signal) |
 | 11 | Künneth confirmation | Reservoir computing | **F1 = 0.985** (inverted binding detection) |
 | 12 | Perfect rivalry detection | Binocular rivalry SSVEP | **F1 = 1.000** (adaptive per-subject) |
+| 13 | LLM hidden-state topology | Qwen2.5-1.5B MATH-500 | **z = 8.12 terminal-layer significance**; AUROC = 0.580 |
+| 14 | Topo-confidence validation | Qwen2.5-1.5B MATH-500 | **Holdout AUROC = 0.948** [0.898, 0.986] |
 
 Experiments 10-12 were discovered by CORAL automated multi-agent search. CORAL is the experiment runner; ATT is the subject under test. Each CORAL agent writes scripts calling ATT's API directly (`BindingDetector`, `TransitionDetector`, `PersistenceAnalyzer`, `TakensEmbedder`). Results validate ATT's Künneth cross-term prediction, extend its domain coverage to cardiac ECG, and close the EEG recall gap.
+
+Experiments 13-14 extend ATT to LLM hidden-state analysis. Persistent homology on transformer point clouds reveals terminal-layer topological concentration (z=8.12), universal H1 non-monotonic entropy across 4 models, and attention-hidden coupling that decreases with problem difficulty. CORAL-engineered features push correctness prediction from AUROC 0.580 to holdout AUROC 0.948, orthogonal to output entropy (r=0.062). GO decision issued for Pathways 2-4. See [topo-confidence](https://github.com/musicofhel/topo-confidence).
 
 ## Domain of Applicability
 
@@ -45,15 +51,16 @@ The binding score is selectively sensitive to coupling between systems with *dif
 ## Testing
 
 ```bash
-python -m pytest tests/ -x -q   # 267 tests
+python -m pytest tests/ -x -q   # 375 tests
 ```
 
 ## Key Directories
 
 | Path | Contents |
 |------|----------|
-| `att/` | Source code (12 modules) |
-| `tests/` | Test suite (267 tests) |
+| `att/` | Source code (~20 modules including `att/llm/`) |
+| `att/llm/` | LLM hidden-state topology (8 modules, added in Experiment 13) |
+| `tests/` | Test suite (375 tests) |
 | `paper/` | LaTeX preprint (`preprint.tex`, `references.bib`) |
 | `docs/` | Sphinx site (Furo theme), auto-deployed to GitHub Pages |
 | `coral_archive/` | CORAL experiment artifacts (108 attempts, 53 agent notes, 4 summaries) |

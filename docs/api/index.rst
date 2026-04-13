@@ -14,5 +14,6 @@ API Reference
    transitions
    neuro
    cone
+   llm
    viz
    cli

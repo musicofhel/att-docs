@@ -18,7 +18,7 @@ pip install att-toolkit
 
 ATT extracts, compares, and visualizes the topological structure of chaotic attractors from multivariate time series. Its core construction -- **joint-vs-marginal persistent homology on Takens-embedded coupled systems** -- isolates emergent coupling topology by comparing persistence diagrams of joint delay embeddings against their marginal counterparts. The library provides clean infrastructure for attractor reconstruction, persistent homology, cross-system binding detection, surrogate-tested statistics, and head-to-head benchmarks against transfer entropy, phase-amplitude coupling, and cross-recurrence quantification.
 
-> **Domain of applicability**: The binding score is selectively sensitive to coupling between systems with *different intrinsic timescales* (e.g., Rossler-Lorenz). It has zero power for same-timescale coupling (e.g., Lorenz-Lorenz). Always use z-score calibration against surrogates rather than raw scores. Validated on EEG (binocular rivalry) and ECG (MIT-BIH arrhythmia). See the [preprint](paper/preprint.tex), Experiments 9-12.
+> **Domain of applicability**: The binding score is selectively sensitive to coupling between systems with *different intrinsic timescales* (e.g., Rossler-Lorenz). It has zero power for same-timescale coupling (e.g., Lorenz-Lorenz). Always use z-score calibration against surrogates rather than raw scores. Validated on EEG (binocular rivalry), ECG (MIT-BIH arrhythmia), and LLM hidden states (Qwen2.5-1.5B, Phi-2, Pythia-1.4B, StableLM). See the [preprint](paper/preprint.tex), Experiments 9-14.
 
 ## Quick Start
 
@@ -82,6 +82,7 @@ att benchmark run \
 pip install att-toolkit           # core
 pip install att-toolkit[eeg]      # + MNE-Python for EEG/MEG
 pip install att-toolkit[gudhi]    # + GUDHI backend (alpha/witness complexes)
+pip install att-toolkit[zigzag]  # + Dionysus for zigzag persistence
 pip install att-toolkit[all]      # everything
 ```
 
@@ -109,6 +110,7 @@ pip install -e ".[dev]"
 | `att.cone` | Directed cross-layer projection geometry (ConeDetector, availability profiles) |
 | `att.viz` | Persistence diagrams, barcodes, Betti curves, 3D attractors, binding images |
 | `att.cli` | Command-line interface for benchmark sweeps |
+| `att.llm` | LLM hidden-state topology: layer-wise PH, CROCKER matrices, zigzag persistence, intrinsic dimension, attention-hidden binding |
 
 ## What Makes ATT Different
 
@@ -124,7 +126,7 @@ ATT sits at the intersection of several existing research threads, none of which
 
 ## Experimental Results
 
-ATT has been validated across synthetic, neural, and cardiac domains via 12 experiments (9 in the original preprint + 3 discovered by automated multi-agent search using [CORAL](https://github.com/Human-Agent-Society/CORAL)). CORAL is the experiment runner; ATT is the subject under test -- each CORAL agent writes scripts that call ATT's API (`BindingDetector`, `TransitionDetector`, `PersistenceAnalyzer`, `TakensEmbedder`) and independently discovers strategies that validate ATT's theoretical claims:
+ATT has been validated across synthetic, neural, cardiac, and LLM domains via 14 experiments (9 in the original preprint + 3 discovered by automated multi-agent search using [CORAL](https://github.com/Human-Agent-Society/CORAL) + 2 extending ATT to transformer hidden states). CORAL is the experiment runner; ATT is the subject under test -- each CORAL agent writes scripts that call ATT's API (`BindingDetector`, `TransitionDetector`, `PersistenceAnalyzer`, `TakensEmbedder`) and independently discovers strategies that validate ATT's theoretical claims:
 
 | Experiment | Domain | Key Result | Preprint Section |
 |------------|--------|------------|------------------|
@@ -132,6 +134,10 @@ ATT has been validated across synthetic, neural, and cardiac domains via 12 expe
 | Perceptual switch detection | Binocular rivalry EEG | Adaptive TDA + alpha power achieves F1=1.0 | Experiment 12 |
 | Cardiac arrhythmia | MIT-BIH ECG | Mixed TDA + signal features: AUROC=0.8014 | Experiment 10 |
 | Vineyard tracking rescue | Reservoir degradation | Greedy top-K + SavGol: F1=1.0 | [`coral_archive/`](coral_archive/) |
+| LLM hidden-state topology | Qwen2.5-1.5B MATH-500 | Terminal-layer z=8.12; H1 non-monotonic entropy universal (4 models) | Experiment 13 |
+| Topo-confidence validation | Qwen2.5-1.5B MATH-500 | Holdout AUROC=0.948 [0.898, 0.986]; orthogonal to entropy (r=0.062) | Experiment 14 |
+
+**LLM extension**: Persistent homology on transformer hidden states predicts mathematical reasoning correctness with holdout AUROC=0.948. This signal is orthogonal to output entropy (r=0.062) -- topology captures whether the model "knows what it's doing" from a single forward pass, not output uncertainty. Standalone package: [topo-confidence](https://github.com/musicofhel/topo-confidence).
 
 **Key finding (Künneth confirmation)**: When coupled systems synchronize, the binding score *drops* (not rises) because the joint attractor collapses toward a product of marginals. This inverted behavior -- the Künneth cross-term prediction -- enables alarm-on-decrease detection of spectral radius drift. First direct experimental test of this theoretical interpretation.
 
@@ -159,7 +165,7 @@ If you use ATT in your research, please cite:
 }
 ```
 
-Preprint (12 experiments spanning synthetic systems, binocular rivalry EEG, cardiac ECG, and reservoir computing): [`paper/preprint.pdf`](paper/preprint.pdf).
+Preprint (12 experiments spanning synthetic systems, binocular rivalry EEG, cardiac ECG, and reservoir computing): [`paper/preprint.pdf`](paper/preprint.pdf). Post-publication experiments 13-14 (LLM hidden-state topology): see [experiments documentation](https://musicofhel.github.io/att-docs/experiments.html).
 
 ## License
 
